@@ -9,6 +9,7 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
+    <input type="hidden" id="baseUrl" value="@Url.Content("~/")" />
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
         <div class="container">
             @Html.ActionLink("應用程式名稱", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })

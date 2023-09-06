@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://dss18.ntust.edu.tw/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://dss18.ntust.edu.tw/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://dss18.ntust.edu.tw/">
+      <s:element name="dorm_room">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="semester" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="roomno" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="dorm_roomResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="dorm_roomResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="studno">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="semester" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="studentno" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="studnoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="studnoResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="members">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="id" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="semester" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="membersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="membersResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DataSet" nillable="true">
+        <s:complexType>
+          <s:sequence>
+            <s:element ref="s:schema" />
+            <s:any />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="dorm_roomSoapIn">
+    <wsdl:part name="parameters" element="tns:dorm_room" />
+  </wsdl:message>
+  <wsdl:message name="dorm_roomSoapOut">
+    <wsdl:part name="parameters" element="tns:dorm_roomResponse" />
+  </wsdl:message>
+  <wsdl:message name="studnoSoapIn">
+    <wsdl:part name="parameters" element="tns:studno" />
+  </wsdl:message>
+  <wsdl:message name="studnoSoapOut">
+    <wsdl:part name="parameters" element="tns:studnoResponse" />
+  </wsdl:message>
+  <wsdl:message name="membersSoapIn">
+    <wsdl:part name="parameters" element="tns:members" />
+  </wsdl:message>
+  <wsdl:message name="membersSoapOut">
+    <wsdl:part name="parameters" element="tns:membersResponse" />
+  </wsdl:message>
+  <wsdl:message name="dorm_roomHttpGetIn">
+    <wsdl:part name="semester" type="s:string" />
+    <wsdl:part name="roomno" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="dorm_roomHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="studnoHttpGetIn">
+    <wsdl:part name="semester" type="s:string" />
+    <wsdl:part name="studentno" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="studnoHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="membersHttpGetIn">
+    <wsdl:part name="id" type="s:string" />
+    <wsdl:part name="semester" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="membersHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="dorm_roomHttpPostIn">
+    <wsdl:part name="semester" type="s:string" />
+    <wsdl:part name="roomno" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="dorm_roomHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="studnoHttpPostIn">
+    <wsdl:part name="semester" type="s:string" />
+    <wsdl:part name="studentno" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="studnoHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="membersHttpPostIn">
+    <wsdl:part name="id" type="s:string" />
+    <wsdl:part name="semester" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="membersHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:portType name="Service1Soap">
+    <wsdl:operation name="dorm_room">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"> dormitory webservice (roomno) ~ </wsdl:documentation>
+      <wsdl:input message="tns:dorm_roomSoapIn" />
+      <wsdl:output message="tns:dorm_roomSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="studno">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">dormitory webservice (studno) ~ </wsdl:documentation>
+      <wsdl:input message="tns:studnoSoapIn" />
+      <wsdl:output message="tns:studnoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="members">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"> all members in school for eel(email) ~ </wsdl:documentation>
+      <wsdl:input message="tns:membersSoapIn" />
+      <wsdl:output message="tns:membersSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="Service1HttpGet">
+    <wsdl:operation name="dorm_room">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"> dormitory webservice (roomno) ~ </wsdl:documentation>
+      <wsdl:input message="tns:dorm_roomHttpGetIn" />
+      <wsdl:output message="tns:dorm_roomHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="studno">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">dormitory webservice (studno) ~ </wsdl:documentation>
+      <wsdl:input message="tns:studnoHttpGetIn" />
+      <wsdl:output message="tns:studnoHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="members">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"> all members in school for eel(email) ~ </wsdl:documentation>
+      <wsdl:input message="tns:membersHttpGetIn" />
+      <wsdl:output message="tns:membersHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="Service1HttpPost">
+    <wsdl:operation name="dorm_room">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"> dormitory webservice (roomno) ~ </wsdl:documentation>
+      <wsdl:input message="tns:dorm_roomHttpPostIn" />
+      <wsdl:output message="tns:dorm_roomHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="studno">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">dormitory webservice (studno) ~ </wsdl:documentation>
+      <wsdl:input message="tns:studnoHttpPostIn" />
+      <wsdl:output message="tns:studnoHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="members">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"> all members in school for eel(email) ~ </wsdl:documentation>
+      <wsdl:input message="tns:membersHttpPostIn" />
+      <wsdl:output message="tns:membersHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="Service1Soap" type="tns:Service1Soap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="dorm_room">
+      <soap:operation soapAction="http://dss18.ntust.edu.tw/dorm_room" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="studno">
+      <soap:operation soapAction="http://dss18.ntust.edu.tw/studno" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="members">
+      <soap:operation soapAction="http://dss18.ntust.edu.tw/members" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Service1Soap12" type="tns:Service1Soap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="dorm_room">
+      <soap12:operation soapAction="http://dss18.ntust.edu.tw/dorm_room" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="studno">
+      <soap12:operation soapAction="http://dss18.ntust.edu.tw/studno" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="members">
+      <soap12:operation soapAction="http://dss18.ntust.edu.tw/members" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Service1HttpGet" type="tns:Service1HttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="dorm_room">
+      <http:operation location="/dorm_room" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="studno">
+      <http:operation location="/studno" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="members">
+      <http:operation location="/members" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Service1HttpPost" type="tns:Service1HttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="dorm_room">
+      <http:operation location="/dorm_room" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="studno">
+      <http:operation location="/studno" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="members">
+      <http:operation location="/members" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service1">
+    <wsdl:port name="Service1Soap" binding="tns:Service1Soap">
+      <soap:address location="https://dss18.ntust.edu.tw/ntustws/service1.asmx" />
+    </wsdl:port>
+    <wsdl:port name="Service1Soap12" binding="tns:Service1Soap12">
+      <soap12:address location="https://dss18.ntust.edu.tw/ntustws/service1.asmx" />
+    </wsdl:port>
+    <wsdl:port name="Service1HttpGet" binding="tns:Service1HttpGet">
+      <http:address location="https://dss18.ntust.edu.tw/ntustws/service1.asmx" />
+    </wsdl:port>
+    <wsdl:port name="Service1HttpPost" binding="tns:Service1HttpPost">
+      <http:address location="https://dss18.ntust.edu.tw/ntustws/service1.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

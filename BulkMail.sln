@@ -15,13 +15,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5. Repository", "5. Reposit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTUST.BulkMail.Web", "NTUST.BulkMail.Web\NTUST.BulkMail.Web.csproj", "{51BAB103-C2AC-473E-BBDA-9BEDE59106AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTUSU.BulkMail.Services", "NTUSU.BulkMail.Services\NTUSU.BulkMail.Services.csproj", "{2659C904-AA27-4F8F-BE3E-6A2E1F0E24FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTUST.BulkMail.Services", "NTUSU.BulkMail.Services\NTUST.BulkMail.Services.csproj", "{2659C904-AA27-4F8F-BE3E-6A2E1F0E24FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTUSU.BulkMail.Models", "NTUSU.BulkMail.Models\NTUSU.BulkMail.Models.csproj", "{B1AAAF03-82B6-41C9-B099-22C253D0CA91}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTUST.BulkMail.Models", "NTUSU.BulkMail.Models\NTUST.BulkMail.Models.csproj", "{B1AAAF03-82B6-41C9-B099-22C253D0CA91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTUSU.BulkMail.EntityFramework", "NTUSU.BulkMail.EntityFramework\NTUSU.BulkMail.EntityFramework.csproj", "{68AE6BB1-E7E1-41C0-ADF9-D6CE1BD6E8BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTUST.BulkMail.EntityFramework", "NTUSU.BulkMail.EntityFramework\NTUST.BulkMail.EntityFramework.csproj", "{68AE6BB1-E7E1-41C0-ADF9-D6CE1BD6E8BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTUSU.BulkMail.Repository", "NTUSU.BulkMail.Repository\NTUSU.BulkMail.Repository.csproj", "{8F6706B8-B987-4EE7-8E95-E755BC275760}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTUST.BulkMail.Repository", "NTUSU.BulkMail.Repository\NTUST.BulkMail.Repository.csproj", "{8F6706B8-B987-4EE7-8E95-E755BC275760}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
