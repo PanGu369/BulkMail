@@ -3,7 +3,55 @@
 }
 
 <div id="app">
-    <button type="button" class="btn btn-primary" v-on:click="getData()">測試</button>
+    <div class="form-group">
+        <label for="id">Id:</label>
+        <input type="text" class="form-control" id="id" v-model="id">
+    </div>
+    <div class="form-group">
+        <label for="semester">Semester:</label>
+        <input type="text" class="form-control" id="semester" v-model="semester">
+    </div>
+    <button type="button" class="btn btn-primary" v-on:click="getData(1)">測試</button>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">序號</th>
+                <th scope="col">姓名</th>
+                <th scope="col">單位</th>
+                <th scope="col">E-Mail</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="(item,i) in pageList.ItemList">
+                <th scope="row">{{ i + pageList.FirstItemOnPage }}</th>
+                <td>{{item.name}}</td>
+                <td>{{item.unit}}</td>
+                <td>{{item.email}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <!--Page 選項-->
+    <div class="pagination-container" v-if="pageList.TotalItemCount > 0">
+        <ul class="pagination">
+            <li class="PagedList-skipToFirst" v-if="pageList.IsFirstPage === false">
+                <a v-on:click="getData(1)">««</a>
+            </li>
+            <li class="PagedList-skipToPrevious" v-if="pageList.HasPreviousPage === true">
+                <a v-on:click="getData((pageList.PageNumber - 1))">«</a>
+            </li>
+            <li v-for="pageIndex in getNumbers(pageList.PageStart, pageList.PageEnd)" :class="pageIndex == pageList.PageNumber ? 'active':''">
+                <a v-if="pageIndex === pageList.PageNumber">{{pageIndex}}</a>
+                <a v-on:click="getData(pageIndex)" v-else>{{pageIndex}}</a>
+            </li>
+            <li class="PagedList-skipToNext" v-if="pageList.hasNextPage === true">
+                <a v-on:click="getData((pageList.PageNumber + 1))">»</a>
+            </li>
+            <li class="PagedList-skipToLast" v-if="pageList.isLastPage === false">
+                <a v-on:click="getData(pageList.PageCount)">»»</a>
+            </li>
+        </ul>
+    </div>
 </div>
 
 <link rel="stylesheet" href="~/Styles/sweetalert2.css" />
