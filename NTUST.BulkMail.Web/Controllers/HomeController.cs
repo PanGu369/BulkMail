@@ -20,11 +20,13 @@ using System.Xml.Serialization;
 using System.IO;
 using System.IO.Pipes;
 using System.Runtime.Remoting.Contexts;
+using NLog;
 
 namespace NTUST.BulkMail.Web.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         public ActionResult Index()
         {
             return View();
@@ -58,32 +60,13 @@ namespace NTUST.BulkMail.Web.Controllers
 
                 var memberWebserviceSource = service1Soap.members(id, semester).GetXml();
                 XmlSerializer serializer = new XmlSerializer(typeof(NewDataSet));
-
+                NewDataSet datas = null;
                 using (StringReader data = new StringReader(memberWebserviceSource))
                 {
-                    NewDataSet datas = (NewDataSet)serializer.Deserialize(data);
-
-                    // 反序列化的資料
-                    foreach (var item in datas.member)
-                    {
-                        var model = new member()
-                        {
-                            IDNO = item.IDNO,
-                            name = item.name,
-                            unit = item.unit,
-                            unicode = item.unicode,
-                            tclass = item.tclass,
-                            title = item.title,
-                            tel = item.tel,
-                            email = item.email,
-                            kind = item.kind,
-                            unitcode = item.unitcode,
-                        };
-                        memberList.Add(model);
-                    }
+                    datas = (NewDataSet)serializer.Deserialize(data);
                 }
 
-                var result = memberList.ToPagedList(pageIndex, pageSizeMax);
+                var result = datas.member.ToPagedList(pageIndex, pageSizeMax);
                 var pageListViewModel = new PageList
                 {
                     FirstItemOnPage = result.FirstItemOnPage,

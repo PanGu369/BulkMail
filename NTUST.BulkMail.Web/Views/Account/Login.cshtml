@@ -1,0 +1,48 @@
+﻿﻿@{
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<div id="app">
+    <div class="card card-outline card-primary">
+        <div class="card-header text-center">
+            <a class="h1"><b>大宗郵件</b>登入</a>
+        </div>
+        <div class="card-body">
+            <form>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="帳號" v-model="user.userId">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" class="form-control" placeholder="密碼" v-model="user.password">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-4">
+                        <button type="button" class="btn btn-primary btn-block" v-on:click="Login()">登入</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+
+            <p class="mb-1">
+                <a href="forgot-password.html">忘記密碼</a>
+            </p>
+            @*<p class="mb-0">
+                <a href="register.html" class="text-center">Register a new membership</a>
+            </p>*@
+        </div>
+        <!-- /.card-body -->
+    </div>
+</div>
