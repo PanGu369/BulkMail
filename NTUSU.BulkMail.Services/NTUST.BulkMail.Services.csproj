@@ -7,8 +7,8 @@
     <ProjectGuid>{2659C904-AA27-4F8F-BE3E-6A2E1F0E24FF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NTUSU.BulkMail.Services</RootNamespace>
-    <AssemblyName>NTUSU.BulkMail.Services</AssemblyName>
+    <RootNamespace>NTUST.BulkMail.Services</RootNamespace>
+    <AssemblyName>NTUST.BulkMail.Services</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,6 +41,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.8\lib\net40\System.Linq.Dynamic.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,10 +52,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BulkMailService.cs" />
+    <Compile Include="Interface\IBulkMailService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NTUSU.BulkMail.EntityFramework\NTUST.BulkMail.EntityFramework.csproj">
+      <Project>{68ae6bb1-e7e1-41c0-adf9-d6ce1bd6e8bc}</Project>
+      <Name>NTUST.BulkMail.EntityFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NTUSU.BulkMail.Models\NTUST.BulkMail.Models.csproj">
+      <Project>{b1aaaf03-82b6-41c9-b099-22c253d0ca91}</Project>
+      <Name>NTUST.BulkMail.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NTUSU.BulkMail.Repository\NTUST.BulkMail.Repository.csproj">
+      <Project>{8f6706b8-b987-4ee7-8e95-e755bc275760}</Project>
+      <Name>NTUST.BulkMail.Repository</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

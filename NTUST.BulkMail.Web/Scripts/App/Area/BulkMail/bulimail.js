@@ -69,7 +69,13 @@
                 if (jqXHR.status === 200) {
                     if (response.resultMessage.Status == "OK") {
                         vm.pageList = response.pageListViewModel;
-                        buildPageList();
+                        Vue.nextTick(function () {
+                            $("#bulkmail").DataTable({
+                                "responsive": true, "lengthChange": false, "autoWidth": false,
+                                "buttons": [ "excel","print", "colvis"]
+                            }).buttons().container().appendTo('#bulkmail_wrapper .col-md-6:eq(0)');
+                        })
+                        //buildPageList();
                     }
                     else {
                         Swal.fire({

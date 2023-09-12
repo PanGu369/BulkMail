@@ -21,37 +21,31 @@ using System.IO;
 using System.IO.Pipes;
 using System.Runtime.Remoting.Contexts;
 using NLog;
+using NTUST.BulkMail.Services.Interface;
+using NTUST.BulkMail.Services;
+using Microsoft.Owin.Logging;
 
 namespace NTUST.BulkMail.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly IBulkMailService _bulkMailService;
+        public HomeController(IBulkMailService bulkMailService)
+        {
+            _bulkMailService = bulkMailService;
+        }
+
         public ActionResult Index()
         {
-            return View();
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
 
         [HttpPost]
         public ActionResult Test(int pageIndex, string id, string semester)
         {
+            _bulkMailService.DeleteStaffMemberTemp();
             ResultMessage resultMessage = new ResultMessage();
             List<member> memberList = new List<member>();
-            var pageSizeMax = 15;
             ServiceReference1.Service1SoapClient service1Soap = new ServiceReference1.Service1SoapClient();
             try
             {
@@ -65,8 +59,8 @@ namespace NTUST.BulkMail.Web.Controllers
                 {
                     datas = (NewDataSet)serializer.Deserialize(data);
                 }
-
-                var result = datas.member.ToPagedList(pageIndex, pageSizeMax);
+                _bulkMailService.CreateStaffMemberTemp(datas.member);
+                var result = datas.member.ToPagedList(pageIndex, datas.member.Count());
                 var pageListViewModel = new PageList
                 {
                     FirstItemOnPage = result.FirstItemOnPage,

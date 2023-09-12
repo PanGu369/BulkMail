@@ -125,11 +125,14 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.8\lib\net40\System.Linq.Dynamic.dll</HintPath>
+    </Reference>
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.9\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -149,8 +152,11 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Web.Http, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.0\lib\net45\System.Web.Http.dll</HintPath>
+    <Reference Include="System.Web.Http, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.9\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.9\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
@@ -211,6 +217,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AutofacConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -263,6 +270,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\AdminLTE\adminlte.js" />
     <Content Include="Scripts\AdminLTE\adminlte.min.js" />
+    <Content Include="Scripts\AdminLTE\demo.js" />
     <Content Include="Scripts\AdminLTE\plugins\bootstrap-colorpicker\css\bootstrap-colorpicker.css" />
     <Content Include="Scripts\AdminLTE\plugins\bootstrap-colorpicker\css\bootstrap-colorpicker.min.css" />
     <Content Include="Scripts\AdminLTE\plugins\bootstrap-colorpicker\js\bootstrap-colorpicker.js" />
@@ -560,6 +568,7 @@
     <Content Include="Scripts\AdminLTE\plugins\codemirror\theme\yeti.css" />
     <Content Include="Scripts\AdminLTE\plugins\codemirror\theme\yonce.css" />
     <Content Include="Scripts\AdminLTE\plugins\codemirror\theme\zenburn.css" />
+    <Content Include="Scripts\AdminLTE\dashboard.js" />
     <Content Include="Scripts\AdminLTE\plugins\datatables-autofill\css\autoFill.bootstrap4.css" />
     <Content Include="Scripts\AdminLTE\plugins\datatables-autofill\css\autoFill.bootstrap4.min.css" />
     <Content Include="Scripts\AdminLTE\plugins\datatables-autofill\js\autoFill.bootstrap4.js" />
@@ -2369,6 +2378,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Shared\PartialViews\_TopNavbarPartial.cshtml" />
+    <Content Include="Views\Shared\PartialViews\_SidebarPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2405,24 +2416,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\ServiceReference1\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NTUSU.BulkMail.EntityFramework\NTUST.BulkMail.EntityFramework.csproj">
-      <Project>{68ae6bb1-e7e1-41c0-adf9-d6ce1bd6e8bc}</Project>
-      <Name>NTUST.BulkMail.EntityFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NTUSU.BulkMail.Models\NTUST.BulkMail.Models.csproj">
-      <Project>{b1aaaf03-82b6-41c9-b099-22c253d0ca91}</Project>
-      <Name>NTUST.BulkMail.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NTUSU.BulkMail.Repository\NTUST.BulkMail.Repository.csproj">
-      <Project>{8f6706b8-b987-4ee7-8e95-e755bc275760}</Project>
-      <Name>NTUST.BulkMail.Repository</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NTUSU.BulkMail.Services\NTUST.BulkMail.Services.csproj">
-      <Project>{2659c904-aa27-4f8f-be3e-6a2e1f0e24ff}</Project>
-      <Name>NTUST.BulkMail.Services</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\AdminLTE\plugins\filterizr\ActiveFilter.d.ts" />
@@ -2499,6 +2492,24 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NTUSU.BulkMail.EntityFramework\NTUST.BulkMail.EntityFramework.csproj">
+      <Project>{68ae6bb1-e7e1-41c0-adf9-d6ce1bd6e8bc}</Project>
+      <Name>NTUST.BulkMail.EntityFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NTUSU.BulkMail.Models\NTUST.BulkMail.Models.csproj">
+      <Project>{b1aaaf03-82b6-41c9-b099-22c253d0ca91}</Project>
+      <Name>NTUST.BulkMail.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NTUSU.BulkMail.Repository\NTUST.BulkMail.Repository.csproj">
+      <Project>{8f6706b8-b987-4ee7-8e95-e755bc275760}</Project>
+      <Name>NTUST.BulkMail.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NTUSU.BulkMail.Services\NTUST.BulkMail.Services.csproj">
+      <Project>{2659c904-aa27-4f8f-be3e-6a2e1f0e24ff}</Project>
+      <Name>NTUST.BulkMail.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

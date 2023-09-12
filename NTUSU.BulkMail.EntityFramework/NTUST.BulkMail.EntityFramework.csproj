@@ -7,8 +7,8 @@
     <ProjectGuid>{68AE6BB1-E7E1-41C0-ADF9-D6CE1BD6E8BC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NTUSU.BulkMail.EntityFramework</RootNamespace>
-    <AssemblyName>NTUSU.BulkMail.EntityFramework</AssemblyName>
+    <RootNamespace>NTUST.BulkMail.EntityFramework</RootNamespace>
+    <AssemblyName>NTUST.BulkMail.EntityFramework</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -42,6 +42,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,11 +52,66 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BulkMailModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BulkMailModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BulkMailModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BulkMailModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BulkMailModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BulkMailModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Infrastructure\DbFactory.cs" />
+    <Compile Include="Infrastructure\Disposable.cs" />
+    <Compile Include="Infrastructure\GenericRepository.cs" />
+    <Compile Include="Infrastructure\IDbFactory.cs" />
+    <Compile Include="Infrastructure\IRepository.cs" />
+    <Compile Include="Infrastructure\IUnitOfWork.cs" />
+    <Compile Include="Infrastructure\RepositoryIQueryableExtensions.cs" />
+    <Compile Include="Infrastructure\UnitOfWork.cs" />
+    <Compile Include="Interface\IStaffmemberTempRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="staffmember.cs">
+      <DependentUpon>BulkMailModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="staffmember_temp.cs">
+      <DependentUpon>BulkMailModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="BulkMailModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>BulkMailModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="BulkMailModel.edmx.diagram">
+      <DependentUpon>BulkMailModel.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Partial\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BulkMailModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BulkMailModel.edmx</DependentUpon>
+      <LastGenOutput>BulkMailModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="BulkMailModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BulkMailModel.edmx</DependentUpon>
+      <LastGenOutput>BulkMailModel.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

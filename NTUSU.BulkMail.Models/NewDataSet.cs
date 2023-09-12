@@ -39,5 +39,4 @@ namespace NTUSU.BulkMail.Models
         [XmlElement("unitcode")]
         public string unitcode { get; set; }
     }
-
 }

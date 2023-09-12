@@ -7,8 +7,8 @@
     <ProjectGuid>{8F6706B8-B987-4EE7-8E95-E755BC275760}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NTUSU.BulkMail.Repository</RootNamespace>
-    <AssemblyName>NTUSU.BulkMail.Repository</AssemblyName>
+    <RootNamespace>NTUST.BulkMail.Repository</RootNamespace>
+    <AssemblyName>NTUST.BulkMail.Repository</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -51,10 +51,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StaffmemberTempRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NTUSU.BulkMail.EntityFramework\NTUST.BulkMail.EntityFramework.csproj">
+      <Project>{68ae6bb1-e7e1-41c0-adf9-d6ce1bd6e8bc}</Project>
+      <Name>NTUST.BulkMail.EntityFramework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
