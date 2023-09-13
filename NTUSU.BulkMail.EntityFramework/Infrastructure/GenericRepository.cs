@@ -55,7 +55,10 @@ namespace NTUST.BulkMail.EntityFramework.Infrastructure
             foreach (var obj in objects)
                 _dbSet.Remove(obj);
         }
-
+        public void ExecuteSqlCommand(string query)
+        {
+            _dbContext.Database.ExecuteSqlCommand(query);
+        }
         public TEntity GetById(TKey id)
         {
             return _dbSet.Find(id);

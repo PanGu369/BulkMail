@@ -17,7 +17,7 @@ namespace NTUST.BulkMail.EntityFramework.Infrastructure
         // Marks an entity to be removed
         TEntity Delete(TEntity entity);
         void Delete(Expression<Func<TEntity, bool>> predicate);
-
+        void ExecuteSqlCommand(string query);
         // Get an entity by int id
         TEntity GetById(TKey id);
         // Get an entity using delegate

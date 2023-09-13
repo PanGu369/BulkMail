@@ -20,18 +20,22 @@ namespace NTUST.BulkMail.Services
     public class BulkMailService : IBulkMailService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IStaffmemberRepository _staffmemberRepository;
         private readonly IStaffmemberTempRepository _staffmemberTempRepository;
 
         public BulkMailService(IUnitOfWork unitOfWork,
+            IStaffmemberRepository staffmemberRepository,
             IStaffmemberTempRepository staffmemberTempRepository) {
             _unitOfWork = unitOfWork;
+            _staffmemberRepository = staffmemberRepository;
             _staffmemberTempRepository = staffmemberTempRepository;
         }
 
         public void CreateStaffMemberTemp(List<member> member)
         {
             staffmember_temp staffmember_Temp = new staffmember_temp();
-            foreach(var item in member)
+            //ServiceReference1.Service1SoapClient service1Soap = new ServiceReference1.Service1SoapClient();
+            foreach (var item in member)
             {
                 if (item.title != "副校長")
                 {
