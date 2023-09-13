@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://tempuri.org/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="studata_no">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pstudentno" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="studata_noResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="studata_noResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="studata_cond">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pnowcondition" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="studata_condResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="studata_condResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="studata_Graduate">
+        <s:complexType />
+      </s:element>
+      <s:element name="studata_GraduateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="studata_GraduateResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_educode">
+        <s:complexType />
+      </s:element>
+      <s:element name="get_educodeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="get_educodeResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DataSet" nillable="true">
+        <s:complexType>
+          <s:sequence>
+            <s:element ref="s:schema" />
+            <s:any />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="studata_noSoapIn">
+    <wsdl:part name="parameters" element="tns:studata_no" />
+  </wsdl:message>
+  <wsdl:message name="studata_noSoapOut">
+    <wsdl:part name="parameters" element="tns:studata_noResponse" />
+  </wsdl:message>
+  <wsdl:message name="studata_condSoapIn">
+    <wsdl:part name="parameters" element="tns:studata_cond" />
+  </wsdl:message>
+  <wsdl:message name="studata_condSoapOut">
+    <wsdl:part name="parameters" element="tns:studata_condResponse" />
+  </wsdl:message>
+  <wsdl:message name="studata_GraduateSoapIn">
+    <wsdl:part name="parameters" element="tns:studata_Graduate" />
+  </wsdl:message>
+  <wsdl:message name="studata_GraduateSoapOut">
+    <wsdl:part name="parameters" element="tns:studata_GraduateResponse" />
+  </wsdl:message>
+  <wsdl:message name="get_educodeSoapIn">
+    <wsdl:part name="parameters" element="tns:get_educode" />
+  </wsdl:message>
+  <wsdl:message name="get_educodeSoapOut">
+    <wsdl:part name="parameters" element="tns:get_educodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="studata_noHttpGetIn">
+    <wsdl:part name="pstudentno" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="studata_noHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="studata_condHttpGetIn">
+    <wsdl:part name="pnowcondition" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="studata_condHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="studata_GraduateHttpGetIn" />
+  <wsdl:message name="studata_GraduateHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="get_educodeHttpGetIn" />
+  <wsdl:message name="get_educodeHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="studata_noHttpPostIn">
+    <wsdl:part name="pstudentno" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="studata_noHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="studata_condHttpPostIn">
+    <wsdl:part name="pnowcondition" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="studata_condHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="studata_GraduateHttpPostIn" />
+  <wsdl:message name="studata_GraduateHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="get_educodeHttpPostIn" />
+  <wsdl:message name="get_educodeHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:portType name="StuDataSoap">
+    <wsdl:operation name="studata_no">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetSutdentData webservice (studno) ~ </wsdl:documentation>
+      <wsdl:input message="tns:studata_noSoapIn" />
+      <wsdl:output message="tns:studata_noSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="studata_cond">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetSutdentData webservice (nowcondition) ~ </wsdl:documentation>
+      <wsdl:input message="tns:studata_condSoapIn" />
+      <wsdl:output message="tns:studata_condSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="studata_Graduate">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get graduate Sutdent Data webservice ~ </wsdl:documentation>
+      <wsdl:input message="tns:studata_GraduateSoapIn" />
+      <wsdl:output message="tns:studata_GraduateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="get_educode">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Geteducode webservice () ~ </wsdl:documentation>
+      <wsdl:input message="tns:get_educodeSoapIn" />
+      <wsdl:output message="tns:get_educodeSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="StuDataHttpGet">
+    <wsdl:operation name="studata_no">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetSutdentData webservice (studno) ~ </wsdl:documentation>
+      <wsdl:input message="tns:studata_noHttpGetIn" />
+      <wsdl:output message="tns:studata_noHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="studata_cond">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetSutdentData webservice (nowcondition) ~ </wsdl:documentation>
+      <wsdl:input message="tns:studata_condHttpGetIn" />
+      <wsdl:output message="tns:studata_condHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="studata_Graduate">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get graduate Sutdent Data webservice ~ </wsdl:documentation>
+      <wsdl:input message="tns:studata_GraduateHttpGetIn" />
+      <wsdl:output message="tns:studata_GraduateHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="get_educode">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Geteducode webservice () ~ </wsdl:documentation>
+      <wsdl:input message="tns:get_educodeHttpGetIn" />
+      <wsdl:output message="tns:get_educodeHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="StuDataHttpPost">
+    <wsdl:operation name="studata_no">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetSutdentData webservice (studno) ~ </wsdl:documentation>
+      <wsdl:input message="tns:studata_noHttpPostIn" />
+      <wsdl:output message="tns:studata_noHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="studata_cond">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetSutdentData webservice (nowcondition) ~ </wsdl:documentation>
+      <wsdl:input message="tns:studata_condHttpPostIn" />
+      <wsdl:output message="tns:studata_condHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="studata_Graduate">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get graduate Sutdent Data webservice ~ </wsdl:documentation>
+      <wsdl:input message="tns:studata_GraduateHttpPostIn" />
+      <wsdl:output message="tns:studata_GraduateHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="get_educode">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Geteducode webservice () ~ </wsdl:documentation>
+      <wsdl:input message="tns:get_educodeHttpPostIn" />
+      <wsdl:output message="tns:get_educodeHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="StuDataSoap" type="tns:StuDataSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="studata_no">
+      <soap:operation soapAction="http://tempuri.org/studata_no" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="studata_cond">
+      <soap:operation soapAction="http://tempuri.org/studata_cond" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="studata_Graduate">
+      <soap:operation soapAction="http://tempuri.org/studata_Graduate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_educode">
+      <soap:operation soapAction="http://tempuri.org/get_educode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="StuDataSoap12" type="tns:StuDataSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="studata_no">
+      <soap12:operation soapAction="http://tempuri.org/studata_no" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="studata_cond">
+      <soap12:operation soapAction="http://tempuri.org/studata_cond" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="studata_Graduate">
+      <soap12:operation soapAction="http://tempuri.org/studata_Graduate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_educode">
+      <soap12:operation soapAction="http://tempuri.org/get_educode" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="StuDataHttpGet" type="tns:StuDataHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="studata_no">
+      <http:operation location="/studata_no" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="studata_cond">
+      <http:operation location="/studata_cond" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="studata_Graduate">
+      <http:operation location="/studata_Graduate" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_educode">
+      <http:operation location="/get_educode" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="StuDataHttpPost" type="tns:StuDataHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="studata_no">
+      <http:operation location="/studata_no" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="studata_cond">
+      <http:operation location="/studata_cond" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="studata_Graduate">
+      <http:operation location="/studata_Graduate" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_educode">
+      <http:operation location="/get_educode" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="StuData">
+    <wsdl:port name="StuDataSoap" binding="tns:StuDataSoap">
+      <soap:address location="https://dss18.ntust.edu.tw/ntustws/Studata.asmx" />
+    </wsdl:port>
+    <wsdl:port name="StuDataSoap12" binding="tns:StuDataSoap12">
+      <soap12:address location="https://dss18.ntust.edu.tw/ntustws/Studata.asmx" />
+    </wsdl:port>
+    <wsdl:port name="StuDataHttpGet" binding="tns:StuDataHttpGet">
+      <http:address location="https://dss18.ntust.edu.tw/ntustws/Studata.asmx" />
+    </wsdl:port>
+    <wsdl:port name="StuDataHttpPost" binding="tns:StuDataHttpPost">
+      <http:address location="https://dss18.ntust.edu.tw/ntustws/Studata.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

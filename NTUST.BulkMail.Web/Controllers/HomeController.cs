@@ -24,6 +24,7 @@ using NLog;
 using NTUST.BulkMail.Services.Interface;
 using NTUST.BulkMail.Services;
 using Microsoft.Owin.Logging;
+using System.Linq.Dynamic;
 
 namespace NTUST.BulkMail.Web.Controllers
 {
@@ -41,26 +42,16 @@ namespace NTUST.BulkMail.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Test(int pageIndex, string id, string semester)
+        public ActionResult List(int pageIndex, string id, string semester)
         {
-            _bulkMailService.DeleteStaffMemberTemp();
             ResultMessage resultMessage = new ResultMessage();
             List<member> memberList = new List<member>();
-            ServiceReference1.Service1SoapClient service1Soap = new ServiceReference1.Service1SoapClient();
             try
             {
-                //測試
-                //var memberWebserviceSource = service1Soap.members("eel6212", "1121").GetXml();
-
-                var memberWebserviceSource = service1Soap.members(id, semester).GetXml();
-                XmlSerializer serializer = new XmlSerializer(typeof(NewDataSet));
-                NewDataSet datas = null;
-                using (StringReader data = new StringReader(memberWebserviceSource))
-                {
-                    datas = (NewDataSet)serializer.Deserialize(data);
-                }
-                _bulkMailService.CreateStaffMemberTemp(datas.member);
-                var result = datas.member.ToPagedList(pageIndex, datas.member.Count());
+                _bulkMailService.CreateStaffMemberTemp(id, semester);
+                _bulkMailService.CreateStaffMember();
+                var query = _bulkMailService.GetStaffMemberData();
+                var result = query.ToPagedList(pageIndex, query.Count());
                 var pageListViewModel = new PageList
                 {
                     FirstItemOnPage = result.FirstItemOnPage,

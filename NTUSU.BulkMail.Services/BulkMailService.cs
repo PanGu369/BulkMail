@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using System.Configuration;
 using NTUSU.BulkMail.Models;
 using NTUST.BulkMail.Repository;
+using System.Xml.Serialization;
+using System.IO;
 
 namespace NTUST.BulkMail.Services
 {
@@ -31,22 +33,27 @@ namespace NTUST.BulkMail.Services
             _staffmemberTempRepository = staffmemberTempRepository;
         }
 
-        public void CreateStaffMemberTemp(List<member> member)
+        public void CreateEduCode()
         {
+
+        }
+        public void CreateStaffMemberTemp(string id, string semester)
+        {
+            DeleteStaffMemberTemp();
             staffmember_temp staffmember_Temp = new staffmember_temp();
-            //ServiceReference1.Service1SoapClient service1Soap = new ServiceReference1.Service1SoapClient();
-            foreach (var item in member)
+            NtustMember.Service1 service = new NtustMember.Service1();
+            //NtustStudent.StuData stuData = new NtustStudent.StuData();
+            try
             {
-                if (item.title != "副校長")
+                var memberWebserviceSource = service.members(id, semester).GetXml();
+                XmlSerializer serializer = new XmlSerializer(typeof(NewDataSet));
+                NewDataSet datas = null;
+                using (StringReader data = new StringReader(memberWebserviceSource))
                 {
-                    if (item.name == "談家珍" || item.title == "四等技術師(B)" || item.title == "四等技術師(A)")
-                    {
-                        item.title = "技術師";
-                    }
-                    if (item.tclass == "正式" && item.title == "助教")
-                    {
-                        item.title = "助理教授";
-                    }
+                    datas = (NewDataSet)serializer.Deserialize(data);
+                }
+                foreach (var item in datas.member)
+                {
                     staffmember_Temp.name = item.name.Trim();
                     staffmember_Temp.idno = item.IDNO.Trim();
                     staffmember_Temp.unitcode = item.unitcode.Trim();
@@ -61,16 +68,73 @@ namespace NTUST.BulkMail.Services
                     Save();
                 }
             }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        public void CreateStaffMember()
+        {
+            DeleteStaffTemp();
+            staffmember staffmember = new staffmember();
+            var query = _staffmemberTempRepository.GetAll();
+            try
+            {
+                foreach (var item in query)
+                {
+                    if (item.title != "副校長")
+                    {
+                        if (item.name == "談家珍" || item.title == "四等技術師(B)" || item.title == "四等技術師(A)")
+                        {
+                            item.title = "技術師";
+                        }
+                        if (item.@class == "正式" && item.title == "助教")
+                        {
+                            item.title = "助理教授";
+                        }
+                        staffmember.name = item.name.Trim();
+                        staffmember.idno = item.idno.Trim();
+                        staffmember.unitcode = item.unitcode.Trim();
+                        staffmember.unicode = item.unicode.Trim();
+                        staffmember.@class = item.@class.Trim();
+                        staffmember.email = item.email.Trim();
+                        staffmember.tel = item.tel.Trim();
+                        staffmember.unit = item.unit.Trim();
+                        staffmember.title = item.title.Trim();
+                        staffmember.kind = item.kind.Trim();
+                        _staffmemberRepository.Add(staffmember);
+                        Save();
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+        }
+        public void DeleteEduCode()
+        {
+
         }
         public void DeleteStaffMemberTemp()
         {
-            var data = _staffmemberTempRepository.GetAll();
-            foreach (var item in data)
+            _staffmemberTempRepository.ExecuteSqlCommand("TRUNCATE TABLE staffmember_temp");
+        }
+        public void DeleteStaffTemp()
+        {
+            _staffmemberRepository.ExecuteSqlCommand("TRUNCATE TABLE staffmember");
+        }
+        public IEnumerable<member> GetStaffMemberData()
+        {
+            var query = _staffmemberRepository.GetAll();
+            var result = query.Select(x => new member()
             {
-                _staffmemberTempRepository.Delete(item);
-            }
-            Save();
-            
+                name = x.name,
+                unit = x.unit,
+                email = x.email,
+                unitcode = x.unitcode,
+            });
+            return result.OrderBy(x => x.unitcode);
         }
         public void Save()
         {

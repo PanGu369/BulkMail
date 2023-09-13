@@ -51,7 +51,7 @@
 
     function getData(pageIndex) {
         $.ajax({
-            url: baseUrl + 'Home/Test',
+            url: baseUrl + 'Home/List',
             type: "POST",
             async: true,
             cache: false,
