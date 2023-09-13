@@ -4,7 +4,33 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="mailModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="mailModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="educode">
+          <Key>
+            <PropertyRef Name="EduCode" />
+          </Key>
+          <Property Name="EduCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="College1" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Period2" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="sPeriod2" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Department2" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Grade1" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Class1" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Team2" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="educode_temp">
+          <Key>
+            <PropertyRef Name="EduCode" />
+          </Key>
+          <Property Name="EduCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="College1" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Period2" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="sPeriod2" Type="nvarchar" MaxLength="50" />
+          <Property Name="Department2" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Grade1" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Class1" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Team2" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="staffmember">
           <Key>
             <PropertyRef Name="id" />
@@ -38,11 +64,12 @@
           <Property Name="kind" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityContainer Name="mailModelStoreContainer">
+          <EntitySet Name="educode" EntityType="Self.educode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="educode_temp" EntityType="Self.educode_temp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="staffmember" EntityType="Self.staffmember" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="staffmember_temp" EntityType="Self.staffmember_temp" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="mailModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -81,7 +108,35 @@
         <EntityContainer Name="mailEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="staffmember" EntityType="Self.staffmember" />
           <EntitySet Name="staffmember_temp" EntityType="Self.staffmember_temp" />
+          <EntitySet Name="educode" EntityType="mailModel.educode" />
+          <EntitySet Name="educode_temp" EntityType="mailModel.educode_temp" />
         </EntityContainer>
+        <EntityType Name="educode">
+          <Key>
+            <PropertyRef Name="EduCode1" />
+          </Key>
+          <Property Name="EduCode1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="College1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Period2" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sPeriod2" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Department2" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Grade1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Class1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Team2" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="educode_temp">
+          <Key>
+            <PropertyRef Name="EduCode" />
+          </Key>
+          <Property Name="EduCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="College1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Period2" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sPeriod2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Department2" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Grade1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Class1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Team2" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -119,6 +174,34 @@
                 <ScalarProperty Name="unit" ColumnName="unit" />
                 <ScalarProperty Name="title" ColumnName="title" />
                 <ScalarProperty Name="kind" ColumnName="kind" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="educode">
+            <EntityTypeMapping TypeName="mailModel.educode">
+              <MappingFragment StoreEntitySet="educode">
+                <ScalarProperty Name="Team2" ColumnName="Team2" />
+                <ScalarProperty Name="Class1" ColumnName="Class1" />
+                <ScalarProperty Name="Grade1" ColumnName="Grade1" />
+                <ScalarProperty Name="Department2" ColumnName="Department2" />
+                <ScalarProperty Name="sPeriod2" ColumnName="sPeriod2" />
+                <ScalarProperty Name="Period2" ColumnName="Period2" />
+                <ScalarProperty Name="College1" ColumnName="College1" />
+                <ScalarProperty Name="EduCode1" ColumnName="EduCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="educode_temp">
+            <EntityTypeMapping TypeName="mailModel.educode_temp">
+              <MappingFragment StoreEntitySet="educode_temp">
+                <ScalarProperty Name="Team2" ColumnName="Team2" />
+                <ScalarProperty Name="Class1" ColumnName="Class1" />
+                <ScalarProperty Name="Grade1" ColumnName="Grade1" />
+                <ScalarProperty Name="Department2" ColumnName="Department2" />
+                <ScalarProperty Name="sPeriod2" ColumnName="sPeriod2" />
+                <ScalarProperty Name="Period2" ColumnName="Period2" />
+                <ScalarProperty Name="College1" ColumnName="College1" />
+                <ScalarProperty Name="EduCode" ColumnName="EduCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

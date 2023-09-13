@@ -48,6 +48,7 @@ namespace NTUST.BulkMail.Web.Controllers
             List<member> memberList = new List<member>();
             try
             {
+                _bulkMailService.CreateEduCode();
                 _bulkMailService.CreateStaffMemberTemp(id, semester);
                 _bulkMailService.CreateStaffMember();
                 var query = _bulkMailService.GetStaffMemberData();

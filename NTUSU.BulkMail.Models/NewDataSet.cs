@@ -15,6 +15,8 @@ namespace NTUSU.BulkMail.Models
     {
         [XmlElement("member")]
         public List<member> member { get; set; }
+        [XmlElement("educode")]
+        public List<educode> educode { get; set; }
     }
     public class member
     {
@@ -38,5 +40,22 @@ namespace NTUSU.BulkMail.Models
         public string kind { get; set; }
         [XmlElement("unitcode")]
         public string unitcode { get; set; }
+    }
+    public class educode
+    {
+        [XmlElement("EduCode")]
+        public string EduCode { get; set; }
+        [XmlElement("College")]
+        public string College { get; set; }
+        [XmlElement("Period")]
+        public string Period { get; set; }
+        [XmlElement("Department")]
+        public string Department { get; set; }
+        [XmlElement("Grade")]
+        public string Grade { get; set; }
+        [XmlElement("Class")]
+        public string Class { get; set; }
+        [XmlElement("Team")]
+        public string Team { get; set; }
     }
 }

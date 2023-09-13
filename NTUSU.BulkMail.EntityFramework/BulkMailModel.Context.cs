@@ -27,5 +27,7 @@ namespace NTUST.BulkMail.EntityFramework
     
         public virtual DbSet<staffmember> staffmember { get; set; }
         public virtual DbSet<staffmember_temp> staffmember_temp { get; set; }
+        public virtual DbSet<educode> educode { get; set; }
+        public virtual DbSet<educode_temp> educode_temp { get; set; }
     }
 }
