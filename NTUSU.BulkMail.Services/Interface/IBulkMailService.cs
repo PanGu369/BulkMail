@@ -14,8 +14,10 @@ namespace NTUST.BulkMail.Services.Interface
         void CreateEduCode();
         void CreateStaffMember(string id, string semester);
         void CreateStudentData(string pnowcondition);
+        void CreateAlumnusData();
         void DeleteEduCode();
         void DeleteStaffMember();
+        void DeleteStudentData();
         IEnumerable<member> GetStaffMemberData();
         void Save();
     }

@@ -51,7 +51,6 @@ namespace NTUST.BulkMail.Services
 
         public void CreateEduCode()
         {
-            DeleteEduCode();
             educode_temp educode_Temp = new educode_temp();
             NtustStudent.StuData stuData = new NtustStudent.StuData();
             try
@@ -63,6 +62,7 @@ namespace NTUST.BulkMail.Services
                 {
                     datas = (NewDataSet)serializer.Deserialize(data);
                 }
+                DeleteEduCode();
                 foreach (var item in datas.educode)
                 {
                     educode_Temp.EduCode = item.EduCode.Trim();
@@ -84,7 +84,6 @@ namespace NTUST.BulkMail.Services
         }
         public void CreateStaffMember(string id, string semester)
         {
-            DeleteStaffMember();
             staffmember_temp staffmember_Temp = new staffmember_temp();
             staffmember staffmember = new staffmember();
             NtustMember.Service1 service = new NtustMember.Service1();
@@ -98,6 +97,7 @@ namespace NTUST.BulkMail.Services
                 {
                     datas = (NewDataSet)serializer.Deserialize(data);
                 }
+                DeleteStaffMember();
                 foreach (var item in datas.member)
                 {
                     staffmember_Temp.name = item.name.Trim();
@@ -146,6 +146,8 @@ namespace NTUST.BulkMail.Services
         public void CreateStudentData(string pnowcondition)
         {
             NtustStudent.StuData stuData = new NtustStudent.StuData();
+            stumember stumember = new stumember();
+            stumember_temp stumember_Temp = new stumember_temp();
             try
             {
                 var stuWebserviceSource = stuData.studata_cond(pnowcondition).GetXml();
@@ -154,6 +156,106 @@ namespace NTUST.BulkMail.Services
                 using (StringReader data = new StringReader(stuWebserviceSource))
                 {
                     datas = (NewDataSet)serializer.Deserialize(data);
+                }
+                DeleteStudentData();
+                foreach (var item in datas.student)
+                {
+                    string text = item.educode.Trim();
+                    string code = text.Substring(1, 1).ToUpper();
+                    int grade = int.Parse(text.Substring(5, 1));
+                    string ext = grade.ToString();
+                    if (grade <= 1)
+                    {
+                        ext = "N";
+                    }
+                    if ((code == "A" || code == "P") && grade >= 2)
+                    {
+                        ext = "G";
+                    }
+                    else if (code == "B" && grade >= 4)
+                    {
+                        ext = "G";
+                    }
+                    else if (code == "M" && grade >= 2)
+                    {
+                        ext = "G";
+                    }
+                    else if (code == "D" && grade >= 3)
+                    {
+                        ext = "G";
+                    }
+                    else if (code == "U" && grade >= 2)
+                    {
+                        ext = "G";
+                    }
+                    stumember_Temp.idno = item.idno.Trim();
+                    stumember_Temp.name = item.name.Trim();
+                    stumember_Temp.sno1 = item.stuNo1.Trim();
+                    stumember_Temp.sex = item.sex.Trim();
+                    stumember_Temp.birthday = item.bdate.Trim();
+                    stumember_Temp.grp = item.group.Trim();
+                    stumember_Temp.addr = item.addr.Trim();
+                    stumember_Temp.tel = item.tel.Trim();
+                    stumember_Temp.sno2 = item.stuNo2.Trim();
+                    stumember_Temp.educode = item.educode.Trim();
+                    stumember_Temp.ext = ext.Trim();
+                    stumember_Temp.foreignermark = item.foreignermark.Trim();
+                    stumember_Temp.nation = item.nationalityIdentity.Trim();
+                    _stuMemberTempRepository.Add(stumember_Temp);
+
+                    stumember.idno = item.idno.Trim();
+                    stumember.name = item.name.Trim();
+                    stumember.sno1 = item.stuNo1.Trim();
+                    stumember.sex = item.sex.Trim();
+                    stumember.birthday = item.bdate.Trim();
+                    stumember.grp = item.group.Trim();
+                    stumember.addr = item.addr.Trim();
+                    stumember.tel = item.tel.Trim();
+                    stumember.sno2 = item.stuNo2.Trim();
+                    stumember.educode = item.educode.Trim();
+                    stumember.ext = ext.Trim();
+                    stumember.foreignermark = item.foreignermark.Trim();
+                    stumember.nation = string.IsNullOrEmpty(item.nationalityIdentity.Trim()) ? "本國" : item.nationalityIdentity.Trim();
+                    _stuMemberRepository.Add(stumember);
+                    Save();
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        public void CreateAlumnusData()
+        {
+            NtustStudent.StuData stuData = new NtustStudent.StuData();
+            try
+            {
+                var stuWebserviceSource = stuData.studata_Graduate().GetXml();
+                XmlSerializer serializer = new XmlSerializer(typeof(NewDataSet));
+                NewDataSet datas = null;
+                using (StringReader data = new StringReader(stuWebserviceSource))
+                {
+                    datas = (NewDataSet)serializer.Deserialize(data);
+                }
+                foreach (var item in datas.GradStudent)
+                {
+                    string[] grpary = item.group.Split('/')[1].Split(' ');
+                    string unit;
+                    string subunit;
+                    string gtype;
+                    if (grpary.Length >= 3)
+                    {
+                        unit = grpary[0];
+                        subunit = grpary[1];
+                        gtype = grpary[2];
+                    }
+                    else
+                    {
+                        unit = "";
+                        subunit = "";
+                        gtype = "";
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -170,6 +272,11 @@ namespace NTUST.BulkMail.Services
         {
             _staffmemberRepository.ExecuteSqlCommand("TRUNCATE TABLE staffmember");
             _staffmemberTempRepository.ExecuteSqlCommand("TRUNCATE TABLE staffmember_temp");
+        }
+        public void DeleteStudentData()
+        {
+            _stuMemberRepository.ExecuteSqlCommand("TRUNCATE TABLE stumember");
+            _stuMemberTempRepository.ExecuteSqlCommand("TRUNCATE TABLE stumember_temp");
         }
         public IEnumerable<member> GetStaffMemberData()
         {

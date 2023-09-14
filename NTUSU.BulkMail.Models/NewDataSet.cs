@@ -19,6 +19,8 @@ namespace NTUSU.BulkMail.Models
         public List<educode> educode { get; set; }
         [XmlElement("student")]
         public List<student> student { get; set; }
+        [XmlElement("GradStudent")]
+        public List<GradStudent> GradStudent { get; set; }
     }
     public class member
     {
@@ -86,5 +88,40 @@ namespace NTUSU.BulkMail.Models
         public string foreignermark { get; set; }
         [XmlElement("國籍身分別")]
         public string nationalityIdentity { get; set; }
+    }
+    public class GradStudent
+    {
+        [XmlElement("身分證字號")]
+        public string idno { get; set; }
+        [XmlElement("姓名")]
+        public string name { get; set; }
+        [XmlElement("學號1")]
+        public string stuNo1 { get; set; }
+        [XmlElement("性別")]
+        public string sex { get; set; }
+        [XmlElement("生日")]
+        public string bdate { get; set; }
+        [XmlElement("群組")]
+        public string group { get; set; }
+        [XmlElement("住址")]
+        public string addr { get; set; }
+        [XmlElement("電話")]
+        public string tel { get; set; }
+        [XmlElement("學號2")]
+        public string stuNo2 { get; set; }
+        [XmlElement("educode")]
+        public string educode { get; set; }
+        [XmlElement("email1")]
+        public string email1 { get; set; }
+        [XmlElement("畢業學年期")]
+        public string graduationYear { get; set; }
+        [XmlElement("foreignermark")]
+        public string foreignermark { get; set; }
+        [XmlElement("china_mark")]
+        public string chinaMark { get; set; }
+        [XmlElement("AbroadMark")]
+        public string abroadMark { get; set; }
+        [XmlElement("Replay")]
+        public string replay { get; set; }
     }
 }

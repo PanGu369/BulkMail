@@ -114,6 +114,7 @@ namespace NTUST.BulkMail.Web.Controllers
             try
             {
                 _bulkMailService.CreateStudentData(code);
+                //_bulkMailService.CreateAlumnusData();
                 resultMessage.Status = "OK";
             }
             catch (Exception ex)
