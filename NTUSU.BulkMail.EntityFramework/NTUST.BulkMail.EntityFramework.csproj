@@ -85,11 +85,19 @@
     <Compile Include="Interface\IEduCodeTempRepository.cs" />
     <Compile Include="Interface\IStaffmemberRepository.cs" />
     <Compile Include="Interface\IStaffmemberTempRepository.cs" />
+    <Compile Include="Interface\IStuMemberRepository.cs" />
+    <Compile Include="Interface\IStuMemberTempRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="staffmember.cs">
       <DependentUpon>BulkMailModel.tt</DependentUpon>
     </Compile>
     <Compile Include="staffmember_temp.cs">
+      <DependentUpon>BulkMailModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="stumember.cs">
+      <DependentUpon>BulkMailModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="stumember_temp.cs">
       <DependentUpon>BulkMailModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>
