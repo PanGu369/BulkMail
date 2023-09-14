@@ -25,6 +25,7 @@ using NTUST.BulkMail.Services.Interface;
 using NTUST.BulkMail.Services;
 using Microsoft.Owin.Logging;
 using System.Linq.Dynamic;
+using NLog.LayoutRenderers.Wrappers;
 
 namespace NTUST.BulkMail.Web.Controllers
 {
@@ -48,9 +49,9 @@ namespace NTUST.BulkMail.Web.Controllers
             List<member> memberList = new List<member>();
             try
             {
-                _bulkMailService.CreateEduCode();
-                _bulkMailService.CreateStaffMemberTemp(id, semester);
-                _bulkMailService.CreateStaffMember();
+                //_bulkMailService.CreateEduCode();
+                //_bulkMailService.CreateStaffMemberTemp(id, semester);
+                //_bulkMailService.CreateStaffMember();
                 var query = _bulkMailService.GetStaffMemberData();
                 var result = query.ToPagedList(pageIndex, query.Count());
                 var pageListViewModel = new PageList
@@ -86,6 +87,42 @@ namespace NTUST.BulkMail.Web.Controllers
                 };
                 return Json(content, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        [HttpPost]
+        public ActionResult GetStaffmember(string id, string semester)
+        {
+            ResultMessage resultMessage = new ResultMessage();
+            try
+            {
+                _bulkMailService.CreateStaffMember(id, semester);
+                resultMessage.Status = "OK";
+            }
+            catch(Exception ex)
+            {
+                resultMessage.Status = "NG";
+                resultMessage.Message= ex.ToString();
+            }
+
+            return Json(resultMessage, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult GetStudentData(string code)
+        {
+            ResultMessage resultMessage = new ResultMessage();
+            try
+            {
+                _bulkMailService.CreateStudentData(code);
+                resultMessage.Status = "OK";
+            }
+            catch (Exception ex)
+            {
+                resultMessage.Status = "NG";
+                resultMessage.Message = ex.ToString();
+            }
+
+            return Json(resultMessage, JsonRequestBehavior.AllowGet);
         }
     }
 }

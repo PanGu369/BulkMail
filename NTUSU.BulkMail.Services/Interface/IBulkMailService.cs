@@ -12,11 +12,10 @@ namespace NTUST.BulkMail.Services.Interface
     public interface IBulkMailService
     {
         void CreateEduCode();
-        void CreateStaffMemberTemp(string id, string semester);
-        void CreateStaffMember();
+        void CreateStaffMember(string id, string semester);
+        void CreateStudentData(string pnowcondition);
         void DeleteEduCode();
-        void DeleteStaffMemberTemp();
-        void DeleteStaffTemp();
+        void DeleteStaffMember();
         IEnumerable<member> GetStaffMemberData();
         void Save();
     }

@@ -16,6 +16,7 @@
         data: {
             id: "eel6212",
             semester: "1121",
+            pnowcondition: "01",
             pageList: {
                 firstItemOnPage: 1,
                 hasNextPage: true,
@@ -43,6 +44,12 @@
             },
             getData(pageIndex) {
                 getData(pageIndex);
+            },
+            CreateStafferMember() {
+                CreateStafferMember();
+            },
+            CreateStudentData() {
+                CreateStudentData();
             }
         },
         filters: {
@@ -92,6 +99,110 @@
             }
         });
     }
+
+    function CreateStafferMember() {
+        $.ajax({
+            url: baseUrl + 'Home/GetStaffmember',
+            type: "POST",
+            async: true,
+            cache: false,
+            contentype: "application/json",
+            datatype: "json",
+            data: {
+                id: vm.id,
+                semester: vm.semester,
+            },
+            headers: {
+                //'RequestVerificationToken': token
+            },
+            success: function (response, textStatus, jqXHR) {
+                if (jqXHR.status === 200) {
+                    if (response.Status == "OK") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功',
+                            text: '資料建立成功',
+                        })
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功',
+                            text: '資料建立成功',
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            //if (result.isConfirmed) {
+                            //    getData(1);
+                            //}
+                        })
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: '連線逾時',
+                            text: '請稍後再試',
+                        })
+                    }
+                }
+                else {
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+            }
+        });
+    }
+    function CreateStudentData() {
+        $.ajax({
+            url: baseUrl + 'Home/GetStudentData',
+            type: "POST",
+            async: true,
+            cache: false,
+            contentype: "application/json",
+            datatype: "json",
+            data: {
+                code: vm.pnowcondition,
+            },
+            headers: {
+                //'RequestVerificationToken': token
+            },
+            success: function (response, textStatus, jqXHR) {
+                if (jqXHR.status === 200) {
+                    if (response.Status == "OK") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功',
+                            text: '資料建立成功',
+                        })
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功',
+                            text: '資料建立成功',
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            //if (result.isConfirmed) {
+                            //    getData(1);
+                            //}
+                        })
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: '連線逾時',
+                            text: '請稍後再試',
+                        })
+                    }
+                }
+                else {
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+            }
+        });
+    }
+
+
 
     // 建立 Page list 的 page 選單
     function buildPageList() {

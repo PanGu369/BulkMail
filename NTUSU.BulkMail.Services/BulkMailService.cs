@@ -18,6 +18,7 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Web.Services.Description;
 
 namespace NTUST.BulkMail.Services
 {
@@ -75,10 +76,11 @@ namespace NTUST.BulkMail.Services
             }
             _eduCodeRepository.ExecuteSqlCommand("insert into educode select a.EduCode, a.College1, a.Period2, b.sPeriod2, a.Department2, a.Grade1, a.Class1, a.Team2 from educode_temp a inner join GensPeriod2 b on a.Period2 = b.Period2");
         }
-        public void CreateStaffMemberTemp(string id, string semester)
+        public void CreateStaffMember(string id, string semester)
         {
-            DeleteStaffMemberTemp();
+            DeleteStaffMember();
             staffmember_temp staffmember_Temp = new staffmember_temp();
+            staffmember staffmember = new staffmember();
             NtustMember.Service1 service = new NtustMember.Service1();
             //NtustStudent.StuData stuData = new NtustStudent.StuData();
             try
@@ -102,6 +104,30 @@ namespace NTUST.BulkMail.Services
                     staffmember_Temp.unit = item.unit.Trim();
                     staffmember_Temp.title = item.title.Trim();
                     staffmember_Temp.kind = item.kind.Trim();
+
+                    if (item.title != "副校長")
+                    {
+                        if (item.name == "談家珍" || item.title == "四等技術師(B)" || item.title == "四等技術師(A)")
+                        {
+                            item.title = "技術師";
+                        }
+                        if (item.tclass == "正式" && item.title == "助教")
+                        {
+                            item.title = "助理教授";
+                        }
+                        staffmember.name = item.name.Trim();
+                        staffmember.idno = item.IDNO.Trim();
+                        staffmember.unitcode = item.unitcode.Trim();
+                        staffmember.unicode = item.unicode.Trim();
+                        staffmember.@class = item.tclass.Trim();
+                        staffmember.email = item.email.Trim();
+                        staffmember.tel = item.tel.Trim();
+                        staffmember.unit = item.unit.Trim();
+                        staffmember.title = item.title.Trim();
+                        staffmember.kind = item.kind.Trim();
+                        _staffmemberRepository.Add(staffmember);
+                        //Save();
+                    }
                     _staffmemberTempRepository.Add(staffmember_Temp);
                     Save();
                 }
@@ -111,38 +137,17 @@ namespace NTUST.BulkMail.Services
 
             }
         }
-        public void CreateStaffMember()
+        public void CreateStudentData(string pnowcondition)
         {
-            DeleteStaffTemp();
-            staffmember staffmember = new staffmember();
-            var query = _staffmemberTempRepository.GetAll();
+            NtustStudent.StuData stuData = new NtustStudent.StuData();
             try
             {
-                foreach (var item in query)
+                var stuWebserviceSource = stuData.studata_cond(pnowcondition).GetXml();
+                XmlSerializer serializer = new XmlSerializer(typeof(NewDataSet));
+                NewDataSet datas = null;
+                using (StringReader data = new StringReader(stuWebserviceSource))
                 {
-                    if (item.title != "副校長")
-                    {
-                        if (item.name == "談家珍" || item.title == "四等技術師(B)" || item.title == "四等技術師(A)")
-                        {
-                            item.title = "技術師";
-                        }
-                        if (item.@class == "正式" && item.title == "助教")
-                        {
-                            item.title = "助理教授";
-                        }
-                        staffmember.name = item.name.Trim();
-                        staffmember.idno = item.idno.Trim();
-                        staffmember.unitcode = item.unitcode.Trim();
-                        staffmember.unicode = item.unicode.Trim();
-                        staffmember.@class = item.@class.Trim();
-                        staffmember.email = item.email.Trim();
-                        staffmember.tel = item.tel.Trim();
-                        staffmember.unit = item.unit.Trim();
-                        staffmember.title = item.title.Trim();
-                        staffmember.kind = item.kind.Trim();
-                        _staffmemberRepository.Add(staffmember);
-                        Save();
-                    }
+                    datas = (NewDataSet)serializer.Deserialize(data);
                 }
             }
             catch (Exception ex)
@@ -155,13 +160,10 @@ namespace NTUST.BulkMail.Services
             _eduCodeRepository.ExecuteSqlCommand("TRUNCATE TABLE educode");
             _eduCodeTempRepository.ExecuteSqlCommand("TRUNCATE TABLE educode_temp");
         }
-        public void DeleteStaffMemberTemp()
-        {
-            _staffmemberTempRepository.ExecuteSqlCommand("TRUNCATE TABLE staffmember_temp");
-        }
-        public void DeleteStaffTemp()
+        public void DeleteStaffMember()
         {
             _staffmemberRepository.ExecuteSqlCommand("TRUNCATE TABLE staffmember");
+            _staffmemberTempRepository.ExecuteSqlCommand("TRUNCATE TABLE staffmember_temp");
         }
         public IEnumerable<member> GetStaffMemberData()
         {
