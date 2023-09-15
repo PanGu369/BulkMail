@@ -170,29 +170,7 @@
           <EntitySet Name="staffmember_temp" EntityType="Self.staffmember_temp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="stumember" EntityType="Self.stumember" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="stumember_temp" EntityType="Self.stumember_temp" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="alumnusmember_temp" EntityType="Self.alumnusmember_temp" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [alumnusmember_temp].[idno] AS [idno], 
-    [alumnusmember_temp].[name] AS [name], 
-    [alumnusmember_temp].[sno1] AS [sno1], 
-    [alumnusmember_temp].[sex] AS [sex], 
-    [alumnusmember_temp].[birthday] AS [birthday], 
-    [alumnusmember_temp].[grp] AS [grp], 
-    [alumnusmember_temp].[unit] AS [unit], 
-    [alumnusmember_temp].[subunit] AS [subunit], 
-    [alumnusmember_temp].[gtype] AS [gtype], 
-    [alumnusmember_temp].[addr] AS [addr], 
-    [alumnusmember_temp].[tel] AS [tel], 
-    [alumnusmember_temp].[sno2] AS [sno2], 
-    [alumnusmember_temp].[educode] AS [educode], 
-    [alumnusmember_temp].[email] AS [email], 
-    [alumnusmember_temp].[graduateyear] AS [graduateyear], 
-    [alumnusmember_temp].[valid] AS [valid], 
-    [alumnusmember_temp].[foreignermark] AS [foreignermark], 
-    [alumnusmember_temp].[china_mark] AS [china_mark], 
-    [alumnusmember_temp].[AbroadMark] AS [AbroadMark], 
-    [alumnusmember_temp].[reply] AS [reply]
-    FROM [dbo].[alumnusmember_temp] AS [alumnusmember_temp]</DefiningQuery>
+          <EntitySet Name="alumnusmember_temp" EntityType="Self.alumnusmember_temp" store:Type="Tables" Schema="dbo">
           </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
