@@ -15,6 +15,7 @@ namespace NTUST.BulkMail.Services.Interface
         void CreateStaffMember(string id, string semester);
         void CreateStudentData(string pnowcondition);
         void CreateAlumnusData();
+        void GenerateDataFromRawData();
         void DeleteEduCode();
         void DeleteStaffMember();
         void DeleteStudentData();

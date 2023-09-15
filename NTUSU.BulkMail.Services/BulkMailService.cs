@@ -236,6 +236,7 @@ namespace NTUST.BulkMail.Services
             NtustStudent.StuData stuData = new NtustStudent.StuData();
             alumnusmember alumnusmember = new alumnusmember();
             alumnusmember_temp alumnusmember_Temp = new alumnusmember_temp();
+            var batchSize = 1000;
             try
             {
                 var stuWebserviceSource = stuData.studata_Graduate().GetXml();
@@ -285,6 +286,28 @@ namespace NTUST.BulkMail.Services
                     alumnusmember_Temp.AbroadMark = item.abroadMark.Trim();
                     alumnusmember_Temp.reply = item.replay.Trim();
                     _alumnusmemberTempRepository.Add(alumnusmember_Temp);
+
+                    alumnusmember.idno = item.idno.Trim();
+                    alumnusmember.name = item.name.Trim();
+                    alumnusmember.sno1 = item.stuNo1.Trim();
+                    alumnusmember.sex = item.sex.Trim();
+                    alumnusmember.birthday = item.bdate.Trim();
+                    alumnusmember.grp = item.group.Trim();
+                    alumnusmember.unit = unit;
+                    alumnusmember.subunit = subunit;
+                    alumnusmember.gtype = gtype;
+                    alumnusmember.addr = item.addr.Trim();
+                    alumnusmember.tel = item.tel.Trim();
+                    alumnusmember.sno2 = item.stuNo2.Trim();
+                    alumnusmember.educode = item.educode.Trim();
+                    alumnusmember.email = item.email1.Trim();
+                    alumnusmember.graduateyear = item.graduationYear.Trim();
+                    alumnusmember.valid = CheckEmail(item.email1.Trim());
+                    alumnusmember.foreignermark = item.foreignermark.Trim();
+                    alumnusmember.china_mark = item.chinaMark.Trim();
+                    alumnusmember.AbroadMark = item.abroadMark.Trim();
+                    alumnusmember.reply = item.replay.Trim();
+                    _alumnusmemberRepository.Add(alumnusmember);
                     Save();
                 }
             }
@@ -292,6 +315,10 @@ namespace NTUST.BulkMail.Services
             {
 
             }
+        }
+        public void GenerateDataFromRawData()
+        {
+
         }
         public void DeleteEduCode()
         {
