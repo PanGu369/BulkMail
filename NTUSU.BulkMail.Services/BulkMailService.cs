@@ -19,6 +19,7 @@ using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web.Services.Description;
+using System.Runtime.Remoting.Contexts;
 
 namespace NTUST.BulkMail.Services
 {
@@ -31,14 +32,17 @@ namespace NTUST.BulkMail.Services
         private readonly IEduCodeTempRepository _eduCodeTempRepository;
         private readonly IStuMemberRepository _stuMemberRepository;
         private readonly IStuMemberTempRepository _stuMemberTempRepository;
-
+        private readonly IAlumnusmemberRepository _alumnusmemberRepository;
+        private readonly IAlumnusmemberTempRepository _alumnusmemberTempRepository;
         public BulkMailService(IUnitOfWork unitOfWork,
             IStaffmemberRepository staffmemberRepository,
             IStaffmemberTempRepository staffmemberTempRepository,
             IEduCodeRepository eduCodeRepository,
             IEduCodeTempRepository eduCodeTempRepository,
             IStuMemberRepository stuMemberRepository,
-            IStuMemberTempRepository stuMemberTempRepository)
+            IStuMemberTempRepository stuMemberTempRepository,
+            IAlumnusmemberRepository alumnusmemberRepository,
+            IAlumnusmemberTempRepository alumnusmemberTempRepository)
         {
             _unitOfWork = unitOfWork;
             _staffmemberRepository = staffmemberRepository;
@@ -47,6 +51,8 @@ namespace NTUST.BulkMail.Services
             _eduCodeTempRepository = eduCodeTempRepository;
             _stuMemberRepository = stuMemberRepository;
             _stuMemberTempRepository = stuMemberTempRepository;
+            _alumnusmemberRepository = alumnusmemberRepository;
+            _alumnusmemberTempRepository = alumnusmemberTempRepository;
         }
 
         public void CreateEduCode()
@@ -228,6 +234,8 @@ namespace NTUST.BulkMail.Services
         public void CreateAlumnusData()
         {
             NtustStudent.StuData stuData = new NtustStudent.StuData();
+            alumnusmember alumnusmember = new alumnusmember();
+            alumnusmember_temp alumnusmember_Temp = new alumnusmember_temp();
             try
             {
                 var stuWebserviceSource = stuData.studata_Graduate().GetXml();
@@ -237,6 +245,7 @@ namespace NTUST.BulkMail.Services
                 {
                     datas = (NewDataSet)serializer.Deserialize(data);
                 }
+                DeleteAlumnusData();
                 foreach (var item in datas.GradStudent)
                 {
                     string[] grpary = item.group.Split('/')[1].Split(' ');
@@ -255,7 +264,28 @@ namespace NTUST.BulkMail.Services
                         subunit = "";
                         gtype = "";
                     }
-
+                    alumnusmember_Temp.idno = item.idno.Trim();
+                    alumnusmember_Temp.name = item.name.Trim();
+                    alumnusmember_Temp.sno1 = item.stuNo1.Trim();
+                    alumnusmember_Temp.sex = item.sex.Trim();
+                    alumnusmember_Temp.birthday = item.bdate.Trim();
+                    alumnusmember_Temp.grp = item.group.Trim();
+                    alumnusmember_Temp.unit = unit;
+                    alumnusmember_Temp.subunit = subunit;
+                    alumnusmember_Temp.gtype = gtype;
+                    alumnusmember_Temp.addr = item.addr.Trim();
+                    alumnusmember_Temp.tel = item.tel.Trim();
+                    alumnusmember_Temp.sno2 = item.stuNo2.Trim();
+                    alumnusmember_Temp.educode = item.educode.Trim();
+                    alumnusmember_Temp.email = item.email1.Trim();
+                    alumnusmember_Temp.graduateyear = item.graduationYear.Trim();
+                    alumnusmember_Temp.valid = CheckEmail(item.email1.Trim());
+                    alumnusmember_Temp.foreignermark = item.foreignermark.Trim();
+                    alumnusmember_Temp.china_mark = item.chinaMark.Trim();
+                    alumnusmember_Temp.AbroadMark = item.abroadMark.Trim();
+                    alumnusmember_Temp.reply = item.replay.Trim();
+                    _alumnusmemberTempRepository.Add(alumnusmember_Temp);
+                    Save();
                 }
             }
             catch (Exception ex)
@@ -277,6 +307,11 @@ namespace NTUST.BulkMail.Services
         {
             _stuMemberRepository.ExecuteSqlCommand("TRUNCATE TABLE stumember");
             _stuMemberTempRepository.ExecuteSqlCommand("TRUNCATE TABLE stumember_temp");
+        }
+        public void DeleteAlumnusData()
+        {
+            _alumnusmemberRepository.ExecuteSqlCommand("TRUNCATE TABLE alumnusmember");
+            _alumnusmemberTempRepository.ExecuteSqlCommand("TRUNCATE TABLE alumnusmember_temp");
         }
         public IEnumerable<member> GetStaffMemberData()
         {

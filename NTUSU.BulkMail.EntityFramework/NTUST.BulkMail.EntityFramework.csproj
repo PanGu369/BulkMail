@@ -52,6 +52,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="alumnusmember.cs">
+      <DependentUpon>BulkMailModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="alumnusmember_temp.cs">
+      <DependentUpon>BulkMailModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="BulkMailModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -81,6 +87,8 @@
     <Compile Include="Infrastructure\IUnitOfWork.cs" />
     <Compile Include="Infrastructure\RepositoryIQueryableExtensions.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />
+    <Compile Include="Interface\IAlumnusmemberRepository.cs" />
+    <Compile Include="Interface\IAlumnusmemberTempRepository.cs" />
     <Compile Include="Interface\IEduCodeRepository.cs" />
     <Compile Include="Interface\IEduCodeTempRepository.cs" />
     <Compile Include="Interface\IStaffmemberRepository.cs" />
