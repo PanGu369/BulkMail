@@ -5,6 +5,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 using BulkMail.Models;
+using Microsoft.Owin.Security.Google;
 
 namespace BulkMail
 {
@@ -57,11 +58,11 @@ namespace BulkMail
             //   appId: "",
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "514530260057-if5ajahcqno2kppdgs54082st9495mdp.apps.googleusercontent.com",
+                ClientSecret = "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"
+            });
         }
     }
 }

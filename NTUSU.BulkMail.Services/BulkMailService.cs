@@ -34,6 +34,8 @@ namespace NTUST.BulkMail.Services
         private readonly IStuMemberTempRepository _stuMemberTempRepository;
         private readonly IAlumnusmemberRepository _alumnusmemberRepository;
         private readonly IAlumnusmemberTempRepository _alumnusmemberTempRepository;
+        private readonly IAlumCollegePeriodDepartmentYearRepository _alumCollegePeriodYearRepository;
+        private readonly IAlumnusGroupViewRepository _alumnusGroupViewRepository;
         public BulkMailService(IUnitOfWork unitOfWork,
             IStaffmemberRepository staffmemberRepository,
             IStaffmemberTempRepository staffmemberTempRepository,
@@ -42,7 +44,9 @@ namespace NTUST.BulkMail.Services
             IStuMemberRepository stuMemberRepository,
             IStuMemberTempRepository stuMemberTempRepository,
             IAlumnusmemberRepository alumnusmemberRepository,
-            IAlumnusmemberTempRepository alumnusmemberTempRepository)
+            IAlumnusmemberTempRepository alumnusmemberTempRepository,
+            IAlumCollegePeriodDepartmentYearRepository alumCollegePeriodYearRepository,
+            IAlumnusGroupViewRepository alumnusGroupViewRepository)
         {
             _unitOfWork = unitOfWork;
             _staffmemberRepository = staffmemberRepository;
@@ -53,6 +57,8 @@ namespace NTUST.BulkMail.Services
             _stuMemberTempRepository = stuMemberTempRepository;
             _alumnusmemberRepository = alumnusmemberRepository;
             _alumnusmemberTempRepository = alumnusmemberTempRepository;
+            _alumCollegePeriodYearRepository = alumCollegePeriodYearRepository;
+            _alumnusGroupViewRepository = alumnusGroupViewRepository;
         }
 
         public void CreateEduCode()
@@ -322,16 +328,33 @@ namespace NTUST.BulkMail.Services
         }
         public void GenerateMailGroupFile()
         {
-            var data = _staffmemberRepository.GetAll();
+            var data = _alumCollegePeriodYearRepository.GetAll();
             string lastfilename = "";
-            if (Directory.Exists("data\\"))
+            StreamWriter sw = null;
+            if (Directory.Exists("D:\\getMailFile\\data\\"))
             {
                 Directory.Delete("D:\\getMailFile\\data\\", true);
             }
             Directory.CreateDirectory("D:\\getMailFile\\data\\");
             foreach (var item in data)
             {
+                if (item.filename.ToString() != lastfilename)
+                {
+                    if (sw != null)
+                    {
+                        sw.Close();
+                    }
+                    sw = new StreamWriter("D:\\getMailFile\\data\\" + item.filename.ToString(), false, Encoding.GetEncoding("big5"));
+                    lastfilename = item.filename.ToString();
+                    string mail = item.mail.ToString().Split(new char[]
+                    {
+                        '@'
+                    })[0] + "@mail.ntust.edu.tw";
+                    sw.Write(mail + "\n");
+                }
+                sw.Write(item.email.ToString().Trim() + "\n");
             }
+            sw.Close();
         }
         public void DeleteEduCode()
         {

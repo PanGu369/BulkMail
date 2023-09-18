@@ -9,6 +9,10 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using BulkMail.Models;
+using AutoMapper.Configuration;
+using System.Collections.Generic;
+using System.Configuration;
+using Google.Apis.Auth;
 
 namespace BulkMail.Controllers
 {

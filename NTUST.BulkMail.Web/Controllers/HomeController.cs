@@ -26,6 +26,9 @@ using NTUST.BulkMail.Services;
 using Microsoft.Owin.Logging;
 using System.Linq.Dynamic;
 using NLog.LayoutRenderers.Wrappers;
+using Google.Apis.Auth;
+using System.Threading.Tasks;
+using NTUST.BulkMail.Web.ActionFilter;
 
 namespace NTUST.BulkMail.Web.Controllers
 {
@@ -113,8 +116,9 @@ namespace NTUST.BulkMail.Web.Controllers
             ResultMessage resultMessage = new ResultMessage();
             try
             {
-                _bulkMailService.CreateStudentData(code);
+                //_bulkMailService.CreateStudentData(code);
                 //_bulkMailService.CreateAlumnusData();
+                _bulkMailService.GenerateMailGroupFile();
                 resultMessage.Status = "OK";
             }
             catch (Exception ex)
@@ -124,6 +128,90 @@ namespace NTUST.BulkMail.Web.Controllers
             }
 
             return Json(resultMessage, JsonRequestBehavior.AllowGet);
+        }
+
+        [AllowCrossSiteJson]
+        public ActionResult ValidGoogleLogin()
+        {
+            string formCredential = Request.Form["credential"]; //回傳憑證
+            string formToken = Request.Form["g_csrf_token"]; //回傳令牌
+            string cookiesToken = Request.Cookies["g_csrf_token"].Value; //Cookie 令牌
+
+            // 驗證 Google Token
+            GoogleJsonWebSignature.Payload payload = VerifyGoogleToken(formCredential, formToken, cookiesToken).Result;
+            if (payload == null)
+            {
+                // 驗證失敗
+                ViewData["Msg"] = "驗證 Google 授權失敗";
+            }
+            else
+            {
+                //驗證成功，取使用者資訊內容
+                ViewData["Msg"] = "驗證 Google 授權成功" + "<br>";
+                ViewData["Msg"] += "Email:" + payload.Email + "<br>";
+                ViewData["Msg"] += "Name:" + payload.Name + "<br>";
+                ViewData["Msg"] += "Picture:" + payload.Picture;
+            }
+
+            return View();
+        }
+
+        /// <summary>
+        /// 驗證 Google Token
+        /// </summary>
+        /// <param name="formCredential"></param>
+        /// <param name="formToken"></param>
+        /// <param name="cookiesToken"></param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        public async Task<GoogleJsonWebSignature.Payload> VerifyGoogleToken(string formCredential, string formToken, string cookiesToken)
+        {
+            // 檢查空值
+            if (formCredential == null || formToken == null && cookiesToken == null)
+            {
+                return null;
+            }
+
+            GoogleJsonWebSignature.Payload payload;
+            try
+            {
+                // 驗證 token
+                if (formToken != cookiesToken)
+                {
+                    return null;
+                }
+
+                // 驗證憑證
+                //IConfiguration Config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
+                string GoogleApiClientId = "514530260057-if5ajahcqno2kppdgs54082st9495mdp.apps.googleusercontent.com";
+                var settings = new GoogleJsonWebSignature.ValidationSettings()
+                {
+                    Audience = new List<string>() { GoogleApiClientId }
+                };
+                payload = await GoogleJsonWebSignature.ValidateAsync(formCredential, settings);
+                if (!payload.Issuer.Equals("accounts.google.com") && !payload.Issuer.Equals("https://accounts.google.com"))
+                {
+                    return null;
+                }
+                if (payload.ExpirationTimeSeconds == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    DateTime now = DateTime.Now.ToUniversalTime();
+                    DateTime expiration = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).DateTime;
+                    if (now > expiration)
+                    {
+                        return null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            return payload;
         }
     }
 }

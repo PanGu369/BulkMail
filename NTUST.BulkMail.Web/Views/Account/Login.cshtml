@@ -9,7 +9,7 @@
         </div>
         <div class="card-body">
             <form>
-                <div class="input-group mb-3">
+                @*<div class="input-group mb-3">
                     <input type="text" class="form-control" placeholder="帳號" v-model="user.userId">
                     <div class="input-group-append">
                         <div class="input-group-text">
@@ -28,21 +28,50 @@
                 <div class="row">
                     <div class="col-8">
                     </div>
-                    <!-- /.col -->
                     <div class="col-4">
                         <button type="button" class="btn btn-primary btn-block" v-on:click="Login()">登入</button>
                     </div>
-                    <!-- /.col -->
+                </div>*@
+
+                <div id="g_id_onload"
+                     data-client_id="514530260057-if5ajahcqno2kppdgs54082st9495mdp.apps.googleusercontent.com"
+                     data-login_uri="https://localhost:44371/Home/Index"
+                     data-auto_prompt="false">
+                </div>
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-size="large"
+                     data-theme="outline"
+                     data-text="sign_in_with"
+                     data-shape="rectangular"
+                     data-logo_alignment="left">
                 </div>
             </form>
 
-            <p class="mb-1">
+            @*<div id="g_id_onload"
+                 data-client_id="514530260057-if5ajahcqno2kppdgs54082st9495mdp.apps.googleusercontent.com"
+                 data-login_uri="https://localhost:44371/Home/Index"
+                 data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin"
+                 data-type="standard"
+                 data-size="large"
+                 data-theme="outline"
+                 data-text="sign_in_with"
+                 data-shape="rectangular"
+                 data-logo_alignment="left">
+            </div>*@
+
+            @*<p class="mb-1">
                 <a href="forgot-password.html">忘記密碼</a>
-            </p>
-            @*<p class="mb-0">
-                <a href="register.html" class="text-center">Register a new membership</a>
             </p>*@
+            @*<p class="mb-0">
+            <a href="register.html" class="text-center">Register a new membership</a>
+        </p>*@
         </div>
         <!-- /.card-body -->
     </div>
 </div>
+
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
