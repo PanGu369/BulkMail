@@ -50,6 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlumCollegePeriodDepartmentYearRepository.cs" />
+    <Compile Include="AlumnusGroupViewRepository.cs" />
     <Compile Include="AlumnusmemberRepository.cs" />
     <Compile Include="EduCodeRepository.cs" />
     <Compile Include="EduCodeTempRepository.cs" />

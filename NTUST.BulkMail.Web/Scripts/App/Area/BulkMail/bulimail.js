@@ -79,7 +79,11 @@
                         Vue.nextTick(function () {
                             $("#bulkmail").DataTable({
                                 "responsive": true, "lengthChange": false, "autoWidth": false,
-                                "buttons": [ "excel","print", "colvis"]
+                                language: {
+                                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/zh-HANT.json',
+                                },
+                                'iDisplayLength': 15,
+                                "buttons": ["excel", "print", "colvis"],
                             }).buttons().container().appendTo('#bulkmail_wrapper .col-md-6:eq(0)');
                         })
                         //buildPageList();

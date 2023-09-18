@@ -162,6 +162,57 @@
           <Property Name="foreignermark" Type="varchar" MaxLength="2" />
           <Property Name="nation" Type="nvarchar" MaxLength="100" />
         </EntityType>
+        <!--產生期間發現錯誤:
+警告 6002: 資料表/檢視 'mail.dbo.AlumCollegePeriodDepartmentYear' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+        <EntityType Name="AlumCollegePeriodDepartmentYear">
+          <Key>
+            <PropertyRef Name="idno" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="sno1" />
+            <PropertyRef Name="educode" />
+            <PropertyRef Name="email" />
+            <PropertyRef Name="graduateyear" />
+            <PropertyRef Name="College" />
+            <PropertyRef Name="Period" />
+            <PropertyRef Name="Department" />
+          </Key>
+          <Property Name="mail" Type="nvarchar" MaxLength="59" />
+          <Property Name="filename" Type="nvarchar" MaxLength="59" />
+          <Property Name="idno" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="sno1" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="educode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="graduateyear" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CollegeCode" Type="nvarchar" MaxLength="1" />
+          <Property Name="College" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PeriodCode" Type="nvarchar" MaxLength="2" />
+          <Property Name="Period" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DepartmentCode" Type="nvarchar" MaxLength="2" />
+          <Property Name="Department" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="year" Type="nvarchar" MaxLength="3" />
+          <Property Name="foreignermark" Type="varchar" MaxLength="5" />
+          <Property Name="china_mark" Type="varchar" MaxLength="5" />
+          <Property Name="AbroadMark" Type="varchar" MaxLength="5" />
+          <Property Name="reply" Type="varchar" MaxLength="5" />
+        </EntityType>
+        <!--產生期間發現錯誤:
+警告 6002: 資料表/檢視 'mail.dbo.AlumnusGroupView' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+        <EntityType Name="AlumnusGroupView">
+          <Key>
+            <PropertyRef Name="member" />
+            <PropertyRef Name="membername" />
+            <PropertyRef Name="membermail" />
+            <PropertyRef Name="memtype" />
+          </Key>
+          <Property Name="cname" Type="nvarchar" MaxLength="168" />
+          <Property Name="mail" Type="nvarchar" MaxLength="31" />
+          <Property Name="filename" Type="nvarchar" MaxLength="15" />
+          <Property Name="member" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="membername" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="membermail" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="memtype" Type="varchar" MaxLength="1" Nullable="false" />
+        </EntityType>
         <EntityContainer Name="mailModelStoreContainer">
           <EntitySet Name="alumnusmember" EntityType="Self.alumnusmember" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="educode" EntityType="Self.educode" Schema="dbo" store:Type="Tables" />
@@ -171,6 +222,10 @@
           <EntitySet Name="stumember" EntityType="Self.stumember" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="stumember_temp" EntityType="Self.stumember_temp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="alumnusmember_temp" EntityType="Self.alumnusmember_temp" store:Type="Tables" Schema="dbo">
+          </EntitySet>
+          <EntitySet Name="AlumCollegePeriodDepartmentYear" EntityType="Self.AlumCollegePeriodDepartmentYear" store:Type="Views" Schema="dbo">
+          </EntitySet>
+          <EntitySet Name="AlumnusGroupView" EntityType="Self.AlumnusGroupView" store:Type="Views" Schema="dbo">
           </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -218,6 +273,8 @@
           <EntitySet Name="stumember_temp" EntityType="mailModel.stumember_temp" />
           <EntitySet Name="alumnusmember" EntityType="mailModel.alumnusmember" />
           <EntitySet Name="alumnusmember_temp" EntityType="mailModel.alumnusmember_temp" />
+          <EntitySet Name="AlumnusGroupView" EntityType="mailModel.AlumnusGroupView" />
+          <EntitySet Name="AlumCollegePeriodDepartmentYear" EntityType="mailModel.AlumCollegePeriodDepartmentYear" />
         </EntityContainer>
         <EntityType Name="educode">
           <Key>
@@ -337,6 +394,53 @@
           <Property Name="email" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="graduateyear" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="valid" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="foreignermark" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="china_mark" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="AbroadMark" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="reply" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="AlumnusGroupView">
+          <Key>
+            <PropertyRef Name="member" />
+            <PropertyRef Name="membername" />
+            <PropertyRef Name="membermail" />
+            <PropertyRef Name="memtype" />
+          </Key>
+          <Property Name="cname" Type="String" MaxLength="168" FixedLength="false" Unicode="true" />
+          <Property Name="mail" Type="String" MaxLength="31" FixedLength="false" Unicode="true" />
+          <Property Name="filename" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="member" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="membername" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="membermail" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="memtype" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="AlumCollegePeriodDepartmentYear">
+          <Key>
+            <PropertyRef Name="idno" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="sno1" />
+            <PropertyRef Name="educode" />
+            <PropertyRef Name="email" />
+            <PropertyRef Name="graduateyear" />
+            <PropertyRef Name="College" />
+            <PropertyRef Name="Period" />
+            <PropertyRef Name="Department" />
+          </Key>
+          <Property Name="mail" Type="String" MaxLength="59" FixedLength="false" Unicode="true" />
+          <Property Name="filename" Type="String" MaxLength="59" FixedLength="false" Unicode="true" />
+          <Property Name="idno" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sno1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="educode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="graduateyear" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CollegeCode" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="College" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PeriodCode" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="Period" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DepartmentCode" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="Department" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="year" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
           <Property Name="foreignermark" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="china_mark" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="AbroadMark" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
@@ -497,6 +601,44 @@
                 <ScalarProperty Name="sno1" ColumnName="sno1" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="idno" ColumnName="idno" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AlumnusGroupView">
+            <EntityTypeMapping TypeName="mailModel.AlumnusGroupView">
+              <MappingFragment StoreEntitySet="AlumnusGroupView">
+                <ScalarProperty Name="memtype" ColumnName="memtype" />
+                <ScalarProperty Name="membermail" ColumnName="membermail" />
+                <ScalarProperty Name="membername" ColumnName="membername" />
+                <ScalarProperty Name="member" ColumnName="member" />
+                <ScalarProperty Name="filename" ColumnName="filename" />
+                <ScalarProperty Name="mail" ColumnName="mail" />
+                <ScalarProperty Name="cname" ColumnName="cname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AlumCollegePeriodDepartmentYear">
+            <EntityTypeMapping TypeName="mailModel.AlumCollegePeriodDepartmentYear">
+              <MappingFragment StoreEntitySet="AlumCollegePeriodDepartmentYear">
+                <ScalarProperty Name="reply" ColumnName="reply" />
+                <ScalarProperty Name="AbroadMark" ColumnName="AbroadMark" />
+                <ScalarProperty Name="china_mark" ColumnName="china_mark" />
+                <ScalarProperty Name="foreignermark" ColumnName="foreignermark" />
+                <ScalarProperty Name="year" ColumnName="year" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
+                <ScalarProperty Name="Period" ColumnName="Period" />
+                <ScalarProperty Name="PeriodCode" ColumnName="PeriodCode" />
+                <ScalarProperty Name="College" ColumnName="College" />
+                <ScalarProperty Name="CollegeCode" ColumnName="CollegeCode" />
+                <ScalarProperty Name="graduateyear" ColumnName="graduateyear" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="educode" ColumnName="educode" />
+                <ScalarProperty Name="sno1" ColumnName="sno1" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="idno" ColumnName="idno" />
+                <ScalarProperty Name="filename" ColumnName="filename" />
+                <ScalarProperty Name="mail" ColumnName="mail" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

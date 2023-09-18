@@ -320,6 +320,19 @@ namespace NTUST.BulkMail.Services
         {
 
         }
+        public void GenerateMailGroupFile()
+        {
+            var data = _staffmemberRepository.GetAll();
+            string lastfilename = "";
+            if (Directory.Exists("data\\"))
+            {
+                Directory.Delete("D:\\getMailFile\\data\\", true);
+            }
+            Directory.CreateDirectory("D:\\getMailFile\\data\\");
+            foreach (var item in data)
+            {
+            }
+        }
         public void DeleteEduCode()
         {
             _eduCodeRepository.ExecuteSqlCommand("TRUNCATE TABLE educode");
