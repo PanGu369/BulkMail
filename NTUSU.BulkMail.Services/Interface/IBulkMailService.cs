@@ -20,8 +20,8 @@ namespace NTUST.BulkMail.Services.Interface
         void DeleteEduCode();
         void DeleteStaffMember();
         void DeleteStudentData();
-        void DeleteAlumnusData();
         IEnumerable<member> GetStaffMemberData();
+        IEnumerable<unitcode> GetUnitcodesData();
         void Save();
     }
 }

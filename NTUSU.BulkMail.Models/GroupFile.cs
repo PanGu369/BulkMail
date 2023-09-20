@@ -12,4 +12,13 @@ namespace NTUST.BulkMail.Models
         public string filename { get; set; }
         public string member { get; set; }
     }
+
+    public class MailList
+    {
+        public string cname { get; set; }
+        public string mail { get; set; }
+        public string filname { get; set; }
+        public string member { get; set; }
+        public string membername { get; set; }
+    }
 }

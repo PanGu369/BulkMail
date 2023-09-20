@@ -12,14 +12,10 @@ namespace NTUST.BulkMail.EntityFramework
     using System;
     using System.Collections.Generic;
     
-    public partial class AlumnusGroupView
+    public partial class unitcode
     {
-        public string cname { get; set; }
-        public string mail { get; set; }
-        public string filename { get; set; }
-        public string member { get; set; }
-        public string membername { get; set; }
-        public string membermail { get; set; }
-        public string memtype { get; set; }
+        public string unitcode1 { get; set; }
+        public string tunitcode { get; set; }
+        public string unit { get; set; }
     }
 }

@@ -52,9 +52,6 @@ namespace NTUST.BulkMail.Web.Controllers
             List<member> memberList = new List<member>();
             try
             {
-                //_bulkMailService.CreateEduCode();
-                //_bulkMailService.CreateStaffMemberTemp(id, semester);
-                //_bulkMailService.CreateStaffMember();
                 var query = _bulkMailService.GetStaffMemberData();
                 var result = query.ToPagedList(pageIndex, query.Count());
                 var pageListViewModel = new PageList
@@ -116,9 +113,7 @@ namespace NTUST.BulkMail.Web.Controllers
             ResultMessage resultMessage = new ResultMessage();
             try
             {
-                //_bulkMailService.CreateStudentData(code);
-                //_bulkMailService.CreateAlumnusData();
-                _bulkMailService.GenerateMailGroupFile();
+                _bulkMailService.CreateStudentData(code);
                 resultMessage.Status = "OK";
             }
             catch (Exception ex)
@@ -127,6 +122,40 @@ namespace NTUST.BulkMail.Web.Controllers
                 resultMessage.Message = ex.ToString();
             }
 
+            return Json(resultMessage, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public ActionResult GetAlumnusData()
+        {
+            ResultMessage resultMessage = new ResultMessage();
+            try
+            {
+                _bulkMailService.CreateAlumnusData();
+                resultMessage.Status = "OK";
+            }
+            catch (Exception ex)
+            {
+                resultMessage.Status = "NG";
+                resultMessage.Message = ex.ToString();
+            }
+
+            return Json(resultMessage, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public ActionResult GenerateMailGroupFile()
+        {
+            ResultMessage resultMessage = new ResultMessage();
+            try
+            {
+                _bulkMailService.GenerateDataFromRawData();
+                _bulkMailService.GenerateMailGroupFile();
+                resultMessage.Status = "OK";
+            }
+            catch(Exception ex) 
+            {
+                resultMessage.Status = "NG";
+                resultMessage.Message = ex.ToString();
+            }
             return Json(resultMessage, JsonRequestBehavior.AllowGet);
         }
 

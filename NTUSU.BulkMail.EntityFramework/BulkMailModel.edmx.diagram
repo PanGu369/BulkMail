@@ -4,17 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2ecd4c892b2140fcb7ff9ce623022f3f" Name="Diagram1">
-        <EntityTypeShape EntityType="mailModel.staffmember" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="mailModel.staffmember_temp" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="mailModel.educode" Width="1.5" PointX="0.75" PointY="4.75" />
-        <EntityTypeShape EntityType="mailModel.educode_temp" Width="1.5" PointX="2.75" PointY="4.75" />
-        <EntityTypeShape EntityType="mailModel.stumember" Width="1.5" PointX="5.375" PointY="0.75" />
-        <EntityTypeShape EntityType="mailModel.stumember_temp" Width="1.5" PointX="5.375" PointY="5.75" />
-        <EntityTypeShape EntityType="mailModel.alumnusmember" Width="1.5" PointX="7.375" PointY="0.75" />
-        <EntityTypeShape EntityType="mailModel.alumnusmember_temp" Width="1.5" PointX="7.375" PointY="6.75" />
-        <EntityTypeShape EntityType="mailModel.AlumnusGroupView" Width="1.5" PointX="0.75" PointY="8.75" />
-        <EntityTypeShape EntityType="mailModel.AlumCollegePeriodDepartmentYear" Width="1.5" PointX="9.375" PointY="0.75" />
+      <Diagram DiagramId="44455091f0314097a9d92dfa5755da72" Name="Diagram1">
+        <EntityTypeShape EntityType="mailModel.educode" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="mailModel.educode_temp" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="mailModel.staffmember" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="mailModel.staffmember_temp" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="mailModel.stumember" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="mailModel.stumember_temp" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="mailModel.unitcode" Width="1.5" PointX="7.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

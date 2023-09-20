@@ -25,15 +25,12 @@ namespace NTUST.BulkMail.EntityFramework
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<staffmember> staffmember { get; set; }
-        public virtual DbSet<staffmember_temp> staffmember_temp { get; set; }
         public virtual DbSet<educode> educode { get; set; }
         public virtual DbSet<educode_temp> educode_temp { get; set; }
+        public virtual DbSet<staffmember> staffmember { get; set; }
+        public virtual DbSet<staffmember_temp> staffmember_temp { get; set; }
         public virtual DbSet<stumember> stumember { get; set; }
         public virtual DbSet<stumember_temp> stumember_temp { get; set; }
-        public virtual DbSet<alumnusmember> alumnusmember { get; set; }
-        public virtual DbSet<alumnusmember_temp> alumnusmember_temp { get; set; }
-        public virtual DbSet<AlumnusGroupView> AlumnusGroupView { get; set; }
-        public virtual DbSet<AlumCollegePeriodDepartmentYear> AlumCollegePeriodDepartmentYear { get; set; }
+        public virtual DbSet<unitcode> unitcode { get; set; }
     }
 }

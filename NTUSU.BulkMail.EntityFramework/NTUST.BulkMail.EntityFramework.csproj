@@ -52,18 +52,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlumCollegePeriodDepartmentYear.cs">
-      <DependentUpon>BulkMailModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AlumnusGroupView.cs">
-      <DependentUpon>BulkMailModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="alumnusmember.cs">
-      <DependentUpon>BulkMailModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="alumnusmember_temp.cs">
-      <DependentUpon>BulkMailModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="BulkMailModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -93,16 +81,13 @@
     <Compile Include="Infrastructure\IUnitOfWork.cs" />
     <Compile Include="Infrastructure\RepositoryIQueryableExtensions.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />
-    <Compile Include="Interface\IAlumCollegePeriodDepartmentYearRepository.cs" />
-    <Compile Include="Interface\IAlumnusGroupViewRepository.cs" />
-    <Compile Include="Interface\IAlumnusmemberRepository.cs" />
-    <Compile Include="Interface\IAlumnusmemberTempRepository.cs" />
     <Compile Include="Interface\IEduCodeRepository.cs" />
     <Compile Include="Interface\IEduCodeTempRepository.cs" />
     <Compile Include="Interface\IStaffmemberRepository.cs" />
     <Compile Include="Interface\IStaffmemberTempRepository.cs" />
     <Compile Include="Interface\IStuMemberRepository.cs" />
     <Compile Include="Interface\IStuMemberTempRepository.cs" />
+    <Compile Include="Interface\IUnitcodeRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="staffmember.cs">
       <DependentUpon>BulkMailModel.tt</DependentUpon>
@@ -114,6 +99,9 @@
       <DependentUpon>BulkMailModel.tt</DependentUpon>
     </Compile>
     <Compile Include="stumember_temp.cs">
+      <DependentUpon>BulkMailModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="unitcode.cs">
       <DependentUpon>BulkMailModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>

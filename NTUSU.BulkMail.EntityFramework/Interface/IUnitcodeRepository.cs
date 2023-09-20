@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NTUST.BulkMail.EntityFramework.Interface
 {
-    public interface IAlumnusmemberTempRepository : IRepository<int, alumnusmember_temp>
+    public interface IUnitcodeRepository : IRepository<int, unitcode>
     {
     }
 }

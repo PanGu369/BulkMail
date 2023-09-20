@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace NTUST.BulkMail.Repository
 {
-    public class AlumnusmemberRepository : GenericRepository<int, alumnusmember>, IAlumnusmemberRepository
+    public class UnitcodeRepository : GenericRepository<int, unitcode>, IUnitcodeRepository
     {
-        public AlumnusmemberRepository(IDbFactory dbFactory) : base(dbFactory)
+        public UnitcodeRepository(IDbFactory dbFactory) : base(dbFactory)
         {
         }
     }

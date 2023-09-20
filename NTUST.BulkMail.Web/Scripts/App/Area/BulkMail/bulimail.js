@@ -50,13 +50,23 @@
             },
             CreateStudentData() {
                 CreateStudentData();
-            }
+            },
+            CreateAlumnusData() {
+                CreateAlumnusData();
+            },
+            GenerateMailGroupFile() {
+                GenerateMailGroupFile();
+            },
+            OpenUnicodeModal() {
+                OpenUnicodeModal();
+            },
         },
         filters: {
         }
     })
 
     function getData(pageIndex) {
+        $.LoadingOverlay("show");
         $.ajax({
             url: baseUrl + 'Home/List',
             type: "POST",
@@ -79,16 +89,18 @@
                         Vue.nextTick(function () {
                             $("#bulkmail").DataTable({
                                 "responsive": true, "lengthChange": false, "autoWidth": false,
-                                language: {
+                                "language": {
                                     url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/zh-HANT.json',
                                 },
                                 'iDisplayLength': 15,
                                 "buttons": ["excel", "print", "colvis"],
                             }).buttons().container().appendTo('#bulkmail_wrapper .col-md-6:eq(0)');
                         })
+                        $.LoadingOverlay("hide");
                         //buildPageList();
                     }
                     else {
+                        $.LoadingOverlay("hide");
                         Swal.fire({
                             icon: 'error',
                             title: '連線逾時',
@@ -97,14 +109,17 @@
                     }
                 }
                 else {
+                    $.LoadingOverlay("hide");
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
+                $.LoadingOverlay("hide");
             }
         });
     }
 
     function CreateStafferMember() {
+        $.LoadingOverlay("show");
         $.ajax({
             url: baseUrl + 'Home/GetStaffmember',
             type: "POST",
@@ -120,7 +135,8 @@
                 //'RequestVerificationToken': token
             },
             success: function (response, textStatus, jqXHR) {
-                if (jqXHR.status === 200) {
+                $.LoadingOverlay("hide");
+                if (jqXHR.status === 200) {             
                     if (response.Status == "OK") {
                         Swal.fire({
                             icon: 'success',
@@ -141,6 +157,7 @@
                         })
                     }
                     else {
+                        $.LoadingOverlay("hide");
                         Swal.fire({
                             icon: 'error',
                             title: '連線逾時',
@@ -149,13 +166,16 @@
                     }
                 }
                 else {
+                    $.LoadingOverlay("hide");
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
+                $.LoadingOverlay("hide");
             }
         });
     }
     function CreateStudentData() {
+        $.LoadingOverlay("show");
         $.ajax({
             url: baseUrl + 'Home/GetStudentData',
             type: "POST",
@@ -170,6 +190,7 @@
                 //'RequestVerificationToken': token
             },
             success: function (response, textStatus, jqXHR) {
+                $.LoadingOverlay("hide");
                 if (jqXHR.status === 200) {
                     if (response.Status == "OK") {
                         Swal.fire({
@@ -191,6 +212,115 @@
                         })
                     }
                     else {
+                        $.LoadingOverlay("hide");
+                        Swal.fire({
+                            icon: 'error',
+                            title: '連線逾時',
+                            text: '請稍後再試',
+                        })
+                    }
+                }
+                else {
+                    $.LoadingOverlay("hide");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $.LoadingOverlay("hide");
+            }
+        });
+    }
+    function CreateAlumnusData() {
+        $.LoadingOverlay("show");
+        $.ajax({
+            url: baseUrl + 'Home/GetAlumnusData',
+            type: "POST",
+            async: true,
+            cache: false,
+            contentype: "application/json",
+            datatype: "json",
+            data: {
+            },
+            headers: {
+                //'RequestVerificationToken': token
+            },
+            success: function (response, textStatus, jqXHR) {
+                $.LoadingOverlay("hide");
+                if (jqXHR.status === 200) {
+                    if (response.Status == "OK") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功',
+                            text: '資料建立成功',
+                        })
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功',
+                            text: '資料建立成功',
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            //if (result.isConfirmed) {
+                            //    getData(1);
+                            //}
+                        })
+                    }
+                    else {
+                        $.LoadingOverlay("hide");
+                        Swal.fire({
+                            icon: 'error',
+                            title: '連線逾時',
+                            text: '請稍後再試',
+                        })
+                    }
+                }
+                else {
+                    $.LoadingOverlay("hide");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $.LoadingOverlay("hide");
+            }
+        });
+    }
+    function GenerateMailGroupFile() {
+        $.LoadingOverlay("show");
+        $.ajax({
+            url: baseUrl + 'Home/GenerateMailGroupFile',
+            type: "POST",
+            async: true,
+            cache: false,
+            contentype: "application/json",
+            datatype: "json",
+            data: {
+            },
+            headers: {
+                //'RequestVerificationToken': token
+            },
+            success: function (response, textStatus, jqXHR) {
+                $.LoadingOverlay("hide");
+                if (jqXHR.status === 200) {
+                    if (response.Status == "OK") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功',
+                            text: '資料建立成功',
+                        })
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功',
+                            text: '資料建立成功',
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            //if (result.isConfirmed) {
+                            //    getData(1);
+                            //}
+                        })
+                    }
+                    else {
+                        $.LoadingOverlay("hide");
                         Swal.fire({
                             icon: 'error',
                             title: '連線逾時',
@@ -202,10 +332,16 @@
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
+                $.LoadingOverlay("hide");
             }
         });
     }
-
+    function OpenUnicodeModal() {
+        $('#modal-xl').modal({
+            show: true,
+            backdrop: 'static'
+        });
+    }
 
 
     // 建立 Page list 的 page 選單

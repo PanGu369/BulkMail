@@ -5,69 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="mailModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="alumnusmember">
-          <Key>
-            <PropertyRef Name="sno1" />
-          </Key>
-          <Property Name="idno" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="sno1" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="sex" Type="nvarchar" MaxLength="5" Nullable="false" />
-          <Property Name="birthday" Type="nvarchar" MaxLength="30" Nullable="false" />
-          <Property Name="grp" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="unit" Type="nvarchar" MaxLength="100" />
-          <Property Name="subunit" Type="nvarchar" MaxLength="100" />
-          <Property Name="gtype" Type="nvarchar" MaxLength="20" />
-          <Property Name="addr" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="tel" Type="nvarchar" MaxLength="30" Nullable="false" />
-          <Property Name="sno2" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="educode" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="email" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="graduateyear" Type="nvarchar" MaxLength="10" Nullable="false" />
-          <Property Name="valid" Type="char" MaxLength="1" />
-          <Property Name="foreignermark" Type="varchar" MaxLength="5" />
-          <Property Name="china_mark" Type="varchar" MaxLength="5" />
-          <Property Name="AbroadMark" Type="varchar" MaxLength="5" />
-          <Property Name="reply" Type="varchar" MaxLength="5" />
-        </EntityType>
-        <!--產生期間發現錯誤:
-警告 6002: 資料表/檢視 'mail.dbo.alumnusmember_temp' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
-        <EntityType Name="alumnusmember_temp">
-          <Key>
-            <PropertyRef Name="idno" />
-            <PropertyRef Name="name" />
-            <PropertyRef Name="sno1" />
-            <PropertyRef Name="sex" />
-            <PropertyRef Name="birthday" />
-            <PropertyRef Name="grp" />
-            <PropertyRef Name="addr" />
-            <PropertyRef Name="tel" />
-            <PropertyRef Name="sno2" />
-            <PropertyRef Name="educode" />
-            <PropertyRef Name="email" />
-            <PropertyRef Name="graduateyear" />
-          </Key>
-          <Property Name="idno" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="sno1" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="sex" Type="nvarchar" MaxLength="5" Nullable="false" />
-          <Property Name="birthday" Type="nvarchar" MaxLength="30" Nullable="false" />
-          <Property Name="grp" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="unit" Type="nvarchar" MaxLength="100" />
-          <Property Name="subunit" Type="nvarchar" MaxLength="100" />
-          <Property Name="gtype" Type="nvarchar" MaxLength="20" />
-          <Property Name="addr" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="tel" Type="nvarchar" MaxLength="30" Nullable="false" />
-          <Property Name="sno2" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="educode" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="email" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="graduateyear" Type="nvarchar" MaxLength="10" Nullable="false" />
-          <Property Name="valid" Type="char" MaxLength="1" />
-          <Property Name="foreignermark" Type="varchar" MaxLength="5" />
-          <Property Name="china_mark" Type="varchar" MaxLength="5" />
-          <Property Name="AbroadMark" Type="varchar" MaxLength="5" />
-          <Property Name="reply" Type="varchar" MaxLength="5" />
-        </EntityType>
         <EntityType Name="educode">
           <Key>
             <PropertyRef Name="EduCode" />
@@ -162,76 +99,53 @@
           <Property Name="foreignermark" Type="varchar" MaxLength="2" />
           <Property Name="nation" Type="nvarchar" MaxLength="100" />
         </EntityType>
-        <!--產生期間發現錯誤:
-警告 6002: 資料表/檢視 'mail.dbo.AlumCollegePeriodDepartmentYear' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
-        <EntityType Name="AlumCollegePeriodDepartmentYear">
+        <EntityType Name="unitcode">
           <Key>
-            <PropertyRef Name="idno" />
-            <PropertyRef Name="name" />
-            <PropertyRef Name="sno1" />
-            <PropertyRef Name="educode" />
-            <PropertyRef Name="email" />
-            <PropertyRef Name="graduateyear" />
-            <PropertyRef Name="College" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Department" />
+            <PropertyRef Name="unitcode" />
           </Key>
-          <Property Name="mail" Type="nvarchar" MaxLength="59" />
-          <Property Name="filename" Type="nvarchar" MaxLength="59" />
-          <Property Name="idno" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="sno1" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="educode" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="email" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="graduateyear" Type="nvarchar" MaxLength="10" Nullable="false" />
-          <Property Name="CollegeCode" Type="nvarchar" MaxLength="1" />
-          <Property Name="College" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="PeriodCode" Type="nvarchar" MaxLength="2" />
-          <Property Name="Period" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="DepartmentCode" Type="nvarchar" MaxLength="2" />
-          <Property Name="Department" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="year" Type="nvarchar" MaxLength="3" />
-          <Property Name="foreignermark" Type="varchar" MaxLength="5" />
-          <Property Name="china_mark" Type="varchar" MaxLength="5" />
-          <Property Name="AbroadMark" Type="varchar" MaxLength="5" />
-          <Property Name="reply" Type="varchar" MaxLength="5" />
-        </EntityType>
-        <!--產生期間發現錯誤:
-警告 6002: 資料表/檢視 'mail.dbo.AlumnusGroupView' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
-        <EntityType Name="AlumnusGroupView">
-          <Key>
-            <PropertyRef Name="member" />
-            <PropertyRef Name="membername" />
-            <PropertyRef Name="membermail" />
-            <PropertyRef Name="memtype" />
-          </Key>
-          <Property Name="cname" Type="nvarchar" MaxLength="168" />
-          <Property Name="mail" Type="nvarchar" MaxLength="31" />
-          <Property Name="filename" Type="nvarchar" MaxLength="15" />
-          <Property Name="member" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="membername" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="membermail" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="memtype" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="unitcode" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="tunitcode" Type="varchar" MaxLength="20" />
+          <Property Name="unit" Type="nvarchar" MaxLength="40" />
         </EntityType>
         <EntityContainer Name="mailModelStoreContainer">
-          <EntitySet Name="alumnusmember" EntityType="Self.alumnusmember" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="educode" EntityType="Self.educode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="educode_temp" EntityType="Self.educode_temp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="staffmember" EntityType="Self.staffmember" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="staffmember_temp" EntityType="Self.staffmember_temp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="stumember" EntityType="Self.stumember" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="stumember_temp" EntityType="Self.stumember_temp" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="alumnusmember_temp" EntityType="Self.alumnusmember_temp" store:Type="Tables" Schema="dbo">
-          </EntitySet>
-          <EntitySet Name="AlumCollegePeriodDepartmentYear" EntityType="Self.AlumCollegePeriodDepartmentYear" store:Type="Views" Schema="dbo">
-          </EntitySet>
-          <EntitySet Name="AlumnusGroupView" EntityType="Self.AlumnusGroupView" store:Type="Views" Schema="dbo">
-          </EntitySet>
+          <EntitySet Name="unitcode" EntityType="Self.unitcode" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="mailModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="educode">
+          <Key>
+            <PropertyRef Name="EduCode1" />
+          </Key>
+          <Property Name="EduCode1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="College1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Period2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sPeriod2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Department2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Grade1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Class1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Team2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="educode_temp">
+          <Key>
+            <PropertyRef Name="EduCode" />
+          </Key>
+          <Property Name="EduCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="College1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Period2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sPeriod2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Department2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Grade1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Class1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Team2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
         <EntityType Name="staffmember">
           <Key>
             <PropertyRef Name="id" />
@@ -264,51 +178,13 @@
           <Property Name="title" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
           <Property Name="kind" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityContainer Name="mailEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="staffmember" EntityType="Self.staffmember" />
-          <EntitySet Name="staffmember_temp" EntityType="Self.staffmember_temp" />
-          <EntitySet Name="educode" EntityType="mailModel.educode" />
-          <EntitySet Name="educode_temp" EntityType="mailModel.educode_temp" />
-          <EntitySet Name="stumember" EntityType="mailModel.stumember" />
-          <EntitySet Name="stumember_temp" EntityType="mailModel.stumember_temp" />
-          <EntitySet Name="alumnusmember" EntityType="mailModel.alumnusmember" />
-          <EntitySet Name="alumnusmember_temp" EntityType="mailModel.alumnusmember_temp" />
-          <EntitySet Name="AlumnusGroupView" EntityType="mailModel.AlumnusGroupView" />
-          <EntitySet Name="AlumCollegePeriodDepartmentYear" EntityType="mailModel.AlumCollegePeriodDepartmentYear" />
-        </EntityContainer>
-        <EntityType Name="educode">
-          <Key>
-            <PropertyRef Name="EduCode1" />
-          </Key>
-          <Property Name="EduCode1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="College1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Period2" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="sPeriod2" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Department2" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Grade1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Class1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Team2" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="educode_temp">
-          <Key>
-            <PropertyRef Name="EduCode" />
-          </Key>
-          <Property Name="EduCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="College1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Period2" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="sPeriod2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Department2" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Grade1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Class1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Team2" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="stumember">
           <Key>
             <PropertyRef Name="sno1" />
           </Key>
           <Property Name="idno" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="sno1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sno1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="sex" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="birthday" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="grp" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -326,7 +202,7 @@
           </Key>
           <Property Name="idno" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="sno1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sno1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="sex" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="birthday" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="grp" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -338,113 +214,22 @@
           <Property Name="foreignermark" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
           <Property Name="nation" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="alumnusmember">
+        <EntityContainer Name="mailEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="educode" EntityType="Self.educode" />
+          <EntitySet Name="educode_temp" EntityType="Self.educode_temp" />
+          <EntitySet Name="staffmember" EntityType="Self.staffmember" />
+          <EntitySet Name="staffmember_temp" EntityType="Self.staffmember_temp" />
+          <EntitySet Name="stumember" EntityType="Self.stumember" />
+          <EntitySet Name="stumember_temp" EntityType="Self.stumember_temp" />
+          <EntitySet Name="unitcode" EntityType="mailModel.unitcode" />
+        </EntityContainer>
+        <EntityType Name="unitcode">
           <Key>
-            <PropertyRef Name="sno1" />
+            <PropertyRef Name="unitcode1" />
           </Key>
-          <Property Name="idno" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="sno1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="sex" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="birthday" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="grp" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="unit" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="subunit" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="gtype" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="addr" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="tel" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="sno2" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="educode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="email" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="graduateyear" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="valid" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="foreignermark" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="china_mark" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="AbroadMark" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="reply" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="alumnusmember_temp">
-          <Key>
-            <PropertyRef Name="idno" />
-            <PropertyRef Name="name" />
-            <PropertyRef Name="sno1" />
-            <PropertyRef Name="sex" />
-            <PropertyRef Name="birthday" />
-            <PropertyRef Name="grp" />
-            <PropertyRef Name="addr" />
-            <PropertyRef Name="tel" />
-            <PropertyRef Name="sno2" />
-            <PropertyRef Name="educode" />
-            <PropertyRef Name="email" />
-            <PropertyRef Name="graduateyear" />
-          </Key>
-          <Property Name="idno" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="sno1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="sex" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="birthday" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="grp" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="unit" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="subunit" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="gtype" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="addr" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="tel" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="sno2" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="educode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="email" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="graduateyear" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="valid" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="foreignermark" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="china_mark" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="AbroadMark" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="reply" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="AlumnusGroupView">
-          <Key>
-            <PropertyRef Name="member" />
-            <PropertyRef Name="membername" />
-            <PropertyRef Name="membermail" />
-            <PropertyRef Name="memtype" />
-          </Key>
-          <Property Name="cname" Type="String" MaxLength="168" FixedLength="false" Unicode="true" />
-          <Property Name="mail" Type="String" MaxLength="31" FixedLength="false" Unicode="true" />
-          <Property Name="filename" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="member" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="membername" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="membermail" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="memtype" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="AlumCollegePeriodDepartmentYear">
-          <Key>
-            <PropertyRef Name="idno" />
-            <PropertyRef Name="name" />
-            <PropertyRef Name="sno1" />
-            <PropertyRef Name="educode" />
-            <PropertyRef Name="email" />
-            <PropertyRef Name="graduateyear" />
-            <PropertyRef Name="College" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Department" />
-          </Key>
-          <Property Name="mail" Type="String" MaxLength="59" FixedLength="false" Unicode="true" />
-          <Property Name="filename" Type="String" MaxLength="59" FixedLength="false" Unicode="true" />
-          <Property Name="idno" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="sno1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="educode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="email" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="graduateyear" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="CollegeCode" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-          <Property Name="College" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PeriodCode" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-          <Property Name="Period" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DepartmentCode" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-          <Property Name="Department" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="year" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="foreignermark" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="china_mark" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="AbroadMark" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="reply" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="unitcode1" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="tunitcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="unit" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -452,6 +237,34 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="mailModelStoreContainer" CdmEntityContainer="mailEntities">
+          <EntitySetMapping Name="educode">
+            <EntityTypeMapping TypeName="mailModel.educode">
+              <MappingFragment StoreEntitySet="educode">
+                <ScalarProperty Name="EduCode1" ColumnName="EduCode" />
+                <ScalarProperty Name="College1" ColumnName="College1" />
+                <ScalarProperty Name="Period2" ColumnName="Period2" />
+                <ScalarProperty Name="sPeriod2" ColumnName="sPeriod2" />
+                <ScalarProperty Name="Department2" ColumnName="Department2" />
+                <ScalarProperty Name="Grade1" ColumnName="Grade1" />
+                <ScalarProperty Name="Class1" ColumnName="Class1" />
+                <ScalarProperty Name="Team2" ColumnName="Team2" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="educode_temp">
+            <EntityTypeMapping TypeName="mailModel.educode_temp">
+              <MappingFragment StoreEntitySet="educode_temp">
+                <ScalarProperty Name="EduCode" ColumnName="EduCode" />
+                <ScalarProperty Name="College1" ColumnName="College1" />
+                <ScalarProperty Name="Period2" ColumnName="Period2" />
+                <ScalarProperty Name="sPeriod2" ColumnName="sPeriod2" />
+                <ScalarProperty Name="Department2" ColumnName="Department2" />
+                <ScalarProperty Name="Grade1" ColumnName="Grade1" />
+                <ScalarProperty Name="Class1" ColumnName="Class1" />
+                <ScalarProperty Name="Team2" ColumnName="Team2" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="staffmember">
             <EntityTypeMapping TypeName="mailModel.staffmember">
               <MappingFragment StoreEntitySet="staffmember">
@@ -486,159 +299,50 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="educode">
-            <EntityTypeMapping TypeName="mailModel.educode">
-              <MappingFragment StoreEntitySet="educode">
-                <ScalarProperty Name="Team2" ColumnName="Team2" />
-                <ScalarProperty Name="Class1" ColumnName="Class1" />
-                <ScalarProperty Name="Grade1" ColumnName="Grade1" />
-                <ScalarProperty Name="Department2" ColumnName="Department2" />
-                <ScalarProperty Name="sPeriod2" ColumnName="sPeriod2" />
-                <ScalarProperty Name="Period2" ColumnName="Period2" />
-                <ScalarProperty Name="College1" ColumnName="College1" />
-                <ScalarProperty Name="EduCode1" ColumnName="EduCode" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="educode_temp">
-            <EntityTypeMapping TypeName="mailModel.educode_temp">
-              <MappingFragment StoreEntitySet="educode_temp">
-                <ScalarProperty Name="Team2" ColumnName="Team2" />
-                <ScalarProperty Name="Class1" ColumnName="Class1" />
-                <ScalarProperty Name="Grade1" ColumnName="Grade1" />
-                <ScalarProperty Name="Department2" ColumnName="Department2" />
-                <ScalarProperty Name="sPeriod2" ColumnName="sPeriod2" />
-                <ScalarProperty Name="Period2" ColumnName="Period2" />
-                <ScalarProperty Name="College1" ColumnName="College1" />
-                <ScalarProperty Name="EduCode" ColumnName="EduCode" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="stumember">
             <EntityTypeMapping TypeName="mailModel.stumember">
               <MappingFragment StoreEntitySet="stumember">
-                <ScalarProperty Name="nation" ColumnName="nation" />
-                <ScalarProperty Name="foreignermark" ColumnName="foreignermark" />
-                <ScalarProperty Name="ext" ColumnName="ext" />
-                <ScalarProperty Name="educode" ColumnName="educode" />
-                <ScalarProperty Name="sno2" ColumnName="sno2" />
-                <ScalarProperty Name="tel" ColumnName="tel" />
-                <ScalarProperty Name="addr" ColumnName="addr" />
-                <ScalarProperty Name="grp" ColumnName="grp" />
-                <ScalarProperty Name="birthday" ColumnName="birthday" />
-                <ScalarProperty Name="sex" ColumnName="sex" />
-                <ScalarProperty Name="sno1" ColumnName="sno1" />
-                <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="idno" ColumnName="idno" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="sno1" ColumnName="sno1" />
+                <ScalarProperty Name="sex" ColumnName="sex" />
+                <ScalarProperty Name="birthday" ColumnName="birthday" />
+                <ScalarProperty Name="grp" ColumnName="grp" />
+                <ScalarProperty Name="addr" ColumnName="addr" />
+                <ScalarProperty Name="tel" ColumnName="tel" />
+                <ScalarProperty Name="sno2" ColumnName="sno2" />
+                <ScalarProperty Name="educode" ColumnName="educode" />
+                <ScalarProperty Name="ext" ColumnName="ext" />
+                <ScalarProperty Name="foreignermark" ColumnName="foreignermark" />
+                <ScalarProperty Name="nation" ColumnName="nation" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="stumember_temp">
             <EntityTypeMapping TypeName="mailModel.stumember_temp">
               <MappingFragment StoreEntitySet="stumember_temp">
-                <ScalarProperty Name="nation" ColumnName="nation" />
-                <ScalarProperty Name="foreignermark" ColumnName="foreignermark" />
+                <ScalarProperty Name="idno" ColumnName="idno" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="sno1" ColumnName="sno1" />
+                <ScalarProperty Name="sex" ColumnName="sex" />
+                <ScalarProperty Name="birthday" ColumnName="birthday" />
+                <ScalarProperty Name="grp" ColumnName="grp" />
+                <ScalarProperty Name="addr" ColumnName="addr" />
+                <ScalarProperty Name="tel" ColumnName="tel" />
+                <ScalarProperty Name="sno2" ColumnName="sno2" />
+                <ScalarProperty Name="educode" ColumnName="educode" />
                 <ScalarProperty Name="ext" ColumnName="ext" />
-                <ScalarProperty Name="educode" ColumnName="educode" />
-                <ScalarProperty Name="sno2" ColumnName="sno2" />
-                <ScalarProperty Name="tel" ColumnName="tel" />
-                <ScalarProperty Name="addr" ColumnName="addr" />
-                <ScalarProperty Name="grp" ColumnName="grp" />
-                <ScalarProperty Name="birthday" ColumnName="birthday" />
-                <ScalarProperty Name="sex" ColumnName="sex" />
-                <ScalarProperty Name="sno1" ColumnName="sno1" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="idno" ColumnName="idno" />
+                <ScalarProperty Name="foreignermark" ColumnName="foreignermark" />
+                <ScalarProperty Name="nation" ColumnName="nation" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="alumnusmember">
-            <EntityTypeMapping TypeName="mailModel.alumnusmember">
-              <MappingFragment StoreEntitySet="alumnusmember">
-                <ScalarProperty Name="reply" ColumnName="reply" />
-                <ScalarProperty Name="AbroadMark" ColumnName="AbroadMark" />
-                <ScalarProperty Name="china_mark" ColumnName="china_mark" />
-                <ScalarProperty Name="foreignermark" ColumnName="foreignermark" />
-                <ScalarProperty Name="valid" ColumnName="valid" />
-                <ScalarProperty Name="graduateyear" ColumnName="graduateyear" />
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="educode" ColumnName="educode" />
-                <ScalarProperty Name="sno2" ColumnName="sno2" />
-                <ScalarProperty Name="tel" ColumnName="tel" />
-                <ScalarProperty Name="addr" ColumnName="addr" />
-                <ScalarProperty Name="gtype" ColumnName="gtype" />
-                <ScalarProperty Name="subunit" ColumnName="subunit" />
+          <EntitySetMapping Name="unitcode">
+            <EntityTypeMapping TypeName="mailModel.unitcode">
+              <MappingFragment StoreEntitySet="unitcode">
                 <ScalarProperty Name="unit" ColumnName="unit" />
-                <ScalarProperty Name="grp" ColumnName="grp" />
-                <ScalarProperty Name="birthday" ColumnName="birthday" />
-                <ScalarProperty Name="sex" ColumnName="sex" />
-                <ScalarProperty Name="sno1" ColumnName="sno1" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="idno" ColumnName="idno" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="alumnusmember_temp">
-            <EntityTypeMapping TypeName="mailModel.alumnusmember_temp">
-              <MappingFragment StoreEntitySet="alumnusmember_temp">
-                <ScalarProperty Name="reply" ColumnName="reply" />
-                <ScalarProperty Name="AbroadMark" ColumnName="AbroadMark" />
-                <ScalarProperty Name="china_mark" ColumnName="china_mark" />
-                <ScalarProperty Name="foreignermark" ColumnName="foreignermark" />
-                <ScalarProperty Name="valid" ColumnName="valid" />
-                <ScalarProperty Name="graduateyear" ColumnName="graduateyear" />
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="educode" ColumnName="educode" />
-                <ScalarProperty Name="sno2" ColumnName="sno2" />
-                <ScalarProperty Name="tel" ColumnName="tel" />
-                <ScalarProperty Name="addr" ColumnName="addr" />
-                <ScalarProperty Name="gtype" ColumnName="gtype" />
-                <ScalarProperty Name="subunit" ColumnName="subunit" />
-                <ScalarProperty Name="unit" ColumnName="unit" />
-                <ScalarProperty Name="grp" ColumnName="grp" />
-                <ScalarProperty Name="birthday" ColumnName="birthday" />
-                <ScalarProperty Name="sex" ColumnName="sex" />
-                <ScalarProperty Name="sno1" ColumnName="sno1" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="idno" ColumnName="idno" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AlumnusGroupView">
-            <EntityTypeMapping TypeName="mailModel.AlumnusGroupView">
-              <MappingFragment StoreEntitySet="AlumnusGroupView">
-                <ScalarProperty Name="memtype" ColumnName="memtype" />
-                <ScalarProperty Name="membermail" ColumnName="membermail" />
-                <ScalarProperty Name="membername" ColumnName="membername" />
-                <ScalarProperty Name="member" ColumnName="member" />
-                <ScalarProperty Name="filename" ColumnName="filename" />
-                <ScalarProperty Name="mail" ColumnName="mail" />
-                <ScalarProperty Name="cname" ColumnName="cname" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AlumCollegePeriodDepartmentYear">
-            <EntityTypeMapping TypeName="mailModel.AlumCollegePeriodDepartmentYear">
-              <MappingFragment StoreEntitySet="AlumCollegePeriodDepartmentYear">
-                <ScalarProperty Name="reply" ColumnName="reply" />
-                <ScalarProperty Name="AbroadMark" ColumnName="AbroadMark" />
-                <ScalarProperty Name="china_mark" ColumnName="china_mark" />
-                <ScalarProperty Name="foreignermark" ColumnName="foreignermark" />
-                <ScalarProperty Name="year" ColumnName="year" />
-                <ScalarProperty Name="Department" ColumnName="Department" />
-                <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="PeriodCode" ColumnName="PeriodCode" />
-                <ScalarProperty Name="College" ColumnName="College" />
-                <ScalarProperty Name="CollegeCode" ColumnName="CollegeCode" />
-                <ScalarProperty Name="graduateyear" ColumnName="graduateyear" />
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="educode" ColumnName="educode" />
-                <ScalarProperty Name="sno1" ColumnName="sno1" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="idno" ColumnName="idno" />
-                <ScalarProperty Name="filename" ColumnName="filename" />
-                <ScalarProperty Name="mail" ColumnName="mail" />
+                <ScalarProperty Name="tunitcode" ColumnName="tunitcode" />
+                <ScalarProperty Name="unitcode1" ColumnName="unitcode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

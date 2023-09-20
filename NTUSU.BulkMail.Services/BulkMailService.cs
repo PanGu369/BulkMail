@@ -20,6 +20,8 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web.Services.Description;
 using System.Runtime.Remoting.Contexts;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 
 namespace NTUST.BulkMail.Services
 {
@@ -32,10 +34,7 @@ namespace NTUST.BulkMail.Services
         private readonly IEduCodeTempRepository _eduCodeTempRepository;
         private readonly IStuMemberRepository _stuMemberRepository;
         private readonly IStuMemberTempRepository _stuMemberTempRepository;
-        private readonly IAlumnusmemberRepository _alumnusmemberRepository;
-        private readonly IAlumnusmemberTempRepository _alumnusmemberTempRepository;
-        private readonly IAlumCollegePeriodDepartmentYearRepository _alumCollegePeriodYearRepository;
-        private readonly IAlumnusGroupViewRepository _alumnusGroupViewRepository;
+        private readonly IUnitcodeRepository _unitcodeRepository;
         public BulkMailService(IUnitOfWork unitOfWork,
             IStaffmemberRepository staffmemberRepository,
             IStaffmemberTempRepository staffmemberTempRepository,
@@ -43,10 +42,7 @@ namespace NTUST.BulkMail.Services
             IEduCodeTempRepository eduCodeTempRepository,
             IStuMemberRepository stuMemberRepository,
             IStuMemberTempRepository stuMemberTempRepository,
-            IAlumnusmemberRepository alumnusmemberRepository,
-            IAlumnusmemberTempRepository alumnusmemberTempRepository,
-            IAlumCollegePeriodDepartmentYearRepository alumCollegePeriodYearRepository,
-            IAlumnusGroupViewRepository alumnusGroupViewRepository)
+            IUnitcodeRepository unitcodeRepository)
         {
             _unitOfWork = unitOfWork;
             _staffmemberRepository = staffmemberRepository;
@@ -55,10 +51,7 @@ namespace NTUST.BulkMail.Services
             _eduCodeTempRepository = eduCodeTempRepository;
             _stuMemberRepository = stuMemberRepository;
             _stuMemberTempRepository = stuMemberTempRepository;
-            _alumnusmemberRepository = alumnusmemberRepository;
-            _alumnusmemberTempRepository = alumnusmemberTempRepository;
-            _alumCollegePeriodYearRepository = alumCollegePeriodYearRepository;
-            _alumnusGroupViewRepository = alumnusGroupViewRepository;
+            _unitcodeRepository = unitcodeRepository;
         }
 
         public void CreateEduCode()
@@ -240,9 +233,6 @@ namespace NTUST.BulkMail.Services
         public void CreateAlumnusData()
         {
             NtustStudent.StuData stuData = new NtustStudent.StuData();
-            alumnusmember alumnusmember = new alumnusmember();
-            alumnusmember_temp alumnusmember_Temp = new alumnusmember_temp();
-            var batchSize = 1000;
             try
             {
                 var stuWebserviceSource = stuData.studata_Graduate().GetXml();
@@ -252,69 +242,56 @@ namespace NTUST.BulkMail.Services
                 {
                     datas = (NewDataSet)serializer.Deserialize(data);
                 }
-                DeleteAlumnusData();
-                foreach (var item in datas.GradStudent)
-                {
-                    string[] grpary = item.group.Split('/')[1].Split(' ');
-                    string unit;
-                    string subunit;
-                    string gtype;
-                    if (grpary.Length >= 3)
-                    {
-                        unit = grpary[0];
-                        subunit = grpary[1];
-                        gtype = grpary[2];
-                    }
-                    else
-                    {
-                        unit = "";
-                        subunit = "";
-                        gtype = "";
-                    }
-                    alumnusmember_Temp.idno = item.idno.Trim();
-                    alumnusmember_Temp.name = item.name.Trim();
-                    alumnusmember_Temp.sno1 = item.stuNo1.Trim();
-                    alumnusmember_Temp.sex = item.sex.Trim();
-                    alumnusmember_Temp.birthday = item.bdate.Trim();
-                    alumnusmember_Temp.grp = item.group.Trim();
-                    alumnusmember_Temp.unit = unit;
-                    alumnusmember_Temp.subunit = subunit;
-                    alumnusmember_Temp.gtype = gtype;
-                    alumnusmember_Temp.addr = item.addr.Trim();
-                    alumnusmember_Temp.tel = item.tel.Trim();
-                    alumnusmember_Temp.sno2 = item.stuNo2.Trim();
-                    alumnusmember_Temp.educode = item.educode.Trim();
-                    alumnusmember_Temp.email = item.email1.Trim();
-                    alumnusmember_Temp.graduateyear = item.graduationYear.Trim();
-                    alumnusmember_Temp.valid = CheckEmail(item.email1.Trim());
-                    alumnusmember_Temp.foreignermark = item.foreignermark.Trim();
-                    alumnusmember_Temp.china_mark = item.chinaMark.Trim();
-                    alumnusmember_Temp.AbroadMark = item.abroadMark.Trim();
-                    alumnusmember_Temp.reply = item.replay.Trim();
-                    _alumnusmemberTempRepository.Add(alumnusmember_Temp);
 
-                    alumnusmember.idno = item.idno.Trim();
-                    alumnusmember.name = item.name.Trim();
-                    alumnusmember.sno1 = item.stuNo1.Trim();
-                    alumnusmember.sex = item.sex.Trim();
-                    alumnusmember.birthday = item.bdate.Trim();
-                    alumnusmember.grp = item.group.Trim();
-                    alumnusmember.unit = unit;
-                    alumnusmember.subunit = subunit;
-                    alumnusmember.gtype = gtype;
-                    alumnusmember.addr = item.addr.Trim();
-                    alumnusmember.tel = item.tel.Trim();
-                    alumnusmember.sno2 = item.stuNo2.Trim();
-                    alumnusmember.educode = item.educode.Trim();
-                    alumnusmember.email = item.email1.Trim();
-                    alumnusmember.graduateyear = item.graduationYear.Trim();
-                    alumnusmember.valid = CheckEmail(item.email1.Trim());
-                    alumnusmember.foreignermark = item.foreignermark.Trim();
-                    alumnusmember.china_mark = item.chinaMark.Trim();
-                    alumnusmember.AbroadMark = item.abroadMark.Trim();
-                    alumnusmember.reply = item.replay.Trim();
-                    _alumnusmemberRepository.Add(alumnusmember);
-                    Save();
+                string insert = "insert into alumnusmember_temp(idno,name,sno1,sex,birthday,grp,unit,subunit,gtype,addr,tel,sno2,educode,email,graduateyear,valid,foreignermark,china_mark,AbroadMark,reply) " +
+                    "values({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19})";
+                using (var dbContext = new mailEntities())
+                {
+                    dbContext.Database.ExecuteSqlCommand("delete alumnusmember_temp", Array.Empty<object>());
+                    foreach (var item in datas.GradStudent)
+                    {
+                        string[] grpary = item.group.Split('/')[1].Split(' ');
+                        string unit;
+                        string subunit;
+                        string gtype;
+                        if (grpary.Length >= 3)
+                        {
+                            unit = grpary[0];
+                            subunit = grpary[1];
+                            gtype = grpary[2];
+                        }
+                        else
+                        {
+                            unit = "";
+                            subunit = "";
+                            gtype = "";
+                        }
+                        dbContext.Database.ExecuteSqlCommand(insert, new object[]
+                        {
+                            item.idno.Trim(),
+                            item.name.Trim(),
+                            item.stuNo1.Trim(),
+                            item.sex.Trim(),
+                            item.bdate.Trim(),
+                            item.group.Trim(),
+                            unit,
+                            subunit,
+                            gtype,
+                            item.addr.Trim(),
+                            item.tel.Trim(),
+                            item.stuNo2.Trim(),
+                            item.educode.Trim(),
+                            item.email1.Trim(),
+                            item.graduationYear.Trim(),
+                            CheckEmail(item.email1.Trim()),
+                            item.foreignermark.Trim(),
+                            item.chinaMark.Trim(),
+                            item.abroadMark.Trim(),
+                            item.replay.Trim(),
+                        });
+                    }
+                    dbContext.Database.ExecuteSqlCommand("delete alumnusmember;" +
+                        "insert into alumnusmember select * from alumnusmember_temp where sno1 not in (select sno1 from alumnusmember_temp group by sno1 having count(*)>1)");
                 }
             }
             catch (Exception ex)
@@ -324,37 +301,66 @@ namespace NTUST.BulkMail.Services
         }
         public void GenerateDataFromRawData()
         {
+            try
+            {
+                using (var dbContext = new mailEntities())
+                {
+                    dbContext.Database.ExecuteSqlCommand("update staffmember set email='jyen@mail.ntust.edu.tw'  where name='顏家鈺'");
+                    dbContext.Database.ExecuteSqlCommand("delete mailgroup; " +
+                        "insert into mailgroup(name,mail,groupmail) select distinct cname as name,SUBSTRING(mail,1,LEN(mail)-15)+'mail.ntust.edu.tw' as mail,mail as groupmail from groupmailviewnews");
+                    dbContext.Database.ExecuteSqlCommand("delete groupmailviewnewdata;insert into groupmailviewnewdata select * from groupmailviewnew");
+                    dbContext.Database.ExecuteSqlCommand("delete groupmailviewnewdatadistinct;insert into groupmailviewnewdatadistinct(cname,mail) select distinct cname,mail from groupmailviewnewdata");
+                    dbContext.Database.ExecuteSqlCommand("delete GroupMailViewNewDropdownlistData;insert into GroupMailViewNewDropdownlistData select * from dbo.groupmailviewnewdropdownlist1");
+                    string sendDailyMail = "truncate table groupmailviewnewsDailyMail;insert into groupmailviewnewsDailyMail select * from groupmailviewnews";
+                    dbContext.Database.ExecuteSqlCommand(sendDailyMail);
+                }
+            }
+            catch(Exception ex)
+            {
 
+            }
         }
         public void GenerateMailGroupFile()
         {
-            var data = _alumCollegePeriodYearRepository.GetAll();
-            string lastfilename = "";
-            StreamWriter sw = null;
-            if (Directory.Exists("D:\\getMailFile\\data\\"))
+            try
             {
-                Directory.Delete("D:\\getMailFile\\data\\", true);
-            }
-            Directory.CreateDirectory("D:\\getMailFile\\data\\");
-            foreach (var item in data)
-            {
-                if (item.filename.ToString() != lastfilename)
+                string lastfilename = "";
+                StreamWriter sw = null;
+                if (Directory.Exists("D:\\getMailFile\\data\\"))
                 {
-                    if (sw != null)
-                    {
-                        sw.Close();
-                    }
-                    sw = new StreamWriter("D:\\getMailFile\\data\\" + item.filename.ToString(), false, Encoding.GetEncoding("big5"));
-                    lastfilename = item.filename.ToString();
-                    string mail = item.mail.ToString().Split(new char[]
-                    {
-                        '@'
-                    })[0] + "@mail.ntust.edu.tw";
-                    sw.Write(mail + "\n");
+                    Directory.Delete("D:\\getMailFile\\data\\", true);
                 }
-                sw.Write(item.email.ToString().Trim() + "\n");
+                Directory.CreateDirectory("D:\\getMailFile\\data\\");
+                using (var dbContext = new mailEntities())
+                {
+                    DbRawSqlQuery<GroupFile> dbRawSqlQuery = dbContext.Database.SqlQuery<GroupFile>("select distinct mail,filename,member from groupmailviewnews order by filename");
+                    foreach (var row in dbRawSqlQuery)
+                    {
+                        if (row.filename.ToString() != lastfilename)
+                        {
+                            if (sw != null)
+                            {
+                                sw.Close();
+                            }
+                            sw = new StreamWriter("D:\\getMailFile\\data\\" + row.filename.ToString(), false, Encoding.GetEncoding("big5"));
+                            lastfilename = row.filename.ToString();
+                            string mail = row.mail.ToString().Split(new char[]
+                            {
+                        '@'
+                            })[0] + "@mail.ntust.edu.tw";
+                            sw.Write(mail + "\n");
+                            Console.WriteLine(mail);
+                        }
+                        sw.Write(row.member.ToString().Trim() + "\n");
+                        Console.WriteLine(row.member.ToString());
+                    }
+                    sw.Close();
+                }
             }
-            sw.Close();
+            catch (Exception ex)
+            {
+
+            }
         }
         public void DeleteEduCode()
         {
@@ -371,11 +377,6 @@ namespace NTUST.BulkMail.Services
             _stuMemberRepository.ExecuteSqlCommand("TRUNCATE TABLE stumember");
             _stuMemberTempRepository.ExecuteSqlCommand("TRUNCATE TABLE stumember_temp");
         }
-        public void DeleteAlumnusData()
-        {
-            _alumnusmemberRepository.ExecuteSqlCommand("TRUNCATE TABLE alumnusmember");
-            _alumnusmemberTempRepository.ExecuteSqlCommand("TRUNCATE TABLE alumnusmember_temp");
-        }
         public IEnumerable<member> GetStaffMemberData()
         {
             var query = _staffmemberRepository.GetAll();
@@ -387,6 +388,11 @@ namespace NTUST.BulkMail.Services
                 unitcode = x.unitcode,
             });
             return result.OrderBy(x => x.unitcode);
+        }
+        public IEnumerable<unitcode> GetUnitcodesData() 
+        { 
+            var query = _unitcodeRepository.GetAll();
+            return query;
         }
         public void Save()
         {
