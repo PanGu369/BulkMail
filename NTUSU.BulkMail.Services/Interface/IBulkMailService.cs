@@ -17,11 +17,14 @@ namespace NTUST.BulkMail.Services.Interface
         void CreateAlumnusData();
         void GenerateDataFromRawData();
         void GenerateMailGroupFile();
+        void GenerateAliasesFile();
         void DeleteEduCode();
         void DeleteStaffMember();
         void DeleteStudentData();
         IEnumerable<member> GetStaffMemberData();
-        IEnumerable<unitcode> GetUnitcodesData();
+        IEnumerable<unitcode> GetUnitcodesDataList();
+        unitcode GetUnitcodesData(string tunitcode, string unitcode);
+        void UpdateUnicodeData(UnicodeViewModal unitcode);
         void Save();
     }
 }

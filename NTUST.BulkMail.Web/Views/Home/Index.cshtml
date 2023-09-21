@@ -69,11 +69,22 @@
                 <div class="col-md-6">
                     <div class="card card-primary">
                         <div class="card-header">
+                            <h3 class="card-title">GenerateAliasesFile</h3>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-primary" v-on:click="GenerateAliasesFile()">GenerateAliasesFile</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card card-primary">
+                        <div class="card-header">
                             <h3 class="card-title">Unicode</h3>
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-                            <button type="button" class="btn btn-primary" v-on:click="OpenUnicodeModal()">新增Unicode</button>
+                            <button type="button" class="btn btn-primary" v-on:click="OpenUnicodeModal()">新增修改Unicode</button>
                         </div>
                     </div>
                 </div>
@@ -87,11 +98,68 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <table></table>
+                                <table id="unicode" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">序號</th>
+                                            <th scope="col">tunitcode</th>
+                                            <th scope="col">單位</th>
+                                            <th scope="col">unitcode</th>
+                                            <th scope="col">功能</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(item,i) in unicodePageList.ItemList">
+                                            <th scope="row">{{ i + unicodePageList.FirstItemOnPage }}</th>
+                                            <td>{{item.tunitcode}}</td>
+                                            <td>{{item.unit}}</td>
+                                            <td>{{item.unitcode1}}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-warning" v-on:click="editUnicode(item.tunitcode, item.unitcode1)">編輯</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                             <div class="modal-footer justify-content-between">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
                                 <button type="button" class="btn btn-primary">儲存</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+                <div class="modal fade" id="editModal">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Unicode</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">tunitcode</label>
+                                        <input type="text" class="form-control" id="exampleInputEmail1" placeholder="tunitcode" maxlength="4" v-model="unicodeData.tunitcode">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">單位</label>
+                                        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="單位" v-model="unicodeData.unit">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">unitcode</label>
+                                        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="unitcode" maxlength="4" v-model="unicodeData.unitcode1">
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+                                <button type="button" class="btn btn-primary" v-on:click="updateUnicodeData()">儲存</button>
                             </div>
                         </div>
                         <!-- /.modal-content -->

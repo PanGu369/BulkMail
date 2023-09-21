@@ -271,6 +271,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\AdminLTE\adminlte.css" />
+    <Content Include="Content\AdminLTE\summernote.css" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -2210,6 +2211,7 @@
     <Content Include="Scripts\AdminLTE\plugins\uplot\uPlot.iife.min.js" />
     <Content Include="Scripts\AdminLTE\plugins\uplot\uPlot.iife.swc.min.js" />
     <Content Include="Scripts\AdminLTE\plugins\uplot\uPlot.min.css" />
+    <Content Include="Scripts\AdminLTE\summernote.js" />
     <Content Include="Scripts\App\Area\BulkMail\bulimail.js" />
     <Content Include="Scripts\App\Area\Login\login.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />

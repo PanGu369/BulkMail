@@ -362,6 +362,35 @@ namespace NTUST.BulkMail.Services
 
             }
         }
+        public void GenerateAliasesFile()
+        {
+            try
+            {
+                string lastfilename = "";
+                File.Copy("D:\\getMailFile\\template\\aliasestemplate", "D:\\getMailFile\\template\\aliases", true);
+                StreamWriter sw = new StreamWriter("D:\\getMailFile\\template\\aliases", true, Encoding.GetEncoding("big5"));
+                using (var dbContext = new mailEntities())
+                {
+                    DbRawSqlQuery<GroupFile> dbRawSqlQuery = dbContext.Database.SqlQuery<GroupFile>("select distinct mail,filename from groupmailviewnews order by mail");
+                    foreach (var row in dbRawSqlQuery)
+                    {
+                        if (!(row.mail == "stud-b0xx-x@ns.ntust.edu.tw") && !(row.mail == "stud-a0xx-x@ns.ntust.edu.tw") && !(row.mail == "stud-p0xx-x@ns.ntust.edu.tw"))
+                        {
+                            string data = string.Format("{0}:    :include:/etc/mail-list/{1}\n", row.mail.Split(new char[]
+                            {
+                        '@'
+                            })[0], row.filename);
+                            sw.Write(data);
+                        }
+                    }
+                    sw.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
         public void DeleteEduCode()
         {
             _eduCodeRepository.ExecuteSqlCommand("TRUNCATE TABLE educode");
@@ -389,10 +418,25 @@ namespace NTUST.BulkMail.Services
             });
             return result.OrderBy(x => x.unitcode);
         }
-        public IEnumerable<unitcode> GetUnitcodesData() 
+        public IEnumerable<unitcode> GetUnitcodesDataList() 
         { 
             var query = _unitcodeRepository.GetAll();
+            return query.OrderBy(x => x.unitcode1);
+        }
+        public unitcode GetUnitcodesData(string tunitcode, string unitcode)
+        {
+            var query = _unitcodeRepository.Get(x => x.tunitcode == tunitcode && x.unitcode1 == unitcode);
             return query;
+        }
+
+        public void UpdateUnicodeData(UnicodeViewModal unitcode)
+        {
+            var query = _unitcodeRepository.Get(x => x.tunitcode == unitcode.tunitcode && x.unitcode1 == unitcode.unitcode1);
+            query.tunitcode = unitcode.tunitcode;
+            query.unit = unitcode.unit;
+            query.unitcode1 = unitcode.unitcode1;
+            _unitcodeRepository.Update(query);
+            Save();
         }
         public void Save()
         {

@@ -60,6 +60,7 @@
     <Compile Include="NewDataSet.cs" />
     <Compile Include="PageList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnicodeViewModal.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

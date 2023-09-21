@@ -29,6 +29,7 @@ using NLog.LayoutRenderers.Wrappers;
 using Google.Apis.Auth;
 using System.Threading.Tasks;
 using NTUST.BulkMail.Web.ActionFilter;
+using NTUST.BulkMail.EntityFramework;
 
 namespace NTUST.BulkMail.Web.Controllers
 {
@@ -89,6 +90,78 @@ namespace NTUST.BulkMail.Web.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult UnincodeList(int pageIndex)
+        {
+            ResultMessage resultMessage = new ResultMessage();
+            List<member> memberList = new List<member>();
+            try
+            {
+                var query = _bulkMailService.GetUnitcodesDataList();
+                var result = query.ToPagedList(pageIndex, query.Count());
+                var pageListViewModel = new PageList
+                {
+                    FirstItemOnPage = result.FirstItemOnPage,
+                    HasNextPage = result.HasNextPage,
+                    HasPreviousPage = result.HasPreviousPage,
+                    IsFirstPage = result.IsFirstPage,
+                    IsLastPage = result.IsLastPage,
+                    LastItemOnPage = result.LastItemOnPage,
+                    PageCount = result.PageCount,
+                    PageNumber = result.PageNumber,
+                    PageSize = result.PageSize,
+                    TotalItemCount = result.TotalItemCount,
+                    ItemList = result.ToList(),
+                };
+
+                resultMessage.Status = "OK";
+                var content = new
+                {
+                    resultMessage = resultMessage,
+                    pageListViewModel = pageListViewModel,
+                };
+                return Json(content, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                resultMessage.Status = "NG";
+                resultMessage.Message = "";
+                var content = new
+                {
+                    resultMessage = resultMessage,
+                };
+                return Json(content, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult GetUnicodeData(string tunitcode, string unitcode)
+        {
+            ResultMessage resultMessage = new ResultMessage();
+            List<member> memberList = new List<member>();
+            try
+            {
+                var query = _bulkMailService.GetUnitcodesData(tunitcode, unitcode);
+
+                resultMessage.Status = "OK";
+                var content = new
+                {
+                    unicodeData = query,
+                    resultMessage = resultMessage,
+                };
+                return Json(content, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                resultMessage.Status = "NG";
+                resultMessage.Message = "";
+                var content = new
+                {
+                    resultMessage = resultMessage,
+                };
+                return Json(content, JsonRequestBehavior.AllowGet);
+            }
+        }
         [HttpPost]
         public ActionResult GetStaffmember(string id, string semester)
         {
@@ -159,6 +232,38 @@ namespace NTUST.BulkMail.Web.Controllers
             return Json(resultMessage, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public ActionResult GenerateAliasesFile()
+        {
+            ResultMessage resultMessage = new ResultMessage();
+            try
+            {
+                _bulkMailService.GenerateAliasesFile();
+                resultMessage.Status = "OK";
+            }
+            catch (Exception ex)
+            {
+                resultMessage.Status = "NG";
+                resultMessage.Message = ex.ToString();
+            }
+            return Json(resultMessage, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public ActionResult UpdateUnicodeData(UnicodeViewModal unitcode)
+        {
+            ResultMessage resultMessage = new ResultMessage();
+            try
+            {
+                _bulkMailService.UpdateUnicodeData(unitcode);
+                resultMessage.Status = "OK";
+            }
+            catch(Exception ex)
+            {
+                resultMessage.Status = "NG";
+                resultMessage.Message = ex.ToString();
+            }
+            return Json(resultMessage, JsonRequestBehavior.AllowGet);
+        }
         [AllowCrossSiteJson]
         public ActionResult ValidGoogleLogin()
         {
