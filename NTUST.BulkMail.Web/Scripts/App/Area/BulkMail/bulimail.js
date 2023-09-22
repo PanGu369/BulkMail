@@ -1,6 +1,8 @@
-﻿(function () {
+﻿
+// 全局注册 vue-multiselect 组件
+Vue.component('vue-multiselect', window.VueMultiselect.default);
+(function () {
     "use strict";
-
     var baseUrl = $('#baseUrl').val();
     // 定義 modal 可以多層次開啟；最上層關閉後，底層 modal 可以維持 scroll
     $(document).on('hidden.bs.modal', '.modal', function () {
@@ -10,7 +12,18 @@
     $(document).ready(function () {
         getData(1);
         getUnincodeData(1);
+        getMailGroup();
+        // Summernote
+        $('#summernote').summernote()
+        //Initialize Select2 Elements
+        $('.select2').select2()
+
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
     });
+
 
     var vm = new Vue({
         el: '#app',
@@ -49,6 +62,8 @@
                 itemList: []
             },
             unicodeData: {},
+            mailgroup: [],
+            mailgroupList: {},
         },
         methods: {
             getNumbers: function (start, stop) {
@@ -64,6 +79,12 @@
             },
             getUnincodeData(pageIndex) {
                 getUnincodeData(pageIndex);
+            },
+            getMailGroup() {
+                getMailGroup();
+            },
+            getMailList(groupName) {
+                getMailList(groupName);
             },
             CreateStafferMember() {
                 CreateStafferMember();
@@ -82,6 +103,12 @@
             },
             OpenUnicodeModal() {
                 OpenUnicodeModal();
+            },
+            OpenMailAddressee() {
+                OpenMailAddressee();
+            },
+            OpenEditMailAddressee() {
+                OpenEditMailAddressee();
             },
             editUnicode(tunitcode, unitcode) {
                 editUnicode(tunitcode, unitcode);
@@ -114,17 +141,17 @@
                 if (jqXHR.status === 200) {
                     if (response.resultMessage.Status == "OK") {
                         vm.pageList = response.pageListViewModel;
-                        Vue.nextTick(function () {
-                            $("#bulkmail").DataTable({
-                                "responsive": true, "lengthChange": false, "autoWidth": false,
-                                "language": {
-                                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/zh-HANT.json',
-                                },
-                                'iDisplayLength': 15,
-                                "buttons": ["excel", "print", "colvis"],
-                                "destroy": true,
-                            }).buttons().container().appendTo('#bulkmail_wrapper .col-md-6:eq(0)');
-                        })
+                        //Vue.nextTick(function () {
+                        //    $("#bulkmail").DataTable({
+                        //        "responsive": true, "lengthChange": false, "autoWidth": false,
+                        //        "language": {
+                        //            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/zh-HANT.json',
+                        //        },
+                        //        'iDisplayLength': 15,
+                        //        "buttons": ["excel", "print", "colvis"],
+                        //        "destroy": true,
+                        //    }).buttons().container().appendTo('#bulkmail_wrapper .col-md-6:eq(0)');
+                        //})
                         $.LoadingOverlay("hide");
                         //buildPageList();
                     }
@@ -180,6 +207,108 @@
                             }).buttons().container().appendTo('#unicode_wrapper .col-md-6:eq(0)');
                         })
                         $.LoadingOverlay("hide");
+                        //buildPageList();
+                    }
+                    else {
+                        $.LoadingOverlay("hide");
+                        Swal.fire({
+                            icon: 'error',
+                            title: '連線逾時',
+                            text: '請稍後再試',
+                        })
+                    }
+                }
+                else {
+                    $.LoadingOverlay("hide");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $.LoadingOverlay("hide");
+            }
+        });
+    }
+
+    function getMailGroup() {
+        $.LoadingOverlay("show");
+        $.ajax({
+            url: baseUrl + 'Home/GetMailGroup',
+            type: "POST",
+            async: true,
+            cache: false,
+            contentype: "application/json",
+            datatype: "json",
+            data: {
+            },
+            headers: {
+                //'RequestVerificationToken': token
+            },
+            success: function (response, textStatus, jqXHR) {
+                if (jqXHR.status === 200) {
+                    if (response.Status == "OK") {
+                        vm.mailgroup = response.Body;
+                        Vue.nextTick(function () {
+                            $("#mail").DataTable({
+                                "responsive": true, "lengthChange": false, "autoWidth": false,
+                                'iDisplayLength': 15,
+                                "language": {
+                                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/zh-HANT.json',
+                                },
+                                "destroy": true,
+                            }).buttons().container().appendTo('#mail_wrapper .col-md-6:eq(0)');
+                        })
+                        $.LoadingOverlay("hide");
+                        //buildPageList();
+                    }
+                    else {
+                        $.LoadingOverlay("hide");
+                        Swal.fire({
+                            icon: 'error',
+                            title: '連線逾時',
+                            text: '請稍後再試',
+                        })
+                    }
+                }
+                else {
+                    $.LoadingOverlay("hide");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $.LoadingOverlay("hide");
+            }
+        });
+    }
+    function getMailList(groupName) {
+        $.LoadingOverlay("show");
+        $.ajax({
+            url: baseUrl + 'Home/GetMailGroupList',
+            type: "POST",
+            async: true,
+            cache: false,
+            contentype: "application/json",
+            datatype: "json",
+            data: {
+                groupName: groupName
+            },
+            headers: {
+                //'RequestVerificationToken': token
+            },
+            success: function (response, textStatus, jqXHR) {
+                if (jqXHR.status === 200) {
+                    if (response.Status == "OK") {
+                        vm.mailgroupList = response.Body;
+                        Vue.nextTick(function () {
+                            $("#mailList").DataTable({
+                                "responsive": true, "lengthChange": false, "autoWidth": false,
+                                'iDisplayLength': 15,
+                                "language": {
+                                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/zh-HANT.json',
+                                },
+                                "destroy": true,
+                            }).buttons().container().appendTo('#mailList_wrapper .col-md-6:eq(0)');
+                        })
+                        $.LoadingOverlay("hide");
+                        CloseEditMailAddressee();
+                        OpenEditMailAddressee();
                         //buildPageList();
                     }
                     else {
@@ -546,6 +675,22 @@
     }
     function CloseUnicodeEditModal() {
         $('#editModal').modal('hide')
+    }
+
+    function OpenMailAddressee() {
+        $('#mailModal').modal({
+            show: true,
+            backdrop: 'static'
+        });
+    }
+    function OpenEditMailAddressee() {
+        $('#mailEditModal').modal({
+            show: true,
+            backdrop: 'static'
+        });
+    }
+    function CloseEditMailAddressee() {
+        $('#mailEditModal').modal('hide')
     }
 
 

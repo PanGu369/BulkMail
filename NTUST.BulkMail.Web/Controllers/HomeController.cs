@@ -163,6 +163,38 @@ namespace NTUST.BulkMail.Web.Controllers
             }
         }
         [HttpPost]
+        public ActionResult GetMailGroup()
+        {
+            ResultMessage resultMessage = new ResultMessage();
+            try
+            {
+                resultMessage.Body = _bulkMailService.GetMailGroup();
+                resultMessage.Status = "OK";
+            }
+            catch (Exception ex)
+            {
+                resultMessage.Status = "NG";
+                resultMessage.Message = ex.ToString();
+            }
+            return Json(resultMessage, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public ActionResult GetMailGroupList(string groupName)
+        {
+            ResultMessage resultMessage = new ResultMessage();
+            try
+            {
+                resultMessage.Body = _bulkMailService.GetMailGroupList(groupName);
+                resultMessage.Status = "OK";
+            }
+            catch (Exception ex)
+            {
+                resultMessage.Status = "NG";
+                resultMessage.Message = ex.ToString();
+            }
+            return Json(resultMessage, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
         public ActionResult GetStaffmember(string id, string semester)
         {
             ResultMessage resultMessage = new ResultMessage();

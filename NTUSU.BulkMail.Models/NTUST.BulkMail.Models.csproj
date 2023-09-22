@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GroupFile.cs" />
+    <Compile Include="MailGroupViewModal.cs" />
     <Compile Include="NewDataSet.cs" />
     <Compile Include="PageList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

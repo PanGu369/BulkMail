@@ -123,7 +123,6 @@
                             </div>
                             <div class="modal-footer justify-content-between">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
-                                <button type="button" class="btn btn-primary">儲存</button>
                             </div>
                         </div>
                         <!-- /.modal-content -->
@@ -167,33 +166,160 @@
                     <!-- /.modal-dialog -->
                 </div>
                 <!-- /.modal -->
-                <div class="col-12">
-                    <div class="card">
+                <div class="modal fade" id="mailModal">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title"></h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="card-body">
+                                    <table id="mail" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">群組名稱</th>
+                                                <th scope="col">功能</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(item,i) in mailgroup">
+                                                <td>
+                                                    <label for="inputPassword3" class="col-form-label"
+                                                           style="cursor: pointer; color: #0079f8 !important; text-decoration: underline;" v-on:click="getMailList(item.name)">{{item.name}}</label>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-warning">加入收件人</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+                <div class="modal fade" id="mailEditModal">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title"></h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="card-body">
+                                    <table id="mailList" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">姓名</th>
+                                                <th scope="col">信箱</th>
+                                                <th scope="col">功能</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(item,i) in mailgroupList">
+                                                <td>
+                                                    <label for="inputPassword3" class="col-form-label">{{item.name}}</label>
+                                                </td>
+                                                <td>
+                                                    <label for="inputPassword3" class="col-form-label">{{item.mail}}</label>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-warning">加入收件人</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+                <div class="col-md-12">
+                    <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">大宗郵件</h3>
+                            <h3 class="card-title">寄信</h3>
                         </div>
                         <div class="card-body">
-                            <table id="bulkmail" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">序號</th>
-                                        <th scope="col">姓名</th>
-                                        <th scope="col">單位</th>
-                                        <th scope="col">E-Mail</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="(item,i) in pageList.ItemList">
-                                        <th scope="row">{{ i + pageList.FirstItemOnPage }}</th>
-                                        <td>{{item.name}}</td>
-                                        <td>{{item.unit}}</td>
-                                        <td>{{item.email}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="form-group row">
+                                <label for="inputEmail3" class="col-sm-2 col-form-label">寄件人</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="inputEmail3">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputPassword3" class="col-sm-2 col-form-label"
+                                       style="cursor: pointer; color: #0079f8 !important; text-decoration: underline;" v-on:click="OpenMailAddressee()">收件人</label>
+                                <div class="col-sm-10">
+                                    <vue-multiselect :options="mailgroup" placeholder="Select one" label="name" track-by="name"></vue-multiselect>
+                                    @*<select class="select2" multiple="multiple" data-placeholder="請選擇收件人" style="width: 100%;" v-model="test123">
+            <option v-for="item in mailgroup" :value="item.name">{{item.name}}</option>
+        </select>*@
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputPassword3" class="col-sm-2 col-form-label">標題</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="inputPassword3">
+                                </div>
+                            </div>
+                            <textarea id="summernote"></textarea>
                         </div>
                     </div>
                 </div>
+                <!--<div class="col-sm-6">-->
+                <!-- Select multiple-->
+                <!--<div class="form-group">
+            <select class="custom-select">
+                <option v-for="item in mailgroup" :value="item.name">{{item.name}}</option>
+            </select>
+        </div>
+    </div>-->
+                @*<div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">大宗郵件</h3>
+                </div>
+                <div class="card-body">
+                    <table id="bulkmail" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">序號</th>
+                                <th scope="col">姓名</th>
+                                <th scope="col">單位</th>
+                                <th scope="col">E-Mail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item,i) in pageList.ItemList">
+                                <th scope="row">{{ i + pageList.FirstItemOnPage }}</th>
+                                <td>{{item.name}}</td>
+                                <td>{{item.unit}}</td>
+                                <td>{{item.email}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>*@
             </div>
         </div>
     </section>

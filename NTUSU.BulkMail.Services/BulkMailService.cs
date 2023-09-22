@@ -22,6 +22,9 @@ using System.Web.Services.Description;
 using System.Runtime.Remoting.Contexts;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Linq.Expressions;
+using System.Collections;
+using System.Xml.Linq;
 
 namespace NTUST.BulkMail.Services
 {
@@ -430,6 +433,35 @@ namespace NTUST.BulkMail.Services
         {
             var query = _unitcodeRepository.Get(x => x.tunitcode == tunitcode && x.unitcode1 == unitcode);
             return query;
+        }
+
+        public IEnumerable<MailGroupViewModal> GetMailGroup()
+        {
+            var query = _mailGroupRepository.GetAll().Select(x => new MailGroupViewModal()
+            {
+                name = x.name,
+            });
+            var result = query.Distinct().OrderBy(x => x.name);
+            return result;
+        }
+        
+        public List<MailGroupListViewModal> GetMailGroupList(string groupName)
+        {
+            using (var dbContext = new mailEntities())
+            {
+                DbRawSqlQuery<GroupMailViewNews> dbRawSqlQuery = dbContext.Database.SqlQuery<GroupMailViewNews>("SELECT * FROM groupmailviewnews WHERE cname = {0} ORDER BY cname", groupName);
+                List<MailGroupListViewModal> list = new List<MailGroupListViewModal>();
+                foreach (var item in dbRawSqlQuery)
+                {
+                    MailGroupListViewModal query = new MailGroupListViewModal();
+                    query.cname = item.cname;
+                    query.name = item.membername;
+                    query.mail = item.membermail;
+                    query.groupmail = item.mail;
+                    list.Add(query);
+                }
+                return list;
+            }
         }
 
         public void UpdateUnicodeData(UnicodeViewModal unitcode)
