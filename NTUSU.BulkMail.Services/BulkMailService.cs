@@ -35,6 +35,7 @@ namespace NTUST.BulkMail.Services
         private readonly IStuMemberRepository _stuMemberRepository;
         private readonly IStuMemberTempRepository _stuMemberTempRepository;
         private readonly IUnitcodeRepository _unitcodeRepository;
+        private readonly IMailGroupRepository _mailGroupRepository;
         public BulkMailService(IUnitOfWork unitOfWork,
             IStaffmemberRepository staffmemberRepository,
             IStaffmemberTempRepository staffmemberTempRepository,
@@ -42,7 +43,8 @@ namespace NTUST.BulkMail.Services
             IEduCodeTempRepository eduCodeTempRepository,
             IStuMemberRepository stuMemberRepository,
             IStuMemberTempRepository stuMemberTempRepository,
-            IUnitcodeRepository unitcodeRepository)
+            IUnitcodeRepository unitcodeRepository,
+            IMailGroupRepository mailGroupRepository)
         {
             _unitOfWork = unitOfWork;
             _staffmemberRepository = staffmemberRepository;
@@ -52,6 +54,7 @@ namespace NTUST.BulkMail.Services
             _stuMemberRepository = stuMemberRepository;
             _stuMemberTempRepository = stuMemberTempRepository;
             _unitcodeRepository = unitcodeRepository;
+            _mailGroupRepository = mailGroupRepository;
         }
 
         public void CreateEduCode()

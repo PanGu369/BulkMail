@@ -32,5 +32,6 @@ namespace NTUST.BulkMail.EntityFramework
         public virtual DbSet<stumember> stumember { get; set; }
         public virtual DbSet<stumember_temp> stumember_temp { get; set; }
         public virtual DbSet<unitcode> unitcode { get; set; }
+        public virtual DbSet<mailgroup> mailgroup { get; set; }
     }
 }

@@ -83,11 +83,15 @@
     <Compile Include="Infrastructure\UnitOfWork.cs" />
     <Compile Include="Interface\IEduCodeRepository.cs" />
     <Compile Include="Interface\IEduCodeTempRepository.cs" />
+    <Compile Include="Interface\IMailGroupRepository.cs" />
     <Compile Include="Interface\IStaffmemberRepository.cs" />
     <Compile Include="Interface\IStaffmemberTempRepository.cs" />
     <Compile Include="Interface\IStuMemberRepository.cs" />
     <Compile Include="Interface\IStuMemberTempRepository.cs" />
     <Compile Include="Interface\IUnitcodeRepository.cs" />
+    <Compile Include="mailgroup.cs">
+      <DependentUpon>BulkMailModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="staffmember.cs">
       <DependentUpon>BulkMailModel.tt</DependentUpon>

@@ -505,7 +505,7 @@
                         Swal.fire({
                             icon: 'success',
                             title: '成功',
-                            text: '資料建立成功',
+                            text: '資料更新成功',
                             confirmButtonText: 'OK',
                         }).then((result) => {
                             /* Read more about isConfirmed, isDenied below */

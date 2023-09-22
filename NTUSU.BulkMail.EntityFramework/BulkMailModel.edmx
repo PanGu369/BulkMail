@@ -31,6 +31,14 @@
           <Property Name="Class1" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Team2" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="mailgroup">
+          <Key>
+            <PropertyRef Name="mail" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="40" />
+          <Property Name="mail" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="groupmail" Type="varchar" MaxLength="40" />
+        </EntityType>
         <EntityType Name="staffmember">
           <Key>
             <PropertyRef Name="id" />
@@ -110,6 +118,7 @@
         <EntityContainer Name="mailModelStoreContainer">
           <EntitySet Name="educode" EntityType="Self.educode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="educode_temp" EntityType="Self.educode_temp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="mailgroup" EntityType="Self.mailgroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="staffmember" EntityType="Self.staffmember" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="staffmember_temp" EntityType="Self.staffmember_temp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="stumember" EntityType="Self.stumember" Schema="dbo" store:Type="Tables" />
@@ -222,6 +231,7 @@
           <EntitySet Name="stumember" EntityType="Self.stumember" />
           <EntitySet Name="stumember_temp" EntityType="Self.stumember_temp" />
           <EntitySet Name="unitcode" EntityType="mailModel.unitcode" />
+          <EntitySet Name="mailgroup" EntityType="mailModel.mailgroup" />
         </EntityContainer>
         <EntityType Name="unitcode">
           <Key>
@@ -230,6 +240,14 @@
           <Property Name="unitcode1" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="tunitcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="unit" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="mailgroup">
+          <Key>
+            <PropertyRef Name="mail" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="mail" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="groupmail" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -343,6 +361,15 @@
                 <ScalarProperty Name="unit" ColumnName="unit" />
                 <ScalarProperty Name="tunitcode" ColumnName="tunitcode" />
                 <ScalarProperty Name="unitcode1" ColumnName="unitcode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mailgroup">
+            <EntityTypeMapping TypeName="mailModel.mailgroup">
+              <MappingFragment StoreEntitySet="mailgroup">
+                <ScalarProperty Name="groupmail" ColumnName="groupmail" />
+                <ScalarProperty Name="mail" ColumnName="mail" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
