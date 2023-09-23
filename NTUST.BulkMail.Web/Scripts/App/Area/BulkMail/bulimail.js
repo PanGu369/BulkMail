@@ -14,7 +14,7 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
         getUnincodeData(1);
         getMailGroup();
         // Summernote
-        $('#summernote').summernote()
+        $('#summernote').summernote();
         //Initialize Select2 Elements
         $('.select2').select2()
 
@@ -64,6 +64,8 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
             unicodeData: {},
             mailgroup: [],
             mailgroupList: {},
+            value: [],
+            value1:"",
         },
         methods: {
             getNumbers: function (start, stop) {
@@ -115,6 +117,9 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
             },
             updateUnicodeData() {
                 updateUnicodeData();
+            },
+            addEMailToGroup(item) {
+                addEMailToGroup(item);
             },
         },
         filters: {
@@ -279,6 +284,7 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
     }
     function getMailList(groupName) {
         $.LoadingOverlay("show");
+        $('#mailList').DataTable().destroy();
         $.ajax({
             url: baseUrl + 'Home/GetMailGroupList',
             type: "POST",
@@ -660,6 +666,10 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
                 $.LoadingOverlay("hide");
             }
         });
+    }
+
+    function addEMailToGroup(item) {
+        vm.value.push(item);
     }
     function OpenUnicodeModal() {
         $('#modal-xl').modal({
