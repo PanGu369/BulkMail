@@ -14,7 +14,9 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
         getUnincodeData(1);
         getMailGroup();
         // Summernote
-        $('#summernote').summernote();
+        $('#summernote').summernote({
+            lang: 'zh-TW',
+        });
         //Initialize Select2 Elements
         $('.select2').select2()
 
@@ -60,6 +62,14 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
                 pageStart: 1,
                 pageEnd: 1,
                 itemList: []
+            },
+            mail: {
+                sender: "",
+                receiver: [],
+                txtreceiver: "",
+                subject: "",
+                email_content: "",
+                dt: "",
             },
             unicodeData: {},
             mailgroup: [],
@@ -121,6 +131,9 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
             addEMailToGroup(item) {
                 addEMailToGroup(item);
             },
+            SendMail() {
+                SendMail();
+            }
         },
         filters: {
         }
@@ -669,7 +682,58 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
     }
 
     function addEMailToGroup(item) {
-        vm.value.push(item);
+        vm.mail.receiver.push(item);
+        Swal.fire({
+            icon: 'success',
+            title: '成功',
+            text: item.name + " " + "加入收件人",
+        })
+    }
+
+    function SendMail() {
+        var html = $('#summernote').summernote('code');
+        vm.mail.email_content = html;
+        $.LoadingOverlay("show");
+        $.ajax({
+            url: baseUrl + 'Home/SendEmail',
+            type: "POST",
+            async: true,
+            cache: false,
+            contentype: "application/json",
+            datatype: "json",
+            data: {
+                mail: vm.mail
+            },
+            headers: {
+                //'RequestVerificationToken': token
+            },
+            success: function (response, textStatus, jqXHR) {
+                $.LoadingOverlay("hide");
+                if (jqXHR.status === 200) {
+                    if (response.Status == "OK") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功',
+                            text: '寄信成功',
+                            confirmButtonText: 'OK',
+                        })
+                    }
+                    else {
+                        $.LoadingOverlay("hide");
+                        Swal.fire({
+                            icon: 'error',
+                            title: '連線逾時',
+                            text: '請稍後再試',
+                        })
+                    }
+                }
+                else {
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $.LoadingOverlay("hide");
+            }
+        });
     }
     function OpenUnicodeModal() {
         $('#modal-xl').modal({

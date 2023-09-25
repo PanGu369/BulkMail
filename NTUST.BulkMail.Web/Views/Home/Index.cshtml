@@ -262,26 +262,29 @@
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">寄件人</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputEmail3">
+                                    <input type="text" class="form-control" id="inputEmail3" v-model ="mail.sender">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputPassword3" class="col-sm-2 col-form-label"
                                        style="cursor: pointer; color: #0079f8 !important; text-decoration: underline;" v-on:click="OpenMailAddressee()">收件人</label>
                                 <div class="col-sm-10">
-                                    <vue-multiselect v-model="value" :options="mailgroup" :multiple="true" placeholder="Select one" label="name" track-by="name"></vue-multiselect>
+                                    <vue-multiselect v-model="mail.receiver" :options="mailgroup" :multiple="true" placeholder="Select one" label="name" track-by="name"></vue-multiselect>
                                     @*<select class="select2" multiple="multiple" data-placeholder="請選擇收件人" style="width: 100%;" v-model="test123">
-            <option v-for="item in mailgroup" :value="item.name">{{item.name}}</option>
-        </select>*@
+                        <option v-for="item in mailgroup" :value="item.name">{{item.name}}</option>
+                    </select>*@
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputPassword3" class="col-sm-2 col-form-label">標題</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputPassword3">
+                                    <input type="text" class="form-control" id="inputPassword3" v-model ="mail.subject">
                                 </div>
                             </div>
                             <textarea id="summernote" v-model="value1"></textarea>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-primary" v-on:click="SendMail()">寄信</button>
                         </div>
                     </div>
                 </div>

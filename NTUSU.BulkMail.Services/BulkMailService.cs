@@ -440,6 +440,8 @@ namespace NTUST.BulkMail.Services
             var query = _mailGroupRepository.GetAll().Select(x => new MailGroupViewModal()
             {
                 name = x.name,
+                mail = x.mail,
+                groupmail = x.groupmail,
             });
             var result = query.Distinct().OrderBy(x => x.name);
             return result;
@@ -462,6 +464,12 @@ namespace NTUST.BulkMail.Services
                 }
                 return list;
             }
+        }
+
+        public mailgroup GetMailGroupName(string groupName)
+        {
+            var query = _mailGroupRepository.Get(x => x.name == groupName);
+            return query;
         }
 
         public void UpdateUnicodeData(UnicodeViewModal unitcode)

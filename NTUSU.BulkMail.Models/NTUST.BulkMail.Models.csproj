@@ -59,6 +59,7 @@
     <Compile Include="GroupFile.cs" />
     <Compile Include="MailGroupViewModal.cs" />
     <Compile Include="NewDataSet.cs" />
+    <Compile Include="NtustEmail.cs" />
     <Compile Include="PageList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnicodeViewModal.cs" />

@@ -30,6 +30,11 @@ using Google.Apis.Auth;
 using System.Threading.Tasks;
 using NTUST.BulkMail.Web.ActionFilter;
 using NTUST.BulkMail.EntityFramework;
+using System.Drawing.Drawing2D;
+using System.Net.Mail;
+using System.Net;
+using System.Text;
+using System.Web.Helpers;
 
 namespace NTUST.BulkMail.Web.Controllers
 {
@@ -295,6 +300,60 @@ namespace NTUST.BulkMail.Web.Controllers
                 resultMessage.Message = ex.ToString();
             }
             return Json(resultMessage, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult SendEmail(NtustEmail mail)
+        {
+            ResultMessage resultMessage = new ResultMessage();
+            try
+            {
+                MailAddress sender = new MailAddress("shadow@mail.ntust.edu.tw", "shadow");
+                using (SmtpClient smtp = new SmtpClient())
+                {
+                    smtp.Host = "140.118.31.96";
+                    smtp.Port = 25;
+                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    smtp.UseDefaultCredentials = false;
+                    smtp.EnableSsl = false;
+                    smtp.Credentials = new NetworkCredential("netadmin", "hvf543$#%vghxVgdDxc");
+
+                    MailMessage msg = new MailMessage();
+                    msg.Subject = mail.subject;
+                    msg.Body = mail.email_content;
+                    msg.BodyEncoding = Encoding.UTF8;
+                    msg.IsBodyHtml = true;
+                    msg.Priority = MailPriority.Normal;
+                    msg.From = sender;
+
+                    foreach (var item in mail.receiver) 
+                    {
+                        if (string.IsNullOrEmpty(item.cname))
+                        {
+                            var mailGroup = _bulkMailService.GetMailGroupName(item.name);
+                            msg.To.Add(new MailAddress("shadow@mail.ntust.edu.tw", "shadow"));
+                            //msg.To.Add(new MailAddress(mailGroup.groupmail, mailGroup.name));
+                            //msg.To.Add(new MailAddress(item.groupmail, item.name));
+                            smtp.Send(msg);
+                        }
+                        else
+                        {
+                            msg.To.Add(new MailAddress("shadow@mail.ntust.edu.tw", "shadow"));
+                            //msg.To.Add(new MailAddress(item.mail, item.name));
+                            smtp.Send(msg);
+                        }
+                    }
+                }
+                resultMessage.Status = "OK";
+                return Json(resultMessage, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception ex) 
+            {
+                resultMessage.Status="NG";
+                resultMessage.Message = ex.ToString();
+                return Json(resultMessage, JsonRequestBehavior.AllowGet);
+            }
         }
         [AllowCrossSiteJson]
         public ActionResult ValidGoogleLogin()
