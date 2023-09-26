@@ -355,6 +355,17 @@ namespace NTUST.BulkMail.Web.Controllers
                 return Json(resultMessage, JsonRequestBehavior.AllowGet);
             }
         }
+        [HttpPost]
+        public JsonResult FileUpload()
+        {
+            ResultMessage resultMessage = new ResultMessage();
+            HttpFileCollectionBase collectionBase = Request.Files;
+            if (Request.Files.AllKeys.Any())
+            {
+
+            }
+            return Json(resultMessage, JsonRequestBehavior.AllowGet);
+        }
         [AllowCrossSiteJson]
         public ActionResult ValidGoogleLogin()
         {

@@ -8,7 +8,7 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
     $(document).on('hidden.bs.modal', '.modal', function () {
         $('.modal:visible').length && $(document.body).addClass('modal-open');
     });
-
+    Dropzone.autoDiscover = false;
     $(document).ready(function () {
         getData(1);
         getUnincodeData(1);
@@ -18,12 +18,14 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
             lang: 'zh-TW',
         });
         //Initialize Select2 Elements
-        $('.select2').select2()
+        $('.select2').select2();
 
         //Initialize Select2 Elements
         $('.select2bs4').select2({
             theme: 'bootstrap4'
-        })
+        });
+
+        init();
     });
 
 
@@ -138,6 +140,72 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
         filters: {
         }
     })
+
+    function init() {
+        // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
+        var previewNode = document.querySelector("#template")
+        previewNode.id = ""
+        var previewTemplate = previewNode.parentNode.innerHTML
+        previewNode.parentNode.removeChild(previewNode)
+
+        var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
+            url: baseUrl + 'Home/FileUpload', // Set the url
+            type: "POST",
+            thumbnailWidth: 80,
+            thumbnailHeight: 80,
+            parallelUploads: 20,
+            previewTemplate: previewTemplate,
+            acceptedFiles: ".jpg,.gif,.png,.jpeg",
+            autoQueue: false, // Make sure the files aren't queued until manually added
+            previewsContainer: "#previews", // Define the container to display the previews
+            clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
+        })
+
+        myDropzone.on("addedfile", function (file) {
+            // Hookup the start button
+            file.previewElement.querySelector(".start").onclick = function () { myDropzone.enqueueFile(file) }
+        })
+
+        // Update the total progress bar
+        myDropzone.on("totaluploadprogress", function (progress) {
+            document.querySelector("#total-progress .progress-bar").style.width = progress + "%"
+        })
+
+        myDropzone.on("sending", function (file) {
+            // Show the total progress bar when upload starts
+            document.querySelector("#total-progress").style.opacity = "1"
+            // And disable the start button
+            file.previewElement.querySelector(".start").setAttribute("disabled", "disabled")
+        })
+
+        // Hide the total progress bar when nothing's uploading anymore
+        myDropzone.on("queuecomplete", function (file, progress) {
+            document.querySelector("#total-progress").style.opacity = "0"
+        })
+
+        myDropzone.on("success", function (file) {
+            //var name = file.name;
+            //var imagePathObject = JSON.parse(file.xhr.response);
+            //var imagePath = imagePathObject[name];
+            //var imagesQuery = {
+            //    ItemSeq: "",
+            //    ImageUrl: "",
+            //};
+            //imagesQuery.ImageUrl = imagePath;
+            //vm.itemList.Images.push(imagesQuery);
+        })
+
+        // Setup the buttons for all transfers
+        // The "add files" button doesn't need to be setup because the config
+        // `clickable` has already been specified.
+        document.querySelector("#actions .start").onclick = function () {
+            myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED))
+        }
+        //document.querySelector("#actions .cancel").onclick = function () {
+        //    myDropzone.removeAllFiles(true)
+        //}
+        // DropzoneJS Demo Code End
+    }
     function getData(pageIndex) {
         $.LoadingOverlay("show");
         $.ajax({
