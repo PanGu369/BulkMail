@@ -30,4 +30,18 @@ namespace NTUST.BulkMail.Models
         public string membermail { get; set; }
         public string memtype { get; set;}
     }
+
+    public class epageMail
+    {
+        public string pt_name { get; set; }
+        public string pt_all_url { get; set; }
+        public string pt_desc { get; set; }
+        public DateTime pt_rel_date { get; set; }
+        public string pt__user1 { get; set; }
+        public string membermail { get; set; }
+        public string membername { get; set; }
+        public string sendDate { get; set; }
+        public DateTime pt_added { get; set; }
+        public bool sended { get; set; }
+    }
 }

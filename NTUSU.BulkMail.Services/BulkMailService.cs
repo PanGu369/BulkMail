@@ -305,6 +305,20 @@ namespace NTUST.BulkMail.Services
 
             }
         }
+        public void CreateSendBigMailBulletinBoardNew(string dtStart, string dtEnd)
+        {
+            using (var dbContext = new mailEntities())
+            {
+                var query = "WITH epage(pt_seq,pt_name,pt_all_url,pt_desc,pt_rel_date,pt__user1,pt__user2,pt_userid,pt_lang,pt_added)AS(select pt_seq,pt_name,pt_all_url,pt_desc,pt_rel_date,pt__user1,pt__user2,pt_userid,pt_lang,pt_added \r\nfrom openquery(RPAGEDB,'select * from rpagedb.pt_view where CASE WHEN DATE(pt_added)=DATE(pt_rel_date) THEN pt_added ELSE pt_rel_date END between ''{0}'' and ''{1}'''))\r\ninsert into sendBigMailBulletinBoardNew(pt_name,pt_all_url,pt_desc,pt_rel_date,pt__user1,membermail,membername,pt_added,sendDate,sended)\r\nselect a.pt_name,a.pt_all_url,SUBSTRING(a.pt_desc,1,800) as pt_desc,a.pt_rel_date,a.pt__user1,ISNULL(c.membermail,b.val) as membermail,ISNULL(c.membername,b.val) as membername,pt_added,'{1}' as sendDate,CAST(0 as bit) as sended \r\nfrom epage a cross apply dbo.mailSplit(a.pt__user2) b left outer join groupmailviewnewsDailyMail c on b.val+'@ns.ntust.edu.tw'=c.mail order by membermail;";
+                query = string.Format(query, dtStart, dtEnd);
+                dbContext.Database.ExecuteSqlCommand("truncate table sendBigMailBulletinBoardNew;");
+                dbContext.Database.ExecuteSqlCommand(query);
+                List<epageMail> result = dbContext.Database.SqlQuery<epageMail>("select distinct pt_name,pt_all_url,pt_desc,pt_rel_date,pt__user1,membermail,membername,pt_added,sendDate,sended from sendBigMailBulletinBoardNew where sended =0 order by membermail", Array.Empty<object>()).ToList<epageMail>();
+                epageMail last = result.FirstOrDefault<epageMail>();
+                StringBuilder sbMail = new StringBuilder();
+
+            }
+        }
         public void GenerateDataFromRawData()
         {
             try

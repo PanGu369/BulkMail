@@ -356,6 +356,24 @@ namespace NTUST.BulkMail.Web.Controllers
             }
         }
         [HttpPost]
+        public ActionResult SendBulletinBoard()
+        {
+            ResultMessage resultMessage = new ResultMessage();
+            try 
+            {
+                DateTime dt = DateTime.Parse(DateTime.Now.ToString("yyyy/MM/dd"));
+                string dtStart = dt.AddDays(-1.0).ToString("yyyy/MM/dd 19:00");
+                string dtEnd = dt.ToString("yyyy/MM/dd 19:00");
+                _bulkMailService.CreateSendBigMailBulletinBoardNew(dtStart, dtEnd);
+                return Json(resultMessage, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception ex)
+            {
+                System.IO.File.WriteAllText("D:\\log.txt", ex.ToString());
+                return Json(resultMessage, JsonRequestBehavior.AllowGet);
+            }
+        }
+        [HttpPost]
         public JsonResult FileUpload()
         {
             ResultMessage resultMessage = new ResultMessage();

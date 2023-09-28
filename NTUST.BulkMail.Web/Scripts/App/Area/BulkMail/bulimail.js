@@ -135,6 +135,9 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
             },
             SendMail() {
                 SendMail();
+            },
+            SendBulletinBoard() {
+                SendBulletinBoard();
             }
         },
         filters: {
@@ -764,6 +767,49 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
         $.LoadingOverlay("show");
         $.ajax({
             url: baseUrl + 'Home/SendEmail',
+            type: "POST",
+            async: true,
+            cache: false,
+            contentype: "application/json",
+            datatype: "json",
+            data: {
+                mail: vm.mail
+            },
+            headers: {
+                //'RequestVerificationToken': token
+            },
+            success: function (response, textStatus, jqXHR) {
+                $.LoadingOverlay("hide");
+                if (jqXHR.status === 200) {
+                    if (response.Status == "OK") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功',
+                            text: '寄信成功',
+                            confirmButtonText: 'OK',
+                        })
+                    }
+                    else {
+                        $.LoadingOverlay("hide");
+                        Swal.fire({
+                            icon: 'error',
+                            title: '連線逾時',
+                            text: '請稍後再試',
+                        })
+                    }
+                }
+                else {
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $.LoadingOverlay("hide");
+            }
+        });
+    }
+    function SendBulletinBoard() {
+        $.LoadingOverlay("show");
+        $.ajax({
+            url: baseUrl + 'Home/SendBulletinBoard',
             type: "POST",
             async: true,
             cache: false,
