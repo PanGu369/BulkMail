@@ -84,7 +84,8 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-                            <button type="button" class="btn btn-primary" v-on:click="OpenUnicodeModal()">新增修改Unicode</button>
+                            <button type="button" class="btn btn-primary" v-on:click="OpenCreateUnicodeModal()">新增Unicode</button>
+                            <button type="button" class="btn btn-primary" v-on:click="OpenUnicodeModal()">修改Unicode</button>
                         </div>
                     </div>
                 </div>
@@ -127,6 +128,7 @@
                                             <td>{{item.unitcode1}}</td>
                                             <td>
                                                 <button type="button" class="btn btn-warning" v-on:click="editUnicode(item.tunitcode, item.unitcode1)">編輯</button>
+                                                <button type="button" class="btn btn-danger" v-on:click="deleteUnicode(item.tunitcode, item.unitcode1)">刪除</button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -134,6 +136,42 @@
                             </div>
                             <div class="modal-footer justify-content-between">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+                <div class="modal fade" id="createModal">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Unicode</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">tunitcode</label>
+                                        <input type="text" class="form-control" id="exampleInputEmail1" placeholder="tunitcode" maxlength="4" v-model="unicodeData.tunitcode">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">單位</label>
+                                        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="單位" v-model="unicodeData.unit">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">unitcode</label>
+                                        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="unitcode" maxlength="4" v-model="unicodeData.unitcode1">
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+                                <button type="button" class="btn btn-primary" v-on:click="createUnicodeData()">儲存</button>
                             </div>
                         </div>
                         <!-- /.modal-content -->
@@ -282,8 +320,8 @@
                                 <div class="col-sm-10">
                                     <vue-multiselect v-model="mail.receiver" :options="mailgroup" :multiple="true" placeholder="Select one" label="name" track-by="name"></vue-multiselect>
                                     @*<select class="select2" multiple="multiple" data-placeholder="請選擇收件人" style="width: 100%;" v-model="test123">
-                    <option v-for="item in mailgroup" :value="item.name">{{item.name}}</option>
-                </select>*@
+                                <option v-for="item in mailgroup" :value="item.name">{{item.name}}</option>
+                            </select>*@
                                 </div>
                             </div>
                             <div class="form-group row">

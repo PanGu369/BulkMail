@@ -115,6 +115,9 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
             GenerateAliasesFile() {
                 GenerateAliasesFile();
             },
+            OpenCreateUnicodeModal() {
+                OpenCreateUnicodeModal();
+            },
             OpenUnicodeModal() {
                 OpenUnicodeModal();
             },
@@ -126,6 +129,12 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
             },
             editUnicode(tunitcode, unitcode) {
                 editUnicode(tunitcode, unitcode);
+            },
+            createUnicodeData() {
+                createUnicodeData();
+            },
+            deleteUnicode(tunitcode, unitcode) {
+                deleteUnicode(tunitcode, unitcode);
             },
             updateUnicodeData() {
                 updateUnicodeData();
@@ -158,7 +167,7 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
             thumbnailHeight: 80,
             parallelUploads: 20,
             previewTemplate: previewTemplate,
-            acceptedFiles: ".jpg,.gif,.png,.jpeg",
+            acceptedFiles: ".jpg,.gif,.png,.jpeg,.pdf,.doc,.docx",
             autoQueue: false, // Make sure the files aren't queued until manually added
             previewsContainer: "#previews", // Define the container to display the previews
             clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
@@ -243,6 +252,14 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
                         //})
                         $.LoadingOverlay("hide");
                         //buildPageList();
+                    }
+                    else if (response.resultMessage.Status == "EMPTY") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '沒有資料',
+                            text: '',
+                        })
+                        $.LoadingOverlay("hide");
                     }
                     else {
                         $.LoadingOverlay("hide");
@@ -701,6 +718,104 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
             }
         });
     }
+    function createUnicodeData() {
+        $.LoadingOverlay("show");
+        $.ajax({
+            url: baseUrl + 'Home/CreateUnicodeData',
+            type: "POST",
+            async: true,
+            cache: false,
+            contentype: "application/json",
+            datatype: "json",
+            data: {
+                unitcode: vm.unicodeData,
+            },
+            headers: {
+                //'RequestVerificationToken': token
+            },
+            success: function (response, textStatus, jqXHR) {
+                $.LoadingOverlay("hide");
+                if (jqXHR.status === 200) {
+                    if (response.Status == "OK") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功',
+                            text: '資料更新成功',
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                CloseUnicodeEditModal();
+                                getUnincodeData(1);
+                            }
+                        })
+                    }
+                    else {
+                        $.LoadingOverlay("hide");
+                        Swal.fire({
+                            icon: 'error',
+                            title: '連線逾時',
+                            text: '請稍後再試',
+                        })
+                    }
+                }
+                else {
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $.LoadingOverlay("hide");
+            }
+        });
+    }
+    function deleteUnicode(tunitcode, unitcode) {
+        $.LoadingOverlay("show");
+        $.ajax({
+            url: baseUrl + 'Home/DeleteUnicodeData',
+            type: "POST",
+            async: true,
+            cache: false,
+            contentype: "application/json",
+            datatype: "json",
+            data: {
+                tunitcode: tunitcode,
+                unitcode: unitcode
+            },
+            headers: {
+                //'RequestVerificationToken': token
+            },
+            success: function (response, textStatus, jqXHR) {
+                $.LoadingOverlay("hide");
+                if (jqXHR.status === 200) {
+                    if (response.Status == "OK") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功',
+                            text: '資料刪除成功',
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                getUnincodeData(1);
+                            }
+                        })
+                    }
+                    else {
+                        $.LoadingOverlay("hide");
+                        Swal.fire({
+                            icon: 'error',
+                            title: '連線逾時',
+                            text: '請稍後再試',
+                        })
+                    }
+                }
+                else {
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $.LoadingOverlay("hide");
+            }
+        });
+    }
 
     function updateUnicodeData() {
         $.LoadingOverlay("show");
@@ -847,6 +962,13 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
             error: function (jqXHR, textStatus, errorThrown) {
                 $.LoadingOverlay("hide");
             }
+        });
+    }
+    function OpenCreateUnicodeModal() {
+        vm.unicodeData = {};
+        $('#createModal').modal({
+            show: true,
+            backdrop: 'static'
         });
     }
     function OpenUnicodeModal() {

@@ -25,6 +25,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq.Expressions;
 using System.Collections;
 using System.Xml.Linq;
+using NLog;
 
 namespace NTUST.BulkMail.Services
 {
@@ -39,6 +40,7 @@ namespace NTUST.BulkMail.Services
         private readonly IStuMemberTempRepository _stuMemberTempRepository;
         private readonly IUnitcodeRepository _unitcodeRepository;
         private readonly IMailGroupRepository _mailGroupRepository;
+        private Logger _logger = LogManager.GetCurrentClassLogger();
         public BulkMailService(IUnitOfWork unitOfWork,
             IStaffmemberRepository staffmemberRepository,
             IStaffmemberTempRepository staffmemberTempRepository,
@@ -74,6 +76,7 @@ namespace NTUST.BulkMail.Services
                     datas = (NewDataSet)serializer.Deserialize(data);
                 }
                 DeleteEduCode();
+                _logger.Info("Insert資料表資料-educode_temp");
                 foreach (var item in datas.educode)
                 {
                     educode_Temp.EduCode = item.EduCode.Trim();
@@ -91,6 +94,7 @@ namespace NTUST.BulkMail.Services
             {
 
             }
+            _logger.Info("Insert資料表資料-educode");
             _eduCodeRepository.ExecuteSqlCommand("insert into educode select a.EduCode, a.College1, a.Period2, b.sPeriod2, a.Department2, a.Grade1, a.Class1, a.Team2 from educode_temp a inner join GensPeriod2 b on a.Period2 = b.Period2");
         }
         public void CreateStaffMember(string id, string semester)
@@ -109,6 +113,7 @@ namespace NTUST.BulkMail.Services
                     datas = (NewDataSet)serializer.Deserialize(data);
                 }
                 DeleteStaffMember();
+                _logger.Info("Insert資料表資料-staffmember staffmember_temp");
                 foreach (var item in datas.member)
                 {
                     staffmember_Temp.name = item.name.Trim();
@@ -151,7 +156,7 @@ namespace NTUST.BulkMail.Services
             }
             catch (Exception ex)
             {
-
+                _logger.Error(ex.ToString());
             }
         }
         public void CreateStudentData(string pnowcondition)
@@ -169,6 +174,7 @@ namespace NTUST.BulkMail.Services
                     datas = (NewDataSet)serializer.Deserialize(data);
                 }
                 DeleteStudentData();
+                _logger.Info("Insert資料表資料-stumember stumember_temp");
                 foreach (var item in datas.student)
                 {
                     string text = item.educode.Trim();
@@ -254,6 +260,8 @@ namespace NTUST.BulkMail.Services
                 using (var dbContext = new mailEntities())
                 {
                     dbContext.Database.ExecuteSqlCommand("delete alumnusmember_temp", Array.Empty<object>());
+                    _logger.Info("刪除資料表資料-alumnusmember_temp");
+                    _logger.Info("Insert資料表資料-alumnusmember_temp");
                     foreach (var item in datas.GradStudent)
                     {
                         string[] grpary = item.group.Split('/')[1].Split(' ');
@@ -298,6 +306,7 @@ namespace NTUST.BulkMail.Services
                     }
                     dbContext.Database.ExecuteSqlCommand("delete alumnusmember;" +
                         "insert into alumnusmember select * from alumnusmember_temp where sno1 not in (select sno1 from alumnusmember_temp group by sno1 having count(*)>1)");
+                    _logger.Info("Insert資料表資料-alumnusmember");
                 }
             }
             catch (Exception ex)
@@ -325,12 +334,27 @@ namespace NTUST.BulkMail.Services
             {
                 using (var dbContext = new mailEntities())
                 {
+                    _logger.Info("Update資料表資料-staffmember set email='jyen@mail.ntust.edu.tw'  where name='顏家鈺'");
                     dbContext.Database.ExecuteSqlCommand("update staffmember set email='jyen@mail.ntust.edu.tw'  where name='顏家鈺'");
+                    
+                    _logger.Info("Delete資料表資料-mailgroup");
+                    _logger.Info("Insert資料表資料-mailgroup");
                     dbContext.Database.ExecuteSqlCommand("delete mailgroup; " +
                         "insert into mailgroup(name,mail,groupmail) select distinct cname as name,SUBSTRING(mail,1,LEN(mail)-15)+'mail.ntust.edu.tw' as mail,mail as groupmail from groupmailviewnews");
+                    
+                    _logger.Info("Delete資料表資料-groupmailviewnewdata");
                     dbContext.Database.ExecuteSqlCommand("delete groupmailviewnewdata;insert into groupmailviewnewdata select * from groupmailviewnew");
+                    
+                    _logger.Info("Delete資料表資料-groupmailviewnewdatadistinct");
+                    _logger.Info("Insert資料表資料-groupmailviewnewdatadistinct");
                     dbContext.Database.ExecuteSqlCommand("delete groupmailviewnewdatadistinct;insert into groupmailviewnewdatadistinct(cname,mail) select distinct cname,mail from groupmailviewnewdata");
+                    
+                    _logger.Info("Delete資料表資料-GroupMailViewNewDropdownlistData");
+                    _logger.Info("Insert資料表資料-GroupMailViewNewDropdownlistData");
                     dbContext.Database.ExecuteSqlCommand("delete GroupMailViewNewDropdownlistData;insert into GroupMailViewNewDropdownlistData select * from dbo.groupmailviewnewdropdownlist1");
+                    
+                    _logger.Info("Delete資料表資料-groupmailviewnewsDailyMail");
+                    _logger.Info("Insert資料表資料-groupmailviewnewsDailyMail");
                     string sendDailyMail = "truncate table groupmailviewnewsDailyMail;insert into groupmailviewnewsDailyMail select * from groupmailviewnews";
                     dbContext.Database.ExecuteSqlCommand(sendDailyMail);
                 }
@@ -344,6 +368,7 @@ namespace NTUST.BulkMail.Services
         {
             try
             {
+                _logger.Info("產出大宗郵件收件人");
                 string lastfilename = "";
                 StreamWriter sw = null;
                 if (Directory.Exists("D:\\getMailFile\\data\\"))
@@ -386,6 +411,7 @@ namespace NTUST.BulkMail.Services
         {
             try
             {
+                _logger.Info("產出大宗郵件收件人別名");
                 string lastfilename = "";
                 File.Copy("D:\\getMailFile\\template\\aliasestemplate", "D:\\getMailFile\\template\\aliases", true);
                 StreamWriter sw = new StreamWriter("D:\\getMailFile\\template\\aliases", true, Encoding.GetEncoding("big5"));
@@ -413,16 +439,19 @@ namespace NTUST.BulkMail.Services
         }
         public void DeleteEduCode()
         {
+            _logger.Info("清除資料表資料-educode educode_temp");
             _eduCodeRepository.ExecuteSqlCommand("TRUNCATE TABLE educode");
             _eduCodeTempRepository.ExecuteSqlCommand("TRUNCATE TABLE educode_temp");
         }
         public void DeleteStaffMember()
         {
+            _logger.Info("清除資料表資料-staffmember staffmember_temp");
             _staffmemberRepository.ExecuteSqlCommand("TRUNCATE TABLE staffmember");
             _staffmemberTempRepository.ExecuteSqlCommand("TRUNCATE TABLE staffmember_temp");
         }
         public void DeleteStudentData()
         {
+            _logger.Info("清除資料表資料-stumember stumember_temp");
             _stuMemberRepository.ExecuteSqlCommand("TRUNCATE TABLE stumember");
             _stuMemberTempRepository.ExecuteSqlCommand("TRUNCATE TABLE stumember_temp");
         }
@@ -438,7 +467,7 @@ namespace NTUST.BulkMail.Services
             });
             return result.OrderBy(x => x.unitcode);
         }
-        public IEnumerable<unitcode> GetUnitcodesDataList() 
+        public IEnumerable<unitcode> GetUnitcodesDataList()
         { 
             var query = _unitcodeRepository.GetAll();
             return query.OrderBy(x => x.unitcode1);
@@ -493,6 +522,22 @@ namespace NTUST.BulkMail.Services
             query.unit = unitcode.unit;
             query.unitcode1 = unitcode.unitcode1;
             _unitcodeRepository.Update(query);
+            Save();
+        }
+        public void CreateUnicodeData(UnicodeViewModal unitcodeObject)
+        {
+            unitcode unitcode = new unitcode();
+            unitcode.unitcode1 = unitcodeObject.unitcode1;
+            unitcode.tunitcode = unitcodeObject.tunitcode;
+            unitcode.unit = unitcodeObject.unit;
+            _unitcodeRepository.Add(unitcode);
+            Save();
+        }
+
+        public void DeleteUnicodeData(string tunitcode, string unitcode)
+        {
+            var query = _unitcodeRepository.Get(x => x.tunitcode == tunitcode && x.unitcode1 == unitcode);
+            _unitcodeRepository.Delete(query);
             Save();
         }
         public void Save()

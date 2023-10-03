@@ -41,6 +41,7 @@ namespace NTUST.BulkMail.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IBulkMailService _bulkMailService;
+        private Logger _logger = LogManager.GetCurrentClassLogger();
         public HomeController(IBulkMailService bulkMailService)
         {
             _bulkMailService = bulkMailService;
@@ -59,29 +60,41 @@ namespace NTUST.BulkMail.Web.Controllers
             try
             {
                 var query = _bulkMailService.GetStaffMemberData();
-                var result = query.ToPagedList(pageIndex, query.Count());
-                var pageListViewModel = new PageList
+                if (query.Any())
                 {
-                    FirstItemOnPage = result.FirstItemOnPage,
-                    HasNextPage = result.HasNextPage,
-                    HasPreviousPage = result.HasPreviousPage,
-                    IsFirstPage = result.IsFirstPage,
-                    IsLastPage = result.IsLastPage,
-                    LastItemOnPage = result.LastItemOnPage,
-                    PageCount = result.PageCount,
-                    PageNumber = result.PageNumber,
-                    PageSize = result.PageSize,
-                    TotalItemCount = result.TotalItemCount,
-                    ItemList = result.ToList(),
-                };
+                    var result = query.ToPagedList(pageIndex, query.Count());
+                    var pageListViewModel = new PageList
+                    {
+                        FirstItemOnPage = result.FirstItemOnPage,
+                        HasNextPage = result.HasNextPage,
+                        HasPreviousPage = result.HasPreviousPage,
+                        IsFirstPage = result.IsFirstPage,
+                        IsLastPage = result.IsLastPage,
+                        LastItemOnPage = result.LastItemOnPage,
+                        PageCount = result.PageCount,
+                        PageNumber = result.PageNumber,
+                        PageSize = result.PageSize,
+                        TotalItemCount = result.TotalItemCount,
+                        ItemList = result.ToList(),
+                    };
 
-                resultMessage.Status = "OK";
-                var content = new
+                    resultMessage.Status = "OK";
+                    var content = new
+                    {
+                        resultMessage = resultMessage,
+                        pageListViewModel = pageListViewModel,
+                    };
+                    return Json(content, JsonRequestBehavior.AllowGet);
+                }
+                else
                 {
-                    resultMessage = resultMessage,
-                    pageListViewModel = pageListViewModel,
-                };
-                return Json(content, JsonRequestBehavior.AllowGet);
+                    resultMessage.Status = "EMPTY";
+                    var content = new
+                    {
+                        resultMessage = resultMessage,
+                    };
+                    return Json(content, JsonRequestBehavior.AllowGet);
+                }
             }
             catch (Exception ex)
             {
@@ -206,12 +219,14 @@ namespace NTUST.BulkMail.Web.Controllers
             try
             {
                 _bulkMailService.CreateStaffMember(id, semester);
+                _logger.Info($"教職員資料更新成功");
                 resultMessage.Status = "OK";
             }
             catch(Exception ex)
             {
                 resultMessage.Status = "NG";
                 resultMessage.Message= ex.ToString();
+                _logger.Error(ex.ToString());
             }
 
             return Json(resultMessage, JsonRequestBehavior.AllowGet);
@@ -224,12 +239,14 @@ namespace NTUST.BulkMail.Web.Controllers
             try
             {
                 _bulkMailService.CreateStudentData(code);
+                _logger.Info($"學生資料更新成功");
                 resultMessage.Status = "OK";
             }
             catch (Exception ex)
             {
                 resultMessage.Status = "NG";
                 resultMessage.Message = ex.ToString();
+                _logger.Error(ex.ToString());
             }
 
             return Json(resultMessage, JsonRequestBehavior.AllowGet);
@@ -241,12 +258,14 @@ namespace NTUST.BulkMail.Web.Controllers
             try
             {
                 _bulkMailService.CreateAlumnusData();
+                _logger.Info($"畢業生資料更新成功");
                 resultMessage.Status = "OK";
             }
             catch (Exception ex)
             {
                 resultMessage.Status = "NG";
                 resultMessage.Message = ex.ToString();
+                _logger.Error(ex.ToString());
             }
 
             return Json(resultMessage, JsonRequestBehavior.AllowGet);
@@ -259,12 +278,14 @@ namespace NTUST.BulkMail.Web.Controllers
             {
                 _bulkMailService.GenerateDataFromRawData();
                 _bulkMailService.GenerateMailGroupFile();
+                _logger.Info($"大宗郵件資料建立成功");
                 resultMessage.Status = "OK";
             }
             catch(Exception ex) 
             {
                 resultMessage.Status = "NG";
                 resultMessage.Message = ex.ToString();
+                _logger.Error(ex.ToString());
             }
             return Json(resultMessage, JsonRequestBehavior.AllowGet);
         }
@@ -276,12 +297,14 @@ namespace NTUST.BulkMail.Web.Controllers
             try
             {
                 _bulkMailService.GenerateAliasesFile();
+                _logger.Info($"大宗郵件別名資料更新成功");
                 resultMessage.Status = "OK";
             }
             catch (Exception ex)
             {
                 resultMessage.Status = "NG";
                 resultMessage.Message = ex.ToString();
+                _logger.Error(ex.ToString());
             }
             return Json(resultMessage, JsonRequestBehavior.AllowGet);
         }
@@ -295,6 +318,40 @@ namespace NTUST.BulkMail.Web.Controllers
                 resultMessage.Status = "OK";
             }
             catch(Exception ex)
+            {
+                resultMessage.Status = "NG";
+                resultMessage.Message = ex.ToString();
+            }
+            return Json(resultMessage, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteUnicodeData(string tunitcode, string unitcode)
+        {
+            ResultMessage resultMessage = new ResultMessage();
+            try
+            {
+                _bulkMailService.DeleteUnicodeData(tunitcode, unitcode);
+                resultMessage.Status = "OK";
+            }
+            catch (Exception ex)
+            {
+                resultMessage.Status = "NG";
+                resultMessage.Message = ex.ToString();
+            }
+            return Json(resultMessage, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult CreateUnicodeData(UnicodeViewModal unitcode)
+        {
+            ResultMessage resultMessage = new ResultMessage();
+            try
+            {
+                _bulkMailService.CreateUnicodeData(unitcode);
+                resultMessage.Status = "OK";
+            }
+            catch (Exception ex)
             {
                 resultMessage.Status = "NG";
                 resultMessage.Message = ex.ToString();
