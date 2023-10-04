@@ -444,7 +444,8 @@ namespace NTUST.BulkMail.Web.Controllers
                     for (int i = 0, j = collectionBase.Count; i < j; i++)
                     {
                         HttpPostedFileBase item = collectionBase[i];
-                        string username = "PanGu369";
+                        string username = "shadow"; //sso建立後可置換取得的使用者
+                        //github token 到期需更換或建立永久 建立github token 可參考 https://shengyu7697.github.io/github-personal-access-token/
                         string token = "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";
 
                         string owner = "PanGu369";
@@ -453,7 +454,7 @@ namespace NTUST.BulkMail.Web.Controllers
                         string path = item.FileName;
 
 
-                        string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/contents/{path}";
+                        string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/contents/{username}/{path}";
 
                         HttpClient httpClient = new HttpClient();
                         httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
@@ -465,7 +466,7 @@ namespace NTUST.BulkMail.Web.Controllers
 
                         var requestBody = new
                         {
-                            message = item.FileName + " " + DateTime.Now.ToString() + " " + "上傳成功!",
+                            message = username + "於" + DateTime.Now.ToString() + "上傳" + item.FileName + " " + "狀態:上傳成功!",
                             content = Convert.ToBase64String(imageBytes)
                         };
 
