@@ -35,6 +35,8 @@ using System.Net.Mail;
 using System.Net;
 using System.Text;
 using System.Web.Helpers;
+using System.Net.Http.Headers;
+using System.Net.Http;
 
 namespace NTUST.BulkMail.Web.Controllers
 {
@@ -431,13 +433,63 @@ namespace NTUST.BulkMail.Web.Controllers
             }
         }
         [HttpPost]
-        public JsonResult FileUpload()
+        public async Task<JsonResult> FileUpload()
         {
             ResultMessage resultMessage = new ResultMessage();
             HttpFileCollectionBase collectionBase = Request.Files;
             if (Request.Files.AllKeys.Any())
             {
+                try
+                {
+                    for (int i = 0, j = collectionBase.Count; i < j; i++)
+                    {
+                        HttpPostedFileBase item = collectionBase[i];
+                        string username = "PanGu369";
+                        string token = "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";
 
+                        string owner = "PanGu369";
+                        string repo = "uploadFile";
+
+                        string path = item.FileName;
+
+
+                        string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/contents/{path}";
+
+                        HttpClient httpClient = new HttpClient();
+                        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+                        httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("PanGu369");
+
+                        Stream stream = item.InputStream;
+                        BinaryReader reader = new BinaryReader(stream);
+                        byte[] imageBytes = reader.ReadBytes((int)stream.Length);
+
+                        var requestBody = new
+                        {
+                            message = item.FileName + " " + DateTime.Now.ToString() + " " + "上傳成功!",
+                            content = Convert.ToBase64String(imageBytes)
+                        };
+
+                        var requestContent = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
+
+                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("token", token);
+
+                        HttpResponseMessage response = await httpClient.PutAsync(apiUrl, requestContent);
+
+                        if (response.IsSuccessStatusCode)
+                        {
+                            Console.WriteLine(item.FileName + DateTime.Now.ToString() + "上傳成功!");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Failed to upload image. Status code: {response.StatusCode}");
+                            Console.WriteLine(await response.Content.ReadAsStringAsync());
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
             return Json(resultMessage, JsonRequestBehavior.AllowGet);
         }
