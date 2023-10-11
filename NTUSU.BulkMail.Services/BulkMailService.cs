@@ -378,6 +378,7 @@ namespace NTUST.BulkMail.Services
                 Directory.CreateDirectory("D:\\getMailFile\\data\\");
                 using (var dbContext = new mailEntities())
                 {
+                    dbContext.Database.CommandTimeout = new int?(1000000);
                     DbRawSqlQuery<GroupFile> dbRawSqlQuery = dbContext.Database.SqlQuery<GroupFile>("select distinct mail,filename,member from groupmailviewnews order by filename");
                     foreach (var row in dbRawSqlQuery)
                     {
@@ -417,6 +418,7 @@ namespace NTUST.BulkMail.Services
                 StreamWriter sw = new StreamWriter("D:\\getMailFile\\template\\aliases", true, Encoding.GetEncoding("big5"));
                 using (var dbContext = new mailEntities())
                 {
+                    dbContext.Database.CommandTimeout = new int?(1000000);
                     DbRawSqlQuery<GroupFile> dbRawSqlQuery = dbContext.Database.SqlQuery<GroupFile>("select distinct mail,filename from groupmailviewnews order by mail");
                     foreach (var row in dbRawSqlQuery)
                     {
