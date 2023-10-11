@@ -4,6 +4,7 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
 (function () {
     "use strict";
     var baseUrl = $('#baseUrl').val();
+    var formData = new FormData();
     // 定義 modal 可以多層次開啟；最上層關閉後，底層 modal 可以維持 scroll
     $(document).on('hidden.bs.modal', '.modal', function () {
         $('.modal:visible').length && $(document.body).addClass('modal-open');
@@ -17,14 +18,6 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
         $('#summernote').summernote({
             lang: 'zh-TW',
         });
-        //Initialize Select2 Elements
-        $('.select2').select2();
-
-        //Initialize Select2 Elements
-        $('.select2bs4').select2({
-            theme: 'bootstrap4'
-        });
-
         init();
     });
 
@@ -162,13 +155,15 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
 
         var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
             url: baseUrl + 'Home/FileUpload', // Set the url
+            autoProcessQueue: true, // 启用自动上传
             type: "POST",
             thumbnailWidth: 80,
             thumbnailHeight: 80,
             parallelUploads: 20,
             previewTemplate: previewTemplate,
+            paramName: "file", 
             acceptedFiles: ".jpg,.gif,.png,.jpeg,.pdf,.doc,.docx",
-            autoQueue: false, // Make sure the files aren't queued until manually added
+            //autoQueue: false, // Make sure the files aren't queued until manually added
             previewsContainer: "#previews", // Define the container to display the previews
             clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
         })
@@ -176,11 +171,7 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
         myDropzone.on("addedfile", function (file) {
             // Hookup the start button
             file.previewElement.querySelector(".start").onclick = function () { myDropzone.enqueueFile(file) }
-        })
-
-        // Update the total progress bar
-        myDropzone.on("totaluploadprogress", function (progress) {
-            document.querySelector("#total-progress .progress-bar").style.width = progress + "%"
+            formData.append(file.name, file);
         })
 
         myDropzone.on("sending", function (file) {
@@ -190,9 +181,8 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
             file.previewElement.querySelector(".start").setAttribute("disabled", "disabled")
         })
 
-        // Hide the total progress bar when nothing's uploading anymore
-        myDropzone.on("queuecomplete", function (file, progress) {
-            document.querySelector("#total-progress").style.opacity = "0"
+        myDropzone.on("removedfile", function (file) {
+            formData.delete(file.name);
         })
 
         myDropzone.on("success", function (file) {
@@ -206,17 +196,6 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
             //imagesQuery.ImageUrl = imagePath;
             //vm.itemList.Images.push(imagesQuery);
         })
-
-        // Setup the buttons for all transfers
-        // The "add files" button doesn't need to be setup because the config
-        // `clickable` has already been specified.
-        document.querySelector("#actions .start").onclick = function () {
-            myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED))
-        }
-        //document.querySelector("#actions .cancel").onclick = function () {
-        //    myDropzone.removeAllFiles(true)
-        //}
-        // DropzoneJS Demo Code End
     }
     function getData(pageIndex) {
         $.LoadingOverlay("show");
@@ -879,17 +858,18 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
     function SendMail() {
         var html = $('#summernote').summernote('code');
         vm.mail.email_content = html;
+        formData.append("mail", JSON.stringify(vm.mail));
         $.LoadingOverlay("show");
         $.ajax({
             url: baseUrl + 'Home/SendEmail',
             type: "POST",
             async: true,
             cache: false,
-            contentype: "application/json",
-            datatype: "json",
-            data: {
-                mail: vm.mail
-            },
+            //dataType: "json",
+            //contentType: "application/json",
+            data: formData,
+            processData: false,
+            contentType: false,
             headers: {
                 //'RequestVerificationToken': token
             },
@@ -902,6 +882,27 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
                             title: '成功',
                             text: '寄信成功',
                             confirmButtonText: 'OK',
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                formData = new FormData();
+                                location.reload();
+                            }
+                        })
+                    }
+                    else if (response.Status == "EMPTY") {
+                        $.LoadingOverlay("hide");
+                        Swal.fire({
+                            icon: 'error',
+                            title: '連線逾時',
+                            text: response.Message,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                formData = new FormData();
+                                location.reload();
+                            }
                         })
                     }
                     else {
@@ -909,7 +910,14 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
                         Swal.fire({
                             icon: 'error',
                             title: '連線逾時',
-                            text: '請稍後再試',
+                            text: "請稍後再試",
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                formData = new FormData();
+                                location.reload();
+                            }
                         })
                     }
                 }

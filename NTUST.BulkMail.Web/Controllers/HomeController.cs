@@ -37,6 +37,8 @@ using System.Text;
 using System.Web.Helpers;
 using System.Net.Http.Headers;
 using System.Net.Http;
+using System.Net.Mime;
+using WebGrease.Activities;
 
 namespace NTUST.BulkMail.Web.Controllers
 {
@@ -44,6 +46,7 @@ namespace NTUST.BulkMail.Web.Controllers
     {
         private readonly IBulkMailService _bulkMailService;
         private Logger _logger = LogManager.GetCurrentClassLogger();
+        private MailMessage msg = new MailMessage();
         public HomeController(IBulkMailService bulkMailService)
         {
             _bulkMailService = bulkMailService;
@@ -363,14 +366,36 @@ namespace NTUST.BulkMail.Web.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult SendEmail(NtustEmail mail)
+        public async Task<ActionResult> SendEmail()
         {
             ResultMessage resultMessage = new ResultMessage();
             try
             {
                 MailAddress sender = new MailAddress("shadow@mail.ntust.edu.tw", "shadow");
+                HttpFileCollectionBase collectionBase = Request.Files;
+                //NtustEmail mail = new NtustEmail();
+                // 从FormData中获取JSON数据
+                string json = Request.Unvalidated.Form["mail"];
+
+                // 将JSON字符串转换回对象
+                NtustEmail mail = JsonConvert.DeserializeObject<NtustEmail>(json);
                 using (SmtpClient smtp = new SmtpClient())
                 {
+                    if (Request.Files.AllKeys.Any())
+                    {
+                        for (int i = 0, j = collectionBase.Count; i < j; i++)
+                        {
+                            HttpPostedFileBase item = collectionBase[i];
+
+                            Stream stream = item.InputStream;
+                            BinaryReader reader = new BinaryReader(stream);
+                            byte[] imageBytes = reader.ReadBytes((int)stream.Length);
+
+                            MemoryStream fileStream = new MemoryStream(imageBytes);
+                            Attachment attachment = new Attachment(fileStream, item.FileName);
+                            msg.Attachments.Add(attachment);
+                        }
+                    }
                     smtp.Host = "140.118.31.96";
                     smtp.Port = 25;
                     smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
@@ -378,7 +403,7 @@ namespace NTUST.BulkMail.Web.Controllers
                     smtp.EnableSsl = false;
                     smtp.Credentials = new NetworkCredential("netadmin", "hvf543$#%vghxVgdDxc");
 
-                    MailMessage msg = new MailMessage();
+                    //MailMessage msg = new MailMessage();
                     msg.Subject = mail.subject;
                     msg.Body = mail.email_content;
                     msg.BodyEncoding = Encoding.UTF8;
@@ -386,22 +411,73 @@ namespace NTUST.BulkMail.Web.Controllers
                     msg.Priority = MailPriority.Normal;
                     msg.From = sender;
 
-                    foreach (var item in mail.receiver) 
+
+                    //string owner = "PanGu369";
+                    //string repo = "uploadFile";
+                    //string path = Session["filePath"].ToString(); // 文件在仓库中的路径
+
+                    //string token = "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";
+
+                    //string githubRawUrl = $"https://raw.githubusercontent.com/{owner}/{repo}/main/{path}";
+
+                    //HttpClient httpClient = new HttpClient();
+                    //httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+                    //httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("PanGu369"); // 替换为您的应用名称
+
+                    //httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("token", token);
+
+                    //HttpResponseMessage response = await httpClient.GetAsync(githubRawUrl);
+
+                    //WebClient webClient = new WebClient();
+                    //webClient.Headers.Add("User-Agent", "PanGu369"); // 替换为您的应用名称
+                    //webClient.Headers.Add("Authorization", $"token {token}");
+
+                    //if (response.IsSuccessStatusCode)
+                    //{
+                    //    // 使用GitHub Raw URL下载文件内容
+                    //    byte[] fileBytes = await webClient.DownloadDataTaskAsync(githubRawUrl);
+
+                    //    // 获取GitHub文件名
+                    //    string[] pathParts = path.Split('/');
+                    //    string fileName = pathParts[pathParts.Length - 1];
+
+
+                    //    // 将GitHub文件内容作为附件添加到电子邮件中
+                    //    //MemoryStream fileStream = new MemoryStream(fileBytes);
+                    //    //Attachment attachment = new Attachment(fileStream, fileName);
+                    //    //msg.Attachments.Add(attachment);
+                    //}
+                    //else
+                    //{
+                    //    Console.WriteLine($"Failed to download file. Status code: {response.StatusCode}");
+                    //    Console.WriteLine(await response.Content.ReadAsStringAsync());
+                    //}
+
+                    if (mail.receiver.Count > 0)
                     {
-                        if (string.IsNullOrEmpty(item.cname))
+                        foreach (var item in mail.receiver)
                         {
-                            var mailGroup = _bulkMailService.GetMailGroupName(item.name);
-                            msg.To.Add(new MailAddress("shadow@mail.ntust.edu.tw", "shadow"));
-                            //msg.To.Add(new MailAddress(mailGroup.groupmail, mailGroup.name));
-                            //msg.To.Add(new MailAddress(item.groupmail, item.name));
-                            smtp.Send(msg);
+                            if (string.IsNullOrEmpty(item.cname))
+                            {
+                                var mailGroup = _bulkMailService.GetMailGroupName(item.name);
+                                msg.To.Add(new MailAddress("shadow@mail.ntust.edu.tw", "shadow"));
+                                //msg.To.Add(new MailAddress(mailGroup.groupmail, mailGroup.name));
+                                //msg.To.Add(new MailAddress(item.groupmail, item.name));
+                                smtp.Send(msg);
+                            }
+                            else
+                            {
+                                msg.To.Add(new MailAddress("shadow@mail.ntust.edu.tw", "shadow"));
+                                //msg.To.Add(new MailAddress(item.mail, item.name));
+                                smtp.Send(msg);
+                            }
                         }
-                        else
-                        {
-                            msg.To.Add(new MailAddress("shadow@mail.ntust.edu.tw", "shadow"));
-                            //msg.To.Add(new MailAddress(item.mail, item.name));
-                            smtp.Send(msg);
-                        }
+                    }
+                    else
+                    {
+                        resultMessage.Status = "EMPTY";
+                        resultMessage.Message = "沒有收件人";
+                        return Json(resultMessage, JsonRequestBehavior.AllowGet);
                     }
                 }
                 resultMessage.Status = "OK";
@@ -455,6 +531,8 @@ namespace NTUST.BulkMail.Web.Controllers
 
 
                         string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/contents/{username}/{path}";
+
+                        //Session["filePath"] = username + "/" + path;
 
                         HttpClient httpClient = new HttpClient();
                         httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
