@@ -39,6 +39,8 @@ using System.Net.Http.Headers;
 using System.Net.Http;
 using System.Net.Mime;
 using WebGrease.Activities;
+using Octokit;
+using System.Web.Services.Description;
 
 namespace NTUST.BulkMail.Web.Controllers
 {
@@ -526,13 +528,14 @@ namespace NTUST.BulkMail.Web.Controllers
 
                         string owner = "PanGu369";
                         string repo = "uploadFile";
-
+                        string branch = "main";
                         string path = item.FileName;
-
 
                         string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/contents/{username}/{path}";
 
-                        //Session["filePath"] = username + "/" + path;
+                        var userGitHub = new GitHubClient(new Octokit.ProductHeaderValue("UserGitHubUploader"));
+                        var userTokenAuth = new Credentials(token);
+                        userGitHub.Credentials = userTokenAuth;
 
                         HttpClient httpClient = new HttpClient();
                         httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
@@ -567,7 +570,6 @@ namespace NTUST.BulkMail.Web.Controllers
                 }
                 catch (Exception ex)
                 {
-
                 }
             }
             return Json(resultMessage, JsonRequestBehavior.AllowGet);
