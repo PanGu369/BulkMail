@@ -26,6 +26,9 @@ using System.Linq.Expressions;
 using System.Collections;
 using System.Xml.Linq;
 using NLog;
+using System.IO.Compression;
+using System.Net.Mail;
+using System.Net;
 
 namespace NTUST.BulkMail.Services
 {
@@ -320,11 +323,89 @@ namespace NTUST.BulkMail.Services
             {
                 var query = "WITH epage(pt_seq,pt_name,pt_all_url,pt_desc,pt_rel_date,pt__user1,pt__user2,pt_userid,pt_lang,pt_added)AS(select pt_seq,pt_name,pt_all_url,pt_desc,pt_rel_date,pt__user1,pt__user2,pt_userid,pt_lang,pt_added \r\nfrom openquery(RPAGEDB,'select * from rpagedb.pt_view where CASE WHEN DATE(pt_added)=DATE(pt_rel_date) THEN pt_added ELSE pt_rel_date END between ''{0}'' and ''{1}'''))\r\ninsert into sendBigMailBulletinBoardNew(pt_name,pt_all_url,pt_desc,pt_rel_date,pt__user1,membermail,membername,pt_added,sendDate,sended)\r\nselect a.pt_name,a.pt_all_url,SUBSTRING(a.pt_desc,1,800) as pt_desc,a.pt_rel_date,a.pt__user1,ISNULL(c.membermail,b.val) as membermail,ISNULL(c.membername,b.val) as membername,pt_added,'{1}' as sendDate,CAST(0 as bit) as sended \r\nfrom epage a cross apply dbo.mailSplit(a.pt__user2) b left outer join groupmailviewnewsDailyMail c on b.val+'@ns.ntust.edu.tw'=c.mail order by membermail;";
                 query = string.Format(query, dtStart, dtEnd);
+                dbContext.Database.CommandTimeout = new int?(5000000);
                 dbContext.Database.ExecuteSqlCommand("truncate table sendBigMailBulletinBoardNew;");
                 dbContext.Database.ExecuteSqlCommand(query);
                 List<epageMail> result = dbContext.Database.SqlQuery<epageMail>("select distinct pt_name,pt_all_url,pt_desc,pt_rel_date,pt__user1,membermail,membername,pt_added,sendDate,sended from sendBigMailBulletinBoardNew where sended =0 order by membermail", Array.Empty<object>()).ToList<epageMail>();
                 epageMail last = result.FirstOrDefault<epageMail>();
                 StringBuilder sbMail = new StringBuilder();
+                string dataContent = "<tr>\r\n\t\t\t\t                    <td data-title=\"發佈單位\">{1}</td>\r\n                                    <td data-title=\"標題\"><a target=\"_blank\" href=\"{3}\" style=\"text-decoration:none;\">{2}</a></td>\r\n                                   </tr>";
+                string mailTail = "</tbody></table></div></body></html>";
+                string mailHead = File.ReadAllText("D:\\sendMailTemplate\\indexMy.html");
+                MailAddress sender = new MailAddress("bulletin@mail.ntust.edu.tw", "臺科公佈欄");
+                using (SmtpClient smtp = new SmtpClient())
+                {
+                    smtp.Host = "140.118.31.96";
+                    smtp.Port = 25;
+                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    smtp.UseDefaultCredentials = false;
+                    smtp.EnableSsl = false;
+                    smtp.Credentials = new NetworkCredential("netadmin", "hvf543$#%vghxVgdDxc");
+                    string subject = string.Format("[TaiwanTech] 臺科公佈欄(NTUST Bulletin)[{0}-{1}]", dtStart, dtEnd);
+                    foreach (epageMail q in result)
+                    {
+                        if (last.membermail != q.membermail)
+                        {
+                            MailMessage msg = new MailMessage();
+                            msg.Subject = subject;
+                            msg.Body = mailHead + sbMail.ToString() + mailTail;
+                            msg.BodyEncoding = Encoding.UTF8;
+                            msg.IsBodyHtml = true;
+                            msg.Priority = MailPriority.Normal;
+                            msg.From = sender;
+                            try
+                            {
+                                //msg.To.Add(new MailAddress(last.membermail, last.membername));
+                                msg.To.Add(new MailAddress("shadow@mail.ntust.edu.tw", "shadow"));
+                                smtp.Send(msg);
+                            }
+                            catch (Exception ex)
+                            {
+                                //Console.WriteLine(ex.ToString());
+                            }
+                            //Console.WriteLine("寄送給{0}", last.membername);
+                            last = q;
+                            sbMail.Clear();
+                        }
+                        string url = q.pt_all_url;
+                        Match re = Regex.Match(url, "(https://bulletin.ntust.edu.tw/)([\\w\\-/]+)(\\.php\\?Lang=zh-tw)");
+                        if (re.Success)
+                        {
+                            url = re.Groups[1].Value + re.Groups[2].Value + ",r1391" + re.Groups[3].Value;
+                        }
+                        sbMail.AppendFormat(dataContent, new object[]
+                        {
+                        q.pt_added.ToString("yyyy/MM/dd HH:mm"),
+                        q.pt__user1,
+                        q.pt_name,
+                        url
+                        });
+                    }
+                    if (last != null)
+                    {
+                        MailMessage msg2 = new MailMessage();
+                        msg2.Subject = subject;
+                        msg2.Body = mailHead + sbMail.ToString() + mailTail;
+                        msg2.BodyEncoding = Encoding.UTF8;
+                        msg2.IsBodyHtml = true;
+                        msg2.Priority = MailPriority.Normal;
+                        msg2.From = sender;
+                        try
+                        {
+                            //msg2.To.Add(new MailAddress(last.membermail, last.membername));
+                            msg2.To.Add(new MailAddress("shadow@mail.ntust.edu.tw", "shadow"));
+                            smtp.Send(msg2);
+                        }
+                        catch (Exception)
+                        {
+                        }
+                        dbContext.Database.ExecuteSqlCommand("insert into BigMailBulletinBoardSendedLog(mail) values({0})", new object[]
+                        {
+                        last.membermail
+                        });
+                    }
+                    //Console.WriteLine("完成寄送校園公佈欄{0}-{1} :{2}", dtStart, dtEnd, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+                }
 
             }
         }
@@ -436,7 +517,7 @@ namespace NTUST.BulkMail.Services
             }
             catch (Exception ex)
             {
-
+                _logger.Error(ex.ToString());
             }
         }
         public void DeleteEduCode()
@@ -511,10 +592,23 @@ namespace NTUST.BulkMail.Services
             }
         }
 
-        public mailgroup GetMailGroupName(string groupName)
+        public List<MailGroupListViewModal> GetMailGroupName(string groupName)
         {
-            var query = _mailGroupRepository.Get(x => x.name == groupName);
-            return query;
+            using (var dbContext = new mailEntities())
+            {
+                DbRawSqlQuery<GroupMailViewNews> dbRawSqlQuery = dbContext.Database.SqlQuery<GroupMailViewNews>("SELECT * FROM groupmailviewnews WHERE cname = {0} ORDER BY cname", groupName);
+                List<MailGroupListViewModal> list = new List<MailGroupListViewModal>();
+                foreach (var item in dbRawSqlQuery)
+                {
+                    MailGroupListViewModal query = new MailGroupListViewModal();
+                    query.cname = item.cname;
+                    query.name = item.membername;
+                    query.mail = item.membermail;
+                    query.groupmail = item.mail;
+                    list.Add(query);
+                }
+                return list;
+            }
         }
 
         public void UpdateUnicodeData(UnicodeViewModal unitcode)

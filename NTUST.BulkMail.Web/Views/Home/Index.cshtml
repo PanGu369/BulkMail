@@ -62,7 +62,7 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-                            <button type="button" class="btn btn-primary" v-on:click="GenerateMailGroupFile()">產生大宗郵件收件人</button>
+                            <button type="button" class="btn btn-warning" v-on:click="GenerateMailGroupFile()">產生大宗郵件收件人</button>
                         </div>
                     </div>
                 </div>
@@ -73,19 +73,19 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-                            <button type="button" class="btn btn-primary" v-on:click="GenerateAliasesFile()">產生大宗郵件收件人別名</button>
+                            <button type="button" class="btn btn-warning" v-on:click="GenerateAliasesFile()">產生大宗郵件收件人別名</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Unicode</h3>
+                            <h3 class="card-title">單位代號</h3>
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-                            <button type="button" class="btn btn-primary" v-on:click="OpenCreateUnicodeModal()">新增Unicode</button>
-                            <button type="button" class="btn btn-primary" v-on:click="OpenUnicodeModal()">修改Unicode</button>
+                            <button type="button" class="btn btn-success" v-on:click="OpenCreateUnicodeModal()">新增單位代號</button>
+                            <button type="button" class="btn btn-success" v-on:click="OpenUnicodeModal()">修改單位代號</button>
                         </div>
                     </div>
                 </div>
@@ -96,7 +96,18 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-                            <button type="button" class="btn btn-primary" v-on:click="SendBulletinBoard()">發送</button>
+                            <button type="button" class="btn btn-danger" v-on:click="SendBulletinBoard()">發送</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">下載大宗郵件收件人</h3>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-danger" v-on:click="DownloadBulkMail()">下載</button>
                         </div>
                     </div>
                 </div>
@@ -302,93 +313,92 @@
                     <!-- /.modal-dialog -->
                 </div>
                 <!-- /.modal -->
-                <div class="col-md-12">
-                    <div class="card card-primary">
-                        <div class="card-header">
-                            <h3 class="card-title">寄信</h3>
+                <!--
+                       <div class="col-md-12">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">寄信</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">寄件人</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control" id="inputEmail3" v-model="mail.sender">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label"
+                           style="cursor: pointer; color: #0079f8 !important; text-decoration: underline;" v-on:click="OpenMailAddressee()">收件人</label>
+                    <div class="col-sm-10">
+                        <vue-multiselect v-model="mail.receiver" :options="mailgroup" :multiple="true" placeholder="Select one" label="name" track-by="name"></vue-multiselect>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">標題</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="inputPassword3" v-model="mail.subject">
+                    </div>
+                </div>
+                <div id="actions" class="row">
+                    <div class="col-lg-6">
+                        <div class="btn-group w-100">
+                            <span class="btn btn-success col fileinput-button">
+                                <i class="fas fa-plus"></i>
+                                <span>附加檔案</span>
+                            </span>
                         </div>
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <label for="inputEmail3" class="col-sm-2 col-form-label">寄件人</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputEmail3" readonly v-model="mail.sender">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputPassword3" class="col-sm-2 col-form-label"
-                                       style="cursor: pointer; color: #0079f8 !important; text-decoration: underline;" v-on:click="OpenMailAddressee()">收件人</label>
-                                <div class="col-sm-10">
-                                    <vue-multiselect v-model="mail.receiver" :options="mailgroup" :multiple="true" placeholder="Select one" label="name" track-by="name"></vue-multiselect>
-                                    @*<select class="select2" multiple="multiple" data-placeholder="請選擇收件人" style="width: 100%;" v-model="test123">
-                    <option v-for="item in mailgroup" :value="item.name">{{item.name}}</option>
-                </select>*@
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputPassword3" class="col-sm-2 col-form-label">標題</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputPassword3" v-model="mail.subject">
-                                </div>
-                            </div>
-                            <div id="actions" class="row">
-                                <div class="col-lg-6">
-                                    <div class="btn-group w-100">
-                                        <span class="btn btn-success col fileinput-button">
-                                            <i class="fas fa-plus"></i>
-                                            <span>附加檔案</span>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 d-flex align-items-center">
-                                    <div class="fileupload-process w-100">
-                                        <div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                                            <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="table table-striped files" id="previews">
-                                <div id="template" class="row mt-2">
-                                    <div class="col-auto">
-                                        <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
-                                    </div>
-                                    <div class="col d-flex align-items-center">
-                                        <p class="mb-0">
-                                            <span class="lead" data-dz-name></span>
-                                            (<span data-dz-size></span>)
-                                        </p>
-                                        <strong class="error text-danger" data-dz-errormessage></strong>
-                                    </div>
-                                    <div class="col-4 d-flex align-items-center">
-                                        <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                                            <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-auto d-flex align-items-center">
-                                        <div class="btn-group">
-                                            <button class="btn btn-primary start">
-                                                <i class="fas fa-upload"></i>
-                                                <span>上傳</span>
-                                            </button>
-                                            <button data-dz-remove class="btn btn-warning cancel">
-                                                <i class="fas fa-times-circle"></i>
-                                                <span>取消</span>
-                                            </button>
-                                            <button data-dz-remove class="btn btn-danger delete">
-                                                <i class="fas fa-trash"></i>
-                                                <span>刪除</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <textarea id="summernote" v-model="value1"></textarea>
-                            <div class="card-footer">
-                                <button type="button" class="btn btn-primary" v-on:click="SendMail()">寄信</button>
+                    </div>
+                    <div class="col-lg-6 d-flex align-items-center">
+                        <div class="fileupload-process w-100">
+                            <div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="table table-striped files" id="previews">
+                    <div id="template" class="row mt-2">
+                        <div class="col-auto">
+                            <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
+                        </div>
+                        <div class="col d-flex align-items-center">
+                            <p class="mb-0">
+                                <span class="lead" data-dz-name></span>
+                                (<span data-dz-size></span>)
+                            </p>
+                            <strong class="error text-danger" data-dz-errormessage></strong>
+                        </div>
+                        <div class="col-4 d-flex align-items-center">
+                            <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                            </div>
+                        </div>
+                        <div class="col-auto d-flex align-items-center">
+                            <div class="btn-group">
+                                <button class="btn btn-primary start">
+                                    <i class="fas fa-upload"></i>
+                                    <span>上傳</span>
+                                </button>
+                                <button data-dz-remove class="btn btn-warning cancel">
+                                    <i class="fas fa-times-circle"></i>
+                                    <span>取消</span>
+                                </button>
+                                <button data-dz-remove class="btn btn-danger delete">
+                                    <i class="fas fa-trash"></i>
+                                    <span>刪除</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <textarea id="summernote" v-model="value1"></textarea>
+                <div class="card-footer">
+                    <button type="button" class="btn btn-primary" v-on:click="SendMail()">寄信</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    -->
                 <!--<div class="col-sm-6">-->
                 <!-- Select multiple-->
                 <!--<div class="form-group">

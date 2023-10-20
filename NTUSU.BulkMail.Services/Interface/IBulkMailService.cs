@@ -27,7 +27,7 @@ namespace NTUST.BulkMail.Services.Interface
         unitcode GetUnitcodesData(string tunitcode, string unitcode);
         IEnumerable<MailGroupViewModal> GetMailGroup();
         List<MailGroupListViewModal> GetMailGroupList(string groupName);
-        mailgroup GetMailGroupName(string groupName);
+        List<MailGroupListViewModal> GetMailGroupName(string groupName);
         void UpdateUnicodeData(UnicodeViewModal unitcode);
         void CreateUnicodeData(UnicodeViewModal unitcodeObject);
         void DeleteUnicodeData(string tunitcode, string unitcode);

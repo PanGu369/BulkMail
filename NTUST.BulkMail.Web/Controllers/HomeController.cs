@@ -41,6 +41,7 @@ using System.Net.Mime;
 using WebGrease.Activities;
 using Octokit;
 using System.Web.Services.Description;
+using System.IO.Compression;
 
 namespace NTUST.BulkMail.Web.Controllers
 {
@@ -366,6 +367,37 @@ namespace NTUST.BulkMail.Web.Controllers
             return Json(resultMessage, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult DownloadZip()
+        {
+            string folderPath1 = @"D:\getMailFile\data";
+            string folderPath2 = @"D:\getMailFile\template";
+
+            if (Directory.Exists(folderPath1) && Directory.Exists(folderPath2))
+            {
+                // 創建一个内存以保存 ZIP 數據
+                using (MemoryStream zipStream = new MemoryStream())
+                {
+                    using (ZipArchive archive = new ZipArchive(zipStream, ZipArchiveMode.Create, true))
+                    {
+                        // 添加文件夾1中的多個文件到 ZIP 存檔
+                        AddFolderToZip(archive, folderPath1);
+
+                        // 添加文件夾2中的多個文件到 ZIP 存檔
+                        AddFolderToZip(archive, folderPath2);
+                    }
+
+                    // 將 ZIP 數據返回给前端
+                    byte[] zipData = zipStream.ToArray();
+                    return File(zipData, "application/zip", "archive.zip");
+                }
+            }
+            else
+            {
+                // 處理文件夾不存在的情况
+                return Content("一個或兩個文件夾不存在");
+            }
+        }
+
         [HttpPost]
         [ValidateInput(false)]
         public async Task<ActionResult> SendEmail()
@@ -462,9 +494,12 @@ namespace NTUST.BulkMail.Web.Controllers
                             if (string.IsNullOrEmpty(item.cname))
                             {
                                 var mailGroup = _bulkMailService.GetMailGroupName(item.name);
-                                msg.To.Add(new MailAddress("shadow@mail.ntust.edu.tw", "shadow"));
-                                //msg.To.Add(new MailAddress(mailGroup.groupmail, mailGroup.name));
-                                //msg.To.Add(new MailAddress(item.groupmail, item.name));
+                                //msg.To.Add(new MailAddress("shadow@mail.ntust.edu.tw", "shadow"));
+                                foreach (var itemMail in mailGroup)
+                                {
+                                    msg.To.Add(new MailAddress(itemMail.mail, itemMail.name));
+                                    //msg.To.Add(new MailAddress(item.groupmail, item.name));
+                                }
                                 smtp.Send(msg);
                             }
                             else
@@ -501,7 +536,8 @@ namespace NTUST.BulkMail.Web.Controllers
                 DateTime dt = DateTime.Parse(DateTime.Now.ToString("yyyy/MM/dd"));
                 string dtStart = dt.AddDays(-1.0).ToString("yyyy/MM/dd 19:00");
                 string dtEnd = dt.ToString("yyyy/MM/dd 19:00");
-                _bulkMailService.CreateSendBigMailBulletinBoardNew(dtStart, dtEnd);
+               // _bulkMailService.CreateSendBigMailBulletinBoardNew(dtStart, dtEnd);
+                resultMessage.Status = "OK";
                 return Json(resultMessage, JsonRequestBehavior.AllowGet);
             }
             catch(Exception ex)
@@ -574,6 +610,32 @@ namespace NTUST.BulkMail.Web.Controllers
             }
             return Json(resultMessage, JsonRequestBehavior.AllowGet);
         }
+
+        // 輔助方法：將本地文件夾中的多個文件添加到 ZIP 存檔
+        private void AddFolderToZip(ZipArchive archive, string folderPath)
+        {
+            string[] files = Directory.GetFiles(folderPath);
+
+            foreach (string filePath in files)
+            {
+                string entryName = Path.Combine(Path.GetFileName(folderPath), Path.GetFileName(filePath));
+                AddFileToZip(archive, filePath, entryName);
+            }
+        }
+
+        // 輔助方法：將本地文件添加到 ZIP 存檔
+        private void AddFileToZip(ZipArchive archive, string filePath, string entryName)
+        {
+            var entry = archive.CreateEntry(entryName);
+            using (var entryStream = entry.Open())
+            {
+                using (var fileStream = new FileStream(filePath, System.IO.FileMode.Open, FileAccess.Read))
+                {
+                    fileStream.CopyTo(entryStream);
+                }
+            }
+        }
+
         [AllowCrossSiteJson]
         public ActionResult ValidGoogleLogin()
         {

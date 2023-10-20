@@ -140,6 +140,9 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
             },
             SendBulletinBoard() {
                 SendBulletinBoard();
+            },
+            DownloadBulkMail() {
+                DownloadBulkMail();
             }
         },
         filters: {
@@ -971,6 +974,29 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
                 $.LoadingOverlay("hide");
             }
         });
+    }
+    function DownloadBulkMail() {
+        $.LoadingOverlay("show");
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "bulkmail/Home/DownloadZip", true);
+        xhr.responseType = "blob";  // 將響應類型設置為二進制數據
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var blob = new Blob([xhr.response], { type: "application/zip" });
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement("a");
+                a.href = url;
+                a.download = "bulkmail.zip";
+                a.style.display = "none";
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }
+        };
+
+        xhr.send();
+        $.LoadingOverlay("hide");
     }
     function OpenCreateUnicodeModal() {
         vm.unicodeData = {};
