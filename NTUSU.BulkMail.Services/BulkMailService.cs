@@ -355,8 +355,8 @@ namespace NTUST.BulkMail.Services
                             msg.From = sender;
                             try
                             {
-                                //msg.To.Add(new MailAddress(last.membermail, last.membername));
-                                msg.To.Add(new MailAddress("shadow@mail.ntust.edu.tw", "shadow"));
+                                msg.To.Add(new MailAddress(last.membermail, last.membername));
+                                //msg.To.Add(new MailAddress("shadow@mail.ntust.edu.tw", "shadow"));
                                 smtp.Send(msg);
                             }
                             catch (Exception ex)
@@ -392,8 +392,8 @@ namespace NTUST.BulkMail.Services
                         msg2.From = sender;
                         try
                         {
-                            //msg2.To.Add(new MailAddress(last.membermail, last.membername));
-                            msg2.To.Add(new MailAddress("shadow@mail.ntust.edu.tw", "shadow"));
+                            msg2.To.Add(new MailAddress(last.membermail, last.membername));
+                            //msg2.To.Add(new MailAddress("shadow@mail.ntust.edu.tw", "shadow"));
                             smtp.Send(msg2);
                         }
                         catch (Exception)
