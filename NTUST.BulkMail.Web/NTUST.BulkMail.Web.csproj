@@ -2383,6 +2383,8 @@
     <Content Include="Scripts\AdminLTE\plugins\sweetalert2-theme-bootstrap-4\package.json" />
     <Content Include="Scripts\AdminLTE\plugins\sweetalert2-theme-bootstrap-4\README.md" />
     <Content Include="Scripts\AdminLTE\plugins\toastr\toastr.js.map" />
+    <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
