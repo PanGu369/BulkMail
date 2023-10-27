@@ -641,6 +641,24 @@ namespace NTUST.BulkMail.Services
             _unitOfWork.Commit();
         }
 
+        public List<LostUnitCode> GetLostUnitCode()
+        {
+            using (var dbContext = new mailEntities())
+            {
+                List<LostUnitCode> result = dbContext.Database.SqlQuery<LostUnitCode>("select unitcode, unit from [staffmemberviews] where (unitcode ) not in (select [unitcode] from unitcode ) order by unit", Array.Empty<object>()).ToList<LostUnitCode>();
+                return result;
+            }
+        }
+
+        public List<LostStaffClassTitleCode> GetLostStaffClassTitleCode()
+        {
+            using (var dbContext = new mailEntities())
+            {
+                List<LostStaffClassTitleCode> result = dbContext.Database.SqlQuery<LostStaffClassTitleCode>("SELECT distinct a.class, a.title FROM dbo.staffmemberu AS a left JOIN dbo.StaffClassTitleCode AS b ON a.class = b.class AND a.title = b.title WHERE (a.email LIKE '%ntust.edu.tw') and b.code is null", Array.Empty<object>()).ToList<LostStaffClassTitleCode>();
+                return result;
+            }
+        }
+
         //反組譯 蟹老闆大宗郵件程式碼-檢查email格式
         private static string CheckEmail(string email)
         {

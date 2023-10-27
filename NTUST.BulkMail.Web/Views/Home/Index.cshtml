@@ -44,7 +44,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="card card-primary">
                         <div class="card-header">
                             <h3 class="card-title">畢業學生</h3>
@@ -80,12 +80,34 @@
                 <div class="col-md-6">
                     <div class="card card-primary">
                         <div class="card-header">
+                            <h3 class="card-title">單位職稱</h3>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-success" v-on:click="OpenCreateUnicodeModal()">新增單位職稱</button>
+                            <button type="button" class="btn btn-success" v-on:click="OpenUnicodeModal()">修改單位職稱</button>
+                            <br />
+                            <div v-for="item in lostStaffClassTitleCodes">
+                                <label>缺少單位職稱:{{item.class}}---缺少單位title:{{item.title}}</label>
+                                <br />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card card-primary">
+                        <div class="card-header">
                             <h3 class="card-title">單位代號</h3>
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
                             <button type="button" class="btn btn-success" v-on:click="OpenCreateUnicodeModal()">新增單位代號</button>
                             <button type="button" class="btn btn-success" v-on:click="OpenUnicodeModal()">修改單位代號</button>
+                            <br />
+                            <div v-for="item in lostUnitCodes">
+                                <label>缺少單位代號:{{item.unitcode}}---缺少單位名稱:{{item.unit}}</label>
+                                <br />
+                            </div>
                         </div>
                     </div>
                 </div>

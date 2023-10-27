@@ -68,6 +68,8 @@ namespace NTUST.BulkMail.Web.Controllers
             try
             {
                 var query = _bulkMailService.GetStaffMemberData();
+                var lostUnintCode = _bulkMailService.GetLostUnitCode();
+                var lostStaffClassTitleCode = _bulkMailService.GetLostStaffClassTitleCode();
                 if (query.Any())
                 {
                     var result = query.ToPagedList(pageIndex, query.Count());
@@ -91,6 +93,8 @@ namespace NTUST.BulkMail.Web.Controllers
                     {
                         resultMessage = resultMessage,
                         pageListViewModel = pageListViewModel,
+                        lostUnintCode = lostUnintCode,
+                        lostStaffClassTitleCode = lostStaffClassTitleCode,
                     };
                     return Json(content, JsonRequestBehavior.AllowGet);
                 }

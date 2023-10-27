@@ -18,7 +18,7 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
         $('#summernote').summernote({
             lang: 'zh-TW',
         });
-        init();
+        //init();
     });
 
 
@@ -69,6 +69,8 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
             unicodeData: {},
             mailgroup: [],
             mailgroupList: {},
+            lostUnitCodes: {},
+            lostStaffClassTitleCodes: {},
             value: [],
             value1:"",
         },
@@ -221,6 +223,8 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
                 if (jqXHR.status === 200) {
                     if (response.resultMessage.Status == "OK") {
                         vm.pageList = response.pageListViewModel;
+                        vm.lostUnitCodes = response.lostUnintCode;
+                        vm.lostStaffClassTitleCodes = response.lostStaffClassTitleCode;
                         //Vue.nextTick(function () {
                         //    $("#bulkmail").DataTable({
                         //        "responsive": true, "lengthChange": false, "autoWidth": false,

@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GroupFile.cs" />
+    <Compile Include="LostViewModal.cs" />
     <Compile Include="MailGroupViewModal.cs" />
     <Compile Include="NewDataSet.cs" />
     <Compile Include="NtustEmail.cs" />

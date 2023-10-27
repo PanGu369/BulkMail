@@ -32,5 +32,7 @@ namespace NTUST.BulkMail.Services.Interface
         void CreateUnicodeData(UnicodeViewModal unitcodeObject);
         void DeleteUnicodeData(string tunitcode, string unitcode);
         void Save();
+        List<LostUnitCode> GetLostUnitCode();
+        List<LostStaffClassTitleCode> GetLostStaffClassTitleCode();
     }
 }
