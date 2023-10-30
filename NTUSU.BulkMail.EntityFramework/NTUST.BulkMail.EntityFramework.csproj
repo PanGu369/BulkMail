@@ -84,6 +84,7 @@
     <Compile Include="Interface\IEduCodeRepository.cs" />
     <Compile Include="Interface\IEduCodeTempRepository.cs" />
     <Compile Include="Interface\IMailGroupRepository.cs" />
+    <Compile Include="Interface\IStaffClassTitleCodeRepository.cs" />
     <Compile Include="Interface\IStaffmemberRepository.cs" />
     <Compile Include="Interface\IStaffmemberTempRepository.cs" />
     <Compile Include="Interface\IStuMemberRepository.cs" />
@@ -93,6 +94,9 @@
       <DependentUpon>BulkMailModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StaffClassTitleCode.cs">
+      <DependentUpon>BulkMailModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="staffmember.cs">
       <DependentUpon>BulkMailModel.tt</DependentUpon>
     </Compile>

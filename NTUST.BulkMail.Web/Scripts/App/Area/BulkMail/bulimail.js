@@ -13,6 +13,7 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
     $(document).ready(function () {
         getData(1);
         getUnincodeData(1);
+        getStaffClassTitleCodeData(1);
         getMailGroup();
         // Summernote
         $('#summernote').summernote({
@@ -58,6 +59,21 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
                 pageEnd: 1,
                 itemList: []
             },
+            staffClassTitleCodePageList: {
+                firstItemOnPage: 1,
+                hasNextPage: true,
+                hasPreviousPage: false,
+                isFirstPage: true,
+                isLastPage: false,
+                lastItemOnPage: 20,
+                pageCount: 0,
+                pageNumber: 1,
+                pageSize: 20,
+                totalItemCount: 0,
+                pageStart: 1,
+                pageEnd: 1,
+                itemList: []
+            },
             mail: {
                 sender: "",
                 receiver: [],
@@ -67,6 +83,7 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
                 dt: "",
             },
             unicodeData: {},
+            staffClassTitleCodeData: {},
             mailgroup: [],
             mailgroupList: {},
             lostUnitCodes: {},
@@ -88,6 +105,9 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
             },
             getUnincodeData(pageIndex) {
                 getUnincodeData(pageIndex);
+            },
+            getStaffClassTitleCodeData(pageIndex) {
+                getStaffClassTitleCodeData(pageIndex);
             },
             getMailGroup() {
                 getMailGroup();
@@ -116,6 +136,12 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
             OpenUnicodeModal() {
                 OpenUnicodeModal();
             },
+            OpenCreateStaffClassTitleCodeModal() {
+                OpenCreateStaffClassTitleCodeModal();
+            },
+            OpenStaffClassTitleCodeModal() {
+                OpenStaffClassTitleCodeModal()
+            },
             OpenMailAddressee() {
                 OpenMailAddressee();
             },
@@ -125,14 +151,26 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
             editUnicode(tunitcode, unitcode) {
                 editUnicode(tunitcode, unitcode);
             },
+            editStaffClassTitleCode(id) {
+                editStaffClassTitleCode(id);
+            },
             createUnicodeData() {
                 createUnicodeData();
+            },
+            createStaffClassTitleCodeData() {
+                createStaffClassTitleCodeData();
             },
             deleteUnicode(tunitcode, unitcode) {
                 deleteUnicode(tunitcode, unitcode);
             },
+            deleteStaffClassTitleCode(id) {
+                deleteStaffClassTitleCode(id);
+            },
             updateUnicodeData() {
                 updateUnicodeData();
+            },
+            updateStaffClassTitleCodeData() {
+                updateStaffClassTitleCodeData();
             },
             addEMailToGroup(item) {
                 addEMailToGroup(item);
@@ -277,8 +315,6 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
             datatype: "json",
             data: {
                 pageIndex: pageIndex,
-                id: vm.id,
-                semester: vm.semester,
             },
             headers: {
                 //'RequestVerificationToken': token
@@ -294,9 +330,61 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
                                     url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/zh-HANT.json',
                                 },
                                 'iDisplayLength': 15,
-                                "buttons": ["excel", "print", "colvis"],
+                                //"buttons": ["excel", "print", "colvis"],
                                 "destroy": true,
-                            }).buttons().container().appendTo('#unicode_wrapper .col-md-6:eq(0)');
+                            });
+                        })
+                        $.LoadingOverlay("hide");
+                        //buildPageList();
+                    }
+                    else {
+                        $.LoadingOverlay("hide");
+                        Swal.fire({
+                            icon: 'error',
+                            title: '連線逾時',
+                            text: '請稍後再試',
+                        })
+                    }
+                }
+                else {
+                    $.LoadingOverlay("hide");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $.LoadingOverlay("hide");
+            }
+        });
+    }
+
+    function getStaffClassTitleCodeData(pageIndex) {
+        $.LoadingOverlay("show");
+        $.ajax({
+            url: baseUrl + 'Home/StaffClassTitleCodeList',
+            type: "POST",
+            async: true,
+            cache: false,
+            contentype: "application/json",
+            datatype: "json",
+            data: {
+                pageIndex: pageIndex,
+            },
+            headers: {
+                //'RequestVerificationToken': token
+            },
+            success: function (response, textStatus, jqXHR) {
+                if (jqXHR.status === 200) {
+                    if (response.resultMessage.Status == "OK") {
+                        vm.staffClassTitleCodePageList = response.pageListViewModel;
+                        Vue.nextTick(function () {
+                            $("#staffClassTitleCode").DataTable({
+                                "responsive": true, "lengthChange": false, "autoWidth": false,
+                                "language": {
+                                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/zh-HANT.json',
+                                },
+                                'iDisplayLength': 15,
+                                //"buttons": ["excel", "print", "colvis"],
+                                "destroy": true,
+                            });
                         })
                         $.LoadingOverlay("hide");
                         //buildPageList();
@@ -704,6 +792,45 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
             }
         });
     }
+    function editStaffClassTitleCode(id) {
+        $.LoadingOverlay("show");
+        $.ajax({
+            url: baseUrl + 'Home/GetStaffClassTitleCodeData',
+            type: "POST",
+            async: true,
+            cache: false,
+            contentype: "application/json",
+            datatype: "json",
+            data: {
+                id: id,
+            },
+            headers: {
+                //'RequestVerificationToken': token
+            },
+            success: function (response, textStatus, jqXHR) {
+                $.LoadingOverlay("hide");
+                if (jqXHR.status === 200) {
+                    if (response.resultMessage.Status == "OK") {
+                        vm.staffClassTitleCodeData = response.staffClassTitleCodeData;
+                        OpenStaffClassTitleCodeEditModal();
+                    }
+                    else {
+                        $.LoadingOverlay("hide");
+                        Swal.fire({
+                            icon: 'error',
+                            title: '連線逾時',
+                            text: '請稍後再試',
+                        })
+                    }
+                }
+                else {
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $.LoadingOverlay("hide");
+            }
+        });
+    }
     function createUnicodeData() {
         $.LoadingOverlay("show");
         $.ajax({
@@ -731,8 +858,55 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
                         }).then((result) => {
                             /* Read more about isConfirmed, isDenied below */
                             if (result.isConfirmed) {
-                                CloseUnicodeEditModal();
                                 getUnincodeData(1);
+                            }
+                        })
+                    }
+                    else {
+                        $.LoadingOverlay("hide");
+                        Swal.fire({
+                            icon: 'error',
+                            title: '連線逾時',
+                            text: '請稍後再試',
+                        })
+                    }
+                }
+                else {
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $.LoadingOverlay("hide");
+            }
+        });
+    }
+    function createStaffClassTitleCodeData() {
+        $.LoadingOverlay("show");
+        $.ajax({
+            url: baseUrl + 'Home/CreateStaffClassTitleCodeData',
+            type: "POST",
+            async: true,
+            cache: false,
+            contentype: "application/json",
+            datatype: "json",
+            data: {
+                staffClassTitleCode: vm.staffClassTitleCodeData,
+            },
+            headers: {
+                //'RequestVerificationToken': token
+            },
+            success: function (response, textStatus, jqXHR) {
+                $.LoadingOverlay("hide");
+                if (jqXHR.status === 200) {
+                    if (response.Status == "OK") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功',
+                            text: '資料更新成功',
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                getStaffClassTitleCodeData(1);
                             }
                         })
                     }
@@ -802,7 +976,54 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
             }
         });
     }
-
+    function deleteStaffClassTitleCode(id) {
+        $.LoadingOverlay("show");
+        $.ajax({
+            url: baseUrl + 'Home/DeleteStaffClassTitleCodeData',
+            type: "POST",
+            async: true,
+            cache: false,
+            contentype: "application/json",
+            datatype: "json",
+            data: {
+                id: id
+            },
+            headers: {
+                //'RequestVerificationToken': token
+            },
+            success: function (response, textStatus, jqXHR) {
+                $.LoadingOverlay("hide");
+                if (jqXHR.status === 200) {
+                    if (response.Status == "OK") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功',
+                            text: '資料刪除成功',
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                getStaffClassTitleCodeData(1);
+                            }
+                        })
+                    }
+                    else {
+                        $.LoadingOverlay("hide");
+                        Swal.fire({
+                            icon: 'error',
+                            title: '連線逾時',
+                            text: '請稍後再試',
+                        })
+                    }
+                }
+                else {
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $.LoadingOverlay("hide");
+            }
+        });
+    }
     function updateUnicodeData() {
         $.LoadingOverlay("show");
         $.ajax({
@@ -832,6 +1053,55 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
                             if (result.isConfirmed) {
                                 CloseUnicodeEditModal();
                                 getUnincodeData(1);
+                            }
+                        })
+                    }
+                    else {
+                        $.LoadingOverlay("hide");
+                        Swal.fire({
+                            icon: 'error',
+                            title: '連線逾時',
+                            text: '請稍後再試',
+                        })
+                    }
+                }
+                else {
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $.LoadingOverlay("hide");
+            }
+        });
+    }
+    function updateStaffClassTitleCodeData() {
+        $.LoadingOverlay("show");
+        $.ajax({
+            url: baseUrl + 'Home/UpdateStaffClassTitleCodeData',
+            type: "POST",
+            async: true,
+            cache: false,
+            contentype: "application/json",
+            datatype: "json",
+            data: {
+                staffClassTitleCode: vm.staffClassTitleCodeData,
+            },
+            headers: {
+                //'RequestVerificationToken': token
+            },
+            success: function (response, textStatus, jqXHR) {
+                $.LoadingOverlay("hide");
+                if (jqXHR.status === 200) {
+                    if (response.Status == "OK") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功',
+                            text: '資料更新成功',
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                CloseStaffClassTitleCodeEditModal();
+                                getStaffClassTitleCodeData(1);
                             }
                         })
                     }
@@ -1021,8 +1291,30 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
             backdrop: 'static'
         });
     }
+    function OpenCreateStaffClassTitleCodeModal() {
+        vm.staffClassTitleCodeData = {};
+        $('#createStaffClassTitleCodeModal').modal({
+            show: true,
+            backdrop: 'static'
+        });
+    }
+    function OpenStaffClassTitleCodeModal() {
+        $('#staffClassTitleCodeModal').modal({
+            show: true,
+            backdrop: 'static'
+        });
+    }
+    function OpenStaffClassTitleCodeEditModal() {
+        $('#editStaffClassTitleCodeModal').modal({
+            show: true,
+            backdrop: 'static'
+        });
+    }
     function CloseUnicodeEditModal() {
         $('#editModal').modal('hide')
+    }
+    function CloseStaffClassTitleCodeEditModal() {
+        $('#editStaffClassTitleCodeModal').modal('hide')
     }
 
     function OpenMailAddressee() {

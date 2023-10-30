@@ -24,13 +24,18 @@ namespace NTUST.BulkMail.Services.Interface
         void DeleteStudentData();
         IEnumerable<member> GetStaffMemberData();
         IEnumerable<unitcode> GetUnitcodesDataList();
+        IEnumerable<StaffClassTitleCodeViewModal> GetStaffClassTitleCodeDataList();
         unitcode GetUnitcodesData(string tunitcode, string unitcode);
+        StaffClassTitleCode GetStaffClassTitleCodesData(int id);
         IEnumerable<MailGroupViewModal> GetMailGroup();
         List<MailGroupListViewModal> GetMailGroupList(string groupName);
         List<MailGroupListViewModal> GetMailGroupName(string groupName);
         void UpdateUnicodeData(UnicodeViewModal unitcode);
+        void UpdateStaffClassTitleCodeData(StaffClassTitleCodeViewModal staffClassTitleCodeViewModal);
         void CreateUnicodeData(UnicodeViewModal unitcodeObject);
+        void CreateStaffClassTitleCodeData(StaffClassTitleCodeViewModal staffClassTitleCodeViewModal);
         void DeleteUnicodeData(string tunitcode, string unitcode);
+        void DeleteStaffClassTitleCodeData(int id);
         void Save();
         List<LostUnitCode> GetLostUnitCode();
         List<LostStaffClassTitleCode> GetLostStaffClassTitleCode();

@@ -84,8 +84,8 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-                            <button type="button" class="btn btn-success" v-on:click="OpenCreateUnicodeModal()">新增單位職稱</button>
-                            <button type="button" class="btn btn-success" v-on:click="OpenUnicodeModal()">修改單位職稱</button>
+                            <button type="button" class="btn btn-success" v-on:click="OpenCreateStaffClassTitleCodeModal()">新增單位職稱</button>
+                            <button type="button" class="btn btn-success" v-on:click="OpenStaffClassTitleCodeModal()">修改單位職稱</button>
                             <br />
                             <div v-for="item in lostStaffClassTitleCodes">
                                 <label>缺少單位職稱:{{item.class}}---缺少單位title:{{item.title}}</label>
@@ -248,6 +248,153 @@
                     <!-- /.modal-dialog -->
                 </div>
                 <!-- /.modal -->
+
+                <div class="modal fade" id="staffClassTitleCodeModal">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">StaffClassTitleCode</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <table id="staffClassTitleCode" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">序號</th>
+                                            <th scope="col">class</th>
+                                            <th scope="col">title</th>
+                                            <th scope="col">subclassname</th>
+                                            <th scope="col">功能</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(item,i) in staffClassTitleCodePageList.ItemList">
+                                            <th scope="row">{{ i + staffClassTitleCodePageList.FirstItemOnPage }}</th>
+                                            <td>{{item.class}}</td>
+                                            <td>{{item.title}}</td>
+                                            <td>{{item.subclassname}}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-warning" v-on:click="editStaffClassTitleCode(item.id)">編輯</button>
+                                                <button type="button" class="btn btn-danger" v-on:click="deleteStaffClassTitleCode(item.id)">刪除</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+                <div class="modal fade" id="createStaffClassTitleCodeModal">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">StaffClassTitleCode</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="classCodeInput">classcode</label>
+                                        <input type="text" class="form-control" id="classCodeInput" placeholder="tunitcode" maxlength="4" v-model="staffClassTitleCodeData.classcode">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="classInput">class</label>
+                                        <input type="text" class="form-control" id="classInput" placeholder="單位" v-model="staffClassTitleCodeData.class">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="titleInput">title</label>
+                                        <input type="text" class="form-control" id="titleInput" placeholder="unitcode" maxlength="4" v-model="staffClassTitleCodeData.title">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="codeInput">code</label>
+                                        <input type="text" class="form-control" id="codeInput" placeholder="tunitcode" maxlength="4" v-model="staffClassTitleCodeData.code">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="subclassInput">subclass</label>
+                                        <input type="text" class="form-control" id="subclassInput" placeholder="單位" v-model="staffClassTitleCodeData.subclass">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="subclasscodeInput">subclasscode</label>
+                                        <input type="text" class="form-control" id="subclasscodeInput" placeholder="unitcode" maxlength="4" v-model="staffClassTitleCodeData.subclasscode">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="subclassnameInput">subclassname</label>
+                                        <input type="text" class="form-control" id="subclassnameInput" placeholder="unitcode" maxlength="4" v-model="staffClassTitleCodeData.subclassname">
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+                                <button type="button" class="btn btn-primary" v-on:click="createStaffClassTitleCodeData()">儲存</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+                <div class="modal fade" id="editStaffClassTitleCodeModal">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">StaffClassTitleCode</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">classcode</label>
+                                    <input type="text" class="form-control" id="exampleInputEmail1" placeholder="tunitcode" maxlength="4" v-model="staffClassTitleCodeData.classcode">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">class</label>
+                                    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="單位" v-model="staffClassTitleCodeData.class">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">title</label>
+                                    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="unitcode" maxlength="4" v-model="staffClassTitleCodeData.title">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">code</label>
+                                    <input type="text" class="form-control" id="exampleInputEmail1" placeholder="tunitcode" maxlength="4" v-model="staffClassTitleCodeData.code">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">subclass</label>
+                                    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="單位" v-model="staffClassTitleCodeData.subclass">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">subclasscode</label>
+                                    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="unitcode" maxlength="4" v-model="staffClassTitleCodeData.subclasscode">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">subclassname</label>
+                                    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="unitcode" maxlength="4" v-model="staffClassTitleCodeData.subclassname">
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+                                <button type="button" class="btn btn-primary" v-on:click="updateStaffClassTitleCodeData()">儲存</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+
                 <div class="modal fade" id="mailModal">
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">

@@ -165,6 +165,50 @@ namespace NTUST.BulkMail.Web.Controllers
         }
 
         [HttpPost]
+        public ActionResult StaffClassTitleCodeList(int pageIndex)
+        {
+            ResultMessage resultMessage = new ResultMessage();
+            List<StaffClassTitleCodeViewModal> memberList = new List<StaffClassTitleCodeViewModal>();
+            try
+            {
+                var query = _bulkMailService.GetStaffClassTitleCodeDataList();
+                var result = query.ToPagedList(pageIndex, query.Count());
+                var pageListViewModel = new PageList
+                {
+                    FirstItemOnPage = result.FirstItemOnPage,
+                    HasNextPage = result.HasNextPage,
+                    HasPreviousPage = result.HasPreviousPage,
+                    IsFirstPage = result.IsFirstPage,
+                    IsLastPage = result.IsLastPage,
+                    LastItemOnPage = result.LastItemOnPage,
+                    PageCount = result.PageCount,
+                    PageNumber = result.PageNumber,
+                    PageSize = result.PageSize,
+                    TotalItemCount = result.TotalItemCount,
+                    ItemList = result.ToList(),
+                };
+
+                resultMessage.Status = "OK";
+                var content = new
+                {
+                    resultMessage = resultMessage,
+                    pageListViewModel = pageListViewModel,
+                };
+                return Json(content, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                resultMessage.Status = "NG";
+                resultMessage.Message = "";
+                var content = new
+                {
+                    resultMessage = resultMessage,
+                };
+                return Json(content, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
         public ActionResult GetUnicodeData(string tunitcode, string unitcode)
         {
             ResultMessage resultMessage = new ResultMessage();
@@ -177,6 +221,34 @@ namespace NTUST.BulkMail.Web.Controllers
                 var content = new
                 {
                     unicodeData = query,
+                    resultMessage = resultMessage,
+                };
+                return Json(content, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                resultMessage.Status = "NG";
+                resultMessage.Message = "";
+                var content = new
+                {
+                    resultMessage = resultMessage,
+                };
+                return Json(content, JsonRequestBehavior.AllowGet);
+            }
+        }
+        [HttpPost]
+        public ActionResult GetStaffClassTitleCodeData(int id)
+        {
+            ResultMessage resultMessage = new ResultMessage();
+            List<StaffClassTitleCodeViewModal> memberList = new List<StaffClassTitleCodeViewModal>();
+            try
+            {
+                var query = _bulkMailService.GetStaffClassTitleCodesData(id);
+
+                resultMessage.Status = "OK";
+                var content = new
+                {
+                    staffClassTitleCodeData = query,
                     resultMessage = resultMessage,
                 };
                 return Json(content, JsonRequestBehavior.AllowGet);
@@ -338,12 +410,45 @@ namespace NTUST.BulkMail.Web.Controllers
         }
 
         [HttpPost]
+        public ActionResult UpdateStaffClassTitleCodeData(StaffClassTitleCodeViewModal staffClassTitleCode)
+        {
+            ResultMessage resultMessage = new ResultMessage();
+            try
+            {
+                _bulkMailService.UpdateStaffClassTitleCodeData(staffClassTitleCode);
+                resultMessage.Status = "OK";
+            }
+            catch (Exception ex)
+            {
+                resultMessage.Status = "NG";
+                resultMessage.Message = ex.ToString();
+            }
+            return Json(resultMessage, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
         public ActionResult DeleteUnicodeData(string tunitcode, string unitcode)
         {
             ResultMessage resultMessage = new ResultMessage();
             try
             {
                 _bulkMailService.DeleteUnicodeData(tunitcode, unitcode);
+                resultMessage.Status = "OK";
+            }
+            catch (Exception ex)
+            {
+                resultMessage.Status = "NG";
+                resultMessage.Message = ex.ToString();
+            }
+            return Json(resultMessage, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public ActionResult DeleteStaffClassTitleCodeData(int id)
+        {
+            ResultMessage resultMessage = new ResultMessage();
+            try
+            {
+                _bulkMailService.DeleteStaffClassTitleCodeData(id);
                 resultMessage.Status = "OK";
             }
             catch (Exception ex)
@@ -361,6 +466,22 @@ namespace NTUST.BulkMail.Web.Controllers
             try
             {
                 _bulkMailService.CreateUnicodeData(unitcode);
+                resultMessage.Status = "OK";
+            }
+            catch (Exception ex)
+            {
+                resultMessage.Status = "NG";
+                resultMessage.Message = ex.ToString();
+            }
+            return Json(resultMessage, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public ActionResult CreateStaffClassTitleCodeData(StaffClassTitleCodeViewModal staffClassTitleCode)
+        {
+            ResultMessage resultMessage = new ResultMessage();
+            try
+            {
+                _bulkMailService.CreateStaffClassTitleCodeData(staffClassTitleCode);
                 resultMessage.Status = "OK";
             }
             catch (Exception ex)

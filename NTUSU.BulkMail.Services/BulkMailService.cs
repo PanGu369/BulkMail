@@ -43,6 +43,7 @@ namespace NTUST.BulkMail.Services
         private readonly IStuMemberTempRepository _stuMemberTempRepository;
         private readonly IUnitcodeRepository _unitcodeRepository;
         private readonly IMailGroupRepository _mailGroupRepository;
+        private readonly IStaffClassTitleCodeRepository _staffClassTitleCodeRepository;
         private Logger _logger = LogManager.GetCurrentClassLogger();
         public BulkMailService(IUnitOfWork unitOfWork,
             IStaffmemberRepository staffmemberRepository,
@@ -52,7 +53,8 @@ namespace NTUST.BulkMail.Services
             IStuMemberRepository stuMemberRepository,
             IStuMemberTempRepository stuMemberTempRepository,
             IUnitcodeRepository unitcodeRepository,
-            IMailGroupRepository mailGroupRepository)
+            IMailGroupRepository mailGroupRepository,
+            IStaffClassTitleCodeRepository staffClassTitleCodeRepository)
         {
             _unitOfWork = unitOfWork;
             _staffmemberRepository = staffmemberRepository;
@@ -63,6 +65,7 @@ namespace NTUST.BulkMail.Services
             _stuMemberTempRepository = stuMemberTempRepository;
             _unitcodeRepository = unitcodeRepository;
             _mailGroupRepository = mailGroupRepository;
+            _staffClassTitleCodeRepository = staffClassTitleCodeRepository;
         }
 
         public void CreateEduCode()
@@ -409,6 +412,20 @@ namespace NTUST.BulkMail.Services
 
             }
         }
+
+        public void CreateStaffClassTitleCodeData(StaffClassTitleCodeViewModal staffClassTitleCodeViewModal)
+        {
+            StaffClassTitleCode staffClassTitleCode = new StaffClassTitleCode();
+            staffClassTitleCode.classCode = staffClassTitleCodeViewModal.classCode;
+            staffClassTitleCode.@class = staffClassTitleCodeViewModal.@class;
+            staffClassTitleCode.title = staffClassTitleCodeViewModal.title;
+            staffClassTitleCode.code = staffClassTitleCodeViewModal.code;
+            staffClassTitleCode.subclass = staffClassTitleCodeViewModal.subclass;
+            staffClassTitleCode.subclasscode = staffClassTitleCodeViewModal.subclasscode;
+            staffClassTitleCode.subclassname = staffClassTitleCodeViewModal.subclassname;
+            _staffClassTitleCodeRepository.Add(staffClassTitleCode);
+            Save();
+        }
         public void GenerateDataFromRawData()
         {
             try
@@ -555,9 +572,30 @@ namespace NTUST.BulkMail.Services
             var query = _unitcodeRepository.GetAll();
             return query.OrderBy(x => x.unitcode1);
         }
+        public IEnumerable<StaffClassTitleCodeViewModal> GetStaffClassTitleCodeDataList()
+        {
+            var query = _staffClassTitleCodeRepository.GetAll();
+            var result = query.Select(x => new StaffClassTitleCodeViewModal()
+            {
+                id = x.id,
+                classCode = x.classCode,
+                @class = x.@class,
+                title = x.title,
+                code = x.code,
+                subclass = x.subclass,
+                subclasscode = x.subclasscode,
+                subclassname = x.subclassname,
+            });
+            return result.OrderBy(x => x.id);
+        }
         public unitcode GetUnitcodesData(string tunitcode, string unitcode)
         {
             var query = _unitcodeRepository.Get(x => x.tunitcode == tunitcode && x.unitcode1 == unitcode);
+            return query;
+        }
+        public StaffClassTitleCode GetStaffClassTitleCodesData(int id)
+        {
+            var query = _staffClassTitleCodeRepository.Get(x => x.id == id);
             return query;
         }
 
@@ -620,6 +658,19 @@ namespace NTUST.BulkMail.Services
             _unitcodeRepository.Update(query);
             Save();
         }
+        public void UpdateStaffClassTitleCodeData(StaffClassTitleCodeViewModal staffClassTitleCodeViewModal)
+        {
+            var query = _staffClassTitleCodeRepository.Get(x => x.id == staffClassTitleCodeViewModal.id);
+            query.classCode = staffClassTitleCodeViewModal.classCode;
+            query.@class = staffClassTitleCodeViewModal.@class;
+            query.title = staffClassTitleCodeViewModal.title;
+            query.code = staffClassTitleCodeViewModal.code;
+            query.subclass = staffClassTitleCodeViewModal.subclass;
+            query.subclasscode = staffClassTitleCodeViewModal.subclasscode;
+            query.subclassname = staffClassTitleCodeViewModal.subclassname;
+            _staffClassTitleCodeRepository.Update(query);
+            Save();
+        }
         public void CreateUnicodeData(UnicodeViewModal unitcodeObject)
         {
             unitcode unitcode = new unitcode();
@@ -634,6 +685,12 @@ namespace NTUST.BulkMail.Services
         {
             var query = _unitcodeRepository.Get(x => x.tunitcode == tunitcode && x.unitcode1 == unitcode);
             _unitcodeRepository.Delete(query);
+            Save();
+        }
+        public void DeleteStaffClassTitleCodeData(int id)
+        {
+            var query = _staffClassTitleCodeRepository.Get(x => x.id == id);
+            _staffClassTitleCodeRepository.Delete(query);
             Save();
         }
         public void Save()

@@ -54,6 +54,7 @@
     <Compile Include="EduCodeTempRepository.cs" />
     <Compile Include="MailGroupRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StaffClassTitleCodeRepository.cs" />
     <Compile Include="StaffmemberRepository.cs" />
     <Compile Include="StaffmemberTempRepository.cs" />
     <Compile Include="StuMemberRepository.cs" />

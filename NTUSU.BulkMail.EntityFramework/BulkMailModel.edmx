@@ -39,6 +39,19 @@
           <Property Name="mail" Type="varchar" MaxLength="40" Nullable="false" />
           <Property Name="groupmail" Type="varchar" MaxLength="40" />
         </EntityType>
+        <EntityType Name="StaffClassTitleCode">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="classCode" Type="varchar" MaxLength="10" />
+          <Property Name="class" Type="nvarchar" MaxLength="10" />
+          <Property Name="title" Type="nvarchar" MaxLength="20" />
+          <Property Name="code" Type="varchar" MaxLength="10" />
+          <Property Name="subclass" Type="nvarchar" MaxLength="10" />
+          <Property Name="subclasscode" Type="varchar" MaxLength="5" />
+          <Property Name="subclassname" Type="nvarchar" MaxLength="20" />
+        </EntityType>
         <EntityType Name="staffmember">
           <Key>
             <PropertyRef Name="id" />
@@ -119,6 +132,7 @@
           <EntitySet Name="educode" EntityType="Self.educode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="educode_temp" EntityType="Self.educode_temp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="mailgroup" EntityType="Self.mailgroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StaffClassTitleCode" EntityType="Self.StaffClassTitleCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="staffmember" EntityType="Self.staffmember" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="staffmember_temp" EntityType="Self.staffmember_temp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="stumember" EntityType="Self.stumember" Schema="dbo" store:Type="Tables" />
@@ -232,6 +246,7 @@
           <EntitySet Name="stumember_temp" EntityType="Self.stumember_temp" />
           <EntitySet Name="unitcode" EntityType="mailModel.unitcode" />
           <EntitySet Name="mailgroup" EntityType="mailModel.mailgroup" />
+          <EntitySet Name="StaffClassTitleCode" EntityType="mailModel.StaffClassTitleCode" />
         </EntityContainer>
         <EntityType Name="unitcode">
           <Key>
@@ -248,6 +263,19 @@
           <Property Name="name" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="mail" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
           <Property Name="groupmail" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="StaffClassTitleCode">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="classCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="class" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="title" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="subclass" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="subclasscode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="subclassname" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -370,6 +398,20 @@
                 <ScalarProperty Name="groupmail" ColumnName="groupmail" />
                 <ScalarProperty Name="mail" ColumnName="mail" />
                 <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StaffClassTitleCode">
+            <EntityTypeMapping TypeName="mailModel.StaffClassTitleCode">
+              <MappingFragment StoreEntitySet="StaffClassTitleCode">
+                <ScalarProperty Name="subclassname" ColumnName="subclassname" />
+                <ScalarProperty Name="subclasscode" ColumnName="subclasscode" />
+                <ScalarProperty Name="subclass" ColumnName="subclass" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="class" ColumnName="class" />
+                <ScalarProperty Name="classCode" ColumnName="classCode" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
